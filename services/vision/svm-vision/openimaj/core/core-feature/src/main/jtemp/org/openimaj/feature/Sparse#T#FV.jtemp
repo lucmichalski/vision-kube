@@ -1,0 +1,275 @@
+/**
+ * Copyright (c) 2011, The University of Southampton and the individual contributors.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ *   * 	Redistributions of source code must retain the above copyright notice,
+ * 	this list of conditions and the following disclaimer.
+ *
+ *   *	Redistributions in binary form must reproduce the above copyright notice,
+ * 	this list of conditions and the following disclaimer in the documentation
+ * 	and/or other materials provided with the distribution.
+ *
+ *   *	Neither the name of the University of Southampton nor the names of its
+ * 	contributors may be used to endorse or promote products derived from this
+ * 	software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package org.openimaj.feature;
+
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.Scanner;
+
+import org.openimaj.util.array.SparseBinSearch#T#Array;
+import org.openimaj.util.array.Sparse#T#Array;
+import org.openimaj.util.array.Sparse#T#Array.Entry;
+import org.openimaj.util.concatenate.Concatenatable;
+
+/**
+ * A sparse one-dimensional feature vector of #t#-valued elements.
+ * 
+ * @author Jonathon Hare (jsh2@ecs.soton.ac.uk)
+ *
+ */
+public class Sparse#T#FV implements FeatureVector, Concatenatable<Sparse#T#FV, Sparse#T#FV> {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * The underlying data backing the feature vector
+	 */
+	public Sparse#T#Array values;
+	
+	/**
+	 * Construct an empty FV with zero length
+	 */
+	protected Sparse#T#FV() {
+	}
+
+	/**
+	 * Construct empty FV with given number of bins
+	 * @param nbins the number of bins in each dimension
+	 */
+	public Sparse#T#FV(int nbins) {
+		values = new SparseBinSearch#T#Array(nbins);
+	}
+	
+	/**
+	 * Construct from sparse array 
+	 * @param values the array of values
+	 */
+	public Sparse#T#FV(Sparse#T#Array values) {
+		this.values = values;
+	}
+
+	/**
+	 * Construct from native array
+	 * @param values the array of values
+	 */
+	public Sparse#T#FV(#t#[] values) {
+		this.values = new SparseBinSearch#T#Array(values);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openimaj.io.ReadableASCII#readASCII(java.util.Scanner)
+	 */
+	@Override
+	public void readASCII(Scanner in) throws IOException {
+		values = new SparseBinSearch#T#Array(0);
+		values.readASCII(in);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openimaj.io.ReadableASCII#asciiHeader()
+	 */
+	@Override
+	public String asciiHeader() {
+		return "S#T#FV";
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openimaj.io.ReadableBinary#readBinary(java.io.DataInput)
+	 */
+	@Override
+	public void readBinary(DataInput in) throws IOException {
+		values = new SparseBinSearch#T#Array(0);
+		values.readBinary(in);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openimaj.io.ReadableBinary#binaryHeader()
+	 */
+	@Override
+	public byte[] binaryHeader() {
+		return "S#T#FV".getBytes();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openimaj.io.WriteableASCII#writeASCII(java.io.PrintWriter)
+	 */
+	@Override
+	public void writeASCII(PrintWriter out) throws IOException {
+		values.writeASCII(out);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openimaj.io.WriteableBinary#writeBinary(java.io.DataOutput)
+	 */
+	@Override
+	public void writeBinary(DataOutput out) throws IOException {
+		values.writeBinary(out);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openimaj.feature.FeatureVector#getVector()
+	 */
+	@Override
+	public Sparse#T#Array getVector() {
+		return values;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openimaj.feature.FeatureVector#length()
+	 */
+	@Override
+	public int length() {
+		return values.length;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openimaj.feature.FeatureVector#normaliseFV(double[], double[])
+	 */
+	@Override
+	public DoubleFV normaliseFV(double [] min, double [] max) {
+		double [] dvals = asDoubleVector();
+
+		for (int i=0; i<dvals.length; i++) {
+			dvals[i] -= min[i];
+			dvals[i] /= (max[i]-min[i]);
+			
+			if (dvals[i]<0) dvals[i] = 0;
+			if (dvals[i]>1) dvals[i] = 1;
+		}
+		
+		return new DoubleFV(dvals);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openimaj.feature.FeatureVector#normaliseFV(double, double)
+	 */
+	@Override
+	public DoubleFV normaliseFV(double min, double max) {
+		double [] dvals = asDoubleVector();
+
+		for (int i=0; i<dvals.length; i++) {
+			dvals[i] -= min;
+			dvals[i] /= (max-min);
+			
+			if (dvals[i]<0) dvals[i] = 0;
+			if (dvals[i]>1) dvals[i] = 1;
+		}
+		
+		return new DoubleFV(dvals);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openimaj.feature.FeatureVector#normaliseFV()
+	 */
+	@Override
+	public DoubleFV normaliseFV() {
+		double [] dvals = asDoubleVector();
+		double sum = 0;
+
+		for (int i=0; i<dvals.length; i++)
+			sum += dvals[i];
+
+		for (int i=0; i<dvals.length; i++)
+			dvals[i] /= sum;
+		
+		return new DoubleFV(dvals);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.openimaj.feature.FeatureVector#normaliseFV(double)
+	 */
+	@Override
+	public DoubleFV normaliseFV(double p) {
+	    return asDoubleFV().normaliseFV(p);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openimaj.feature.FeatureVector#asDoubleFV()
+	 */
+	@Override
+	public DoubleFV asDoubleFV() {
+		return new DoubleFV(asDoubleVector());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openimaj.feature.FeatureVector#asDoubleVector()
+	 */
+	@Override
+	public double[] asDoubleVector() {
+		double [] d = new double[values.length];
+		
+		for (Entry e : values.entries()) {
+			d[e.index] = e.value;
+		}
+		
+		return d;
+	}
+	
+	@Override
+	public Sparse#T#FV concatenate(Sparse#T#FV... ins) {
+		Sparse#T#Array [] insValues = new Sparse#T#Array[ins.length];
+		
+		for (int i=0; i<ins.length; i++)
+			insValues[i] = ins[i].values;
+		
+		Sparse#T#Array vals = values.concatenate(insValues);
+		
+		return new Sparse#T#FV(vals);
+	}
+	
+	@Override
+	public Sparse#T#FV concatenate(List<Sparse#T#FV> ins) {
+		Sparse#T#Array [] insValues = new Sparse#T#Array[ins.size()];
+		
+		for (int i=0; i<ins.size(); i++)
+			insValues[i] = ins.get(i).values;
+		
+		Sparse#T#Array vals = values.concatenate(insValues);
+		
+		return new Sparse#T#FV(vals);
+	}
+
+	@Override
+	public double getAsDouble(int i) {
+		return values.get(i);
+	}
+
+	@Override
+	public void setFromDouble(int i, double v) {
+		values.set(i, (#t#) v);
+	}
+
+	@Override
+	public Sparse#T#FV newInstance() {
+		return new Sparse#T#FV(length());
+	}
+}

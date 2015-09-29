@@ -1,0 +1,11 @@
+{
+  "title": "FOODpedia Linked Data Fragments server",
+  "datasources": {
+    "foodpedia-sparql": {
+      "title": "FOODpedia (Virtuoso)",
+      "type": "SparqlDatasource",
+      "description": "FOODpedia with a Virtuoso back-end",
+      "settings": { "endpoint": "http://endpoint:8890/sparql", "defaultGraph": "http://foodpedia.tk/" }
+    }
+  }
+}

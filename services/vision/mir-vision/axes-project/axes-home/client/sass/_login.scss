@@ -1,0 +1,39 @@
+
+.login-view {
+  @include box-sizing(border-box);
+  width: 400px;
+  margin: 100px auto;
+  padding: 100px 30px;
+  
+  button, .topcoat-button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+#login-form {
+  @include box-sizing(border-box);
+  width: 100%;
+  color: $text-color;
+  
+  label {
+    display: none;
+  }
+  
+  input {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 5px;
+  }
+  
+  .error {
+    @include box-sizing(border-box);
+    width: 100%;
+    padding: 30px 10px;
+    display: inline-block;
+    font-weight: bold;
+    color: #ec514e;
+    text-align: center;
+  }
+}

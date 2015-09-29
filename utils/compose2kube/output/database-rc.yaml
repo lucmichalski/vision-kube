@@ -1,0 +1,46 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "database",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "database"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "database"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "database"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "database",
+            "image": "postgres",
+            "ports": [
+              {
+                "containerPort": 5432
+              }
+            ],
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

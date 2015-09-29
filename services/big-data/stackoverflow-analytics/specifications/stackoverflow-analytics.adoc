@@ -1,0 +1,49 @@
+== Stackoverflow Analytics
+
+Stack Overflow analytics platform to track and measure stack overflow tag question and answer growth over time. Identify trends and see how communities are requesting support around a product or feature over time and in real time.
+
+=== Requirements
+
+* Uses stack overflow API
+*  Question title, tags, upvotes, original poster, people who edited the question, accepted answer, votes for the answer, other answers
+ * (?? comments)
+ * (later semantic analytics / sentiment of query and answer text)
+* How many questions per month, per week, per week day
+* Questions per tag
+* Questions/answers per person, especially for answerers
+* Get one person and see how their engagement changed over time
+* Spike of engagement, continuous engagement, low engagement, people who could do more
+* Use this to get a better understand the health of the ecosystem and type of questions that are asked
+* Which questions are not answered
+* Which tags are commonly used together
+
+=== Basic Domain Model
+
+image::https://raw.githubusercontent.com/kbastani/stackoverflow-analytics/master/specifications/Images/stackoverflow_model.svg[]
+
+=== Setup
+
+//setup
+[source,cypher]
+----
+create (:Year {year:2014})<-[:IN]-(m:Month {month:4})<-[:IN]-(d3:Day {day:3})
+create (m)<-[:IN]-(d4:Day {day:4})
+create (m)<-[:IN]-(d5:Day {day:5})
+create (john:User {name:"John", reputation:2323})
+create (jane:User {name:"Jane", reputation:122})
+create (frank:User {name:"Frank", reputation:1})
+create (q:Question {title:"This is a question",votes:[1,0],stars:1})-[:CREATED]->(d3)
+create (q)-[:TAGGED]->(t:Tag {name:"tag"})
+create (john)-[:ASKED]->(q)
+create (jane)-[:EDITED]->(q)
+create (jane)-[:PROVIDES]->(a:Answer {votes:[4,0],accepted:true})-[:ANSWERS]->(q)
+create (a)-[:CREATED]->(d4)
+create (frank)-[:PROVIDES]->(b:Answer)-[:ANSWERS]->(q)
+create (a)-[:CREATED]->(d5)
+----
+
+//graph
+
+// table
+
+=== 

@@ -1,0 +1,13 @@
+port = ":1979"
+graceTimeOut = 10
+logLevel = "ERROR"
+traefikLogsFile = "/opt/ltuengine76/logs/smart_proxy_daemon.log"
+accessLogsFile = "/opt/ltuengine76/logs/smart_proxy_access.log"
+
+[web]
+address = ":1980"
+
+[file]
+filename = "/opt/ltuengine76/rules.toml"
+watch = true
+

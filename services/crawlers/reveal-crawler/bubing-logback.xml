@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--<appender name="all" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %r %p [%t] %logger{1} - %m%n</pattern>
+        </encoder>
+    </appender>-->
+    <appender name="all" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/tmp/bubing.log</file>
+        <encoder>
+            <pattern>%d %r %p [%t] %logger{1} - %m%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <maxHistory>100</maxHistory>
+            <FileNamePattern>/tmp/bubing.%d{yyyy-MM-dd_HH}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <appender name="warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/tmp/bubing.warn</file>
+        <encoder>
+            <pattern>%d %r %p [%t] %logger{1} - %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <maxHistory>100</maxHistory>
+            <FileNamePattern>/tmp/bubing.%d.warn</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="all"/>
+        <appender-ref ref="warn"/>
+    </root>
+    <logger name="net.htmlparser.jericho" level="OFF"/>
+    <logger name="it.unimi.di.law.bubing" level="INFO"/>
+    <logger name="it.unimi.di.law.bubing.frontier.FetchingThread$DNSJavaClientConnectionManager" level="INFO"/>
+    <logger name="org.apache.http.impl.client" level="WARN"/>
+</configuration>

@@ -1,0 +1,29 @@
+[Unit]
+Description=Matlab MCR
+
+Requires=docker.service
+
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+
+KillMode=none
+
+EnvironmentFile=/etc/environment
+
+Restart=on-failure
+RemainAfterExit=yes
+
+
+ExecStartPre=-/usr/bin/docker kill vmxmcr
+ExecStartPre=-/usr/bin/docker rm vmxmcr
+ExecStartPre=/usr/bin/docker pull visionai/mcr-2014a
+ExecStart=/usr/bin/docker run --name vmxmcr visionai/mcr-2014a
+ExecStartPost=/usr/bin/echo VMX: Started mcr.service
+
+ExecStop=/usr/bin/docker stop vmxmcr
+
+[X-Fleet]
+Global=true
+MachineMetadata="vmxtype=vmxserver"

@@ -1,0 +1,10 @@
+cassandra:
+  image: mashape/cassandra
+
+kong:
+  build: .
+  links:
+    - cassandra
+  ports:
+    - 8001
+    - 8000

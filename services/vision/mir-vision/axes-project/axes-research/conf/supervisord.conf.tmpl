@@ -1,0 +1,120 @@
+;
+; Template supervisord configuration file for axes-research
+;
+; Copy this file to supervisord.conf and edit the settings. Then launch the 
+; supervisord deamon using:
+;
+; $ supervisord -c conf/supervisord.conf
+;
+; You can then start, stop, reload, etc. services using the supervisorctl
+; command. E.g.:
+;
+; $ supervisorctl -c conf/supervisord.conf stop cutserver
+;
+; Supervisorctl can also be run in interactive mode:
+;
+; $ supervisorctl -c conf/supervisord.conf
+; cutserver                        RUNNING    pid 9649, uptime 0:00:20
+; django-dev                       STOPPED    Not started
+; django-gevent                    RUNNING    pid 9651, uptime 0:00:06
+; django-gevent-debug              STOPPED    Not started
+; mongodb                          RUNNING    pid 9648, uptime 0:00:20
+; supervisor> 
+;
+; To run multiple supervisord processes on the same server, you'll need to 
+; change the name of the .sock, .pid, and serverurl below.
+;
+; See: http://supervisord.org/configuration.html
+;
+
+[unix_http_server]
+file=/tmp/supervisor.sock
+
+[supervisord]
+logfile=logs/supervisord.log
+pidfile=/tmp/supervisord.pid
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=unix:///tmp/supervisor.sock
+
+;
+; MongoDB server
+;
+[program:mongodb]
+command=mongod
+priority=1
+autostart=true
+stdout_logfile=logs/%(program_name)s.stdout.log
+stderr_logfile=logs/%(program_name)s.stderr.log
+
+;
+; Celery worker process
+;
+[program:celery]
+command=python manage.py celery worker
+priority=2
+autostart=true
+stdout_logfile=logs/%(program_name)s.stdout.log
+stderr_logfile=logs/%(program_name)s.stderr.log
+
+;
+; Django http server based on gevent (production mode)
+;
+[program:django-gevent]
+command=python services/gevent-server.py -p 8001
+priority=3
+autostart=false
+stdout_logfile=logs/%(program_name)s.stdout.log
+stderr_logfile=logs/%(program_name)s.stderr.log
+
+;
+; Django http server based on gevent (debug mode)
+;
+[program:django-gevent-debug]
+command=python services/gevent-server.py -p 8002 --debug
+priority=3
+autostart=false
+stdout_logfile=logs/%(program_name)s.stdout.log
+stderr_logfile=logs/%(program_name)s.stderr.log
+
+;
+; Green Unicorn based http server (production mode)
+;
+[program:gunicorn]
+command=gunicorn_django --pythonpath . 
+    -w 4
+    -k gevent
+    -b localhost:8001 axesresearch.settings.production
+priority=3
+autostart=false
+stdout_logfile=logs/%(program_name)s.stdout.log
+stderr_logfile=logs/%(program_name)s.stderr.log
+
+;
+; Green Unicorn based http server (debug mode)
+;
+[program:gunicorn-debug]
+command=gunicorn_django --pythonpath . 
+    -k gevent
+    -b localhost:8002 axesresearch.settings.dev
+priority=3
+autostart=false
+stdout_logfile=logs/%(program_name)s.stdout.log
+stderr_logfile=logs/%(program_name)s.stderr.log
+
+;
+; Django development server (development only)
+;
+[program:django-dev]
+command=python manage.py runserver 8000
+priority=3
+autostart=false
+stopasgroup=true ; needed for dev server
+stdout_logfile=logs/%(program_name)s.stdout.log
+stderr_logfile=logs/%(program_name)s.stdout.log
+
+
+

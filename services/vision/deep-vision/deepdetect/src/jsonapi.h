@@ -1,0 +1,134 @@
+/**
+ * DeepDetect
+ * Copyright (c) 2014-2015 Emmanuel Benazera
+ * Author: Emmanuel Benazera <beniz@droidnik.fr>
+ *
+ * This file is part of deepdetect.
+ *
+ * deepdetect is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * deepdetect is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with deepdetect.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef JSONAPI_H
+#define JSONAPI_H
+
+#include "apistrategy.h"
+#include "dd_types.h"
+
+namespace dd
+{
+  /**
+   * \brief JSON API class
+   */
+  class JsonAPI : public APIStrategy
+  {
+  public:
+    JsonAPI();
+    ~JsonAPI();
+
+    /**
+     * \brief command line handling
+     */
+    int boot(int argc, char *argv[]);
+
+    /**
+     * \brief error status generation
+     * @param jst JSON document object
+     * @param code error HTTP code
+     * @param msg error message
+     * @param dd_code deepdetect custom error code
+     * @param dd_msg deepdetect custom error message
+     */
+    void render_status(JDoc &jst,
+		       const uint32_t &code, const std::string &msg,
+		       const uint32_t &dd_code=0, const std::string &dd_msg="") const;
+    
+    // errors
+    JDoc dd_ok_200() const;
+    JDoc dd_created_201() const;
+    JDoc dd_bad_request_400() const;
+    JDoc dd_forbidden_403() const;
+    JDoc dd_not_found_404() const;
+    JDoc dd_conflict_409() const;
+    JDoc dd_internal_error_500() const;
+
+    // specific errors
+    JDoc dd_unknown_library_1000() const;
+    JDoc dd_no_data_1001() const;
+    JDoc dd_service_not_found_1002() const;
+    JDoc dd_job_not_found_1003() const;
+    JDoc dd_input_connector_not_found_1004() const;
+    JDoc dd_service_input_bad_request_1005() const;
+    JDoc dd_service_bad_request_1006() const;
+    JDoc dd_internal_mllib_error_1007(const std::string &what) const;
+    JDoc dd_train_predict_conflict_1008() const;
+
+    // JSON rendering
+    std::string jrender(const JDoc &jst) const;
+    std::string jrender(const JVal &jval) const;
+
+    // resources
+    // return a JSON document for every API call
+    JDoc info() const;
+    JDoc service_create(const std::string &sname, const std::string &jstr);
+    JDoc service_status(const std::string &sname);
+    JDoc service_delete(const std::string &sname,
+			const std::string &jstr);
+    
+    JDoc service_predict(const std::string &jstr);
+
+    JDoc service_train(const std::string &jstr);
+    JDoc service_train_status(const std::string &jstr);
+    JDoc service_train_delete(const std::string &jstr);
+
+    static int store_json_blob(const std::string &model_repo,
+			       const std::string &jstr);
+
+    static std::string _json_blob_fname;
+  };
+
+  /**
+   * \brief visitor class for service info call
+   */
+  class visitor_info : public mapbox::util::static_visitor<APIData>
+  {
+  public:
+    visitor_info() {}
+    ~visitor_info() {}
+
+    template<typename T>
+      APIData operator() (T &mllib)
+      {
+	return mllib.info();
+      }
+  };
+
+  /**
+   * \brief visitor class for service status call
+   */
+  class visitor_status : public mapbox::util::static_visitor<APIData>
+  {
+  public:
+    visitor_status() {}
+    ~visitor_status() {}
+
+    template<typename T>
+      APIData operator() (T &mllib)
+      {
+	return mllib.status();
+      }
+  };
+
+}
+
+#endif

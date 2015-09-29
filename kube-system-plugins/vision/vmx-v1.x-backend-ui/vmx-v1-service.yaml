@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmx-v1-models-ui
+  namespace: kube-system
+  labels:
+    k8s-app: vmx-v1-models-ui
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "vmx-v1-gui"
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: ui
+  selector:
+    k8s-app: vmx-v1-models-ui

@@ -1,0 +1,94 @@
+
+
+
+What is this?
+=============
+
+This is code for LEAR's participation to TV12
+
+
+
+
+
+
+
+
+# early fusions
+
+key=jerome_small
+output=/scratch2/clear/revaud/trecvid12/combine-tv12/weights_train_linearsvm_linear_mbh+sift_mu_sigma+jochen_audio+mbh,sift_mu_sigma+mbh,sift_mu_sigma,jochen_audio+linear_SVM_sssl2_tree_biwords_5895B6501D71F386.pickle
+
+key=jerome_big
+output=/scratch2/clear/revaud/trecvid12/combine-tv12/weights_train_linearsvm_linear_mbh_1024+sift_1024+jochen_audio_sns+mbh_1024,sift_1024-nomixw+mbh_1024,sift_1024,jochen_audio_sns+linear_SVM_sssl2_tree_biwords_5895B6501D71F386.pickle
+
+
+
+
+key=dan_small
+output=/home/lear/oneata/src/med12lear/data/late_fusion_classifiers/small_5_weights.pickle
+
+key=dan_big
+output=/home/lear/oneata/src/med12lear/data/late_fusion_classifiers/big_5_weights.pickle
+
+
+
+# Jerome's LR results
+
+# c-LFjrlrsmall
+
+key=jerome_smalllr
+output=/scratch2/clear/revaud/trecvid12/combine-tv12/weights_train_lr_linear_mbh+sift_mu_sigma+jochen_audio+mbh,sift_mu_sigma-nomixw+linear_SVM_sssl2_tree_biwords_5895B6501D71F386.pickle
+
+# c-LFjrlrbig
+key=jerome_biglr
+output=/scratch2/clear/revaud/trecvid12/combine-tv12/weights_train_lr_linear_mbh_1024+sift_1024+jochen_audio+mbh_1024,sift_1024-nomixw+linear_SVM_sssl2_tree_biwords_5895B6501D71F386.pickle
+
+
+# -> gives DCR thresholds table, copy/paste to prepare_final_res.py
+
+
+python eval_folds.py -dcrthresh -linearcomb $output -tv12
+
+# generate results 
+
+python late_fusion_test.py -o data/finalTV12/lf_$key -linearcomb $output -tv12
+
+
+# For small results
+
+python late_fusion_test.py -o data/finalTV11_train_on_12/lf_$key -linearcomb $output -tv11
+
+
+
+# for all results...
+
+python eval_folds.py  -linearcomb $output -tv12 -html
+
+# in prepare_final_res
+
+
+
+# Prepare final
+
+To prepare the results in the format accepted by the F4DE evaluating tool, do the following:
+
+1. Add a line in the file `score_files.yaml` that gives the correspondence
+   between the key of the system ID and the location where the scores are are
+   stored. Example:
+
+    "c-color_small": "data/finalTV11_classifiers/ef_color_1024_d32" 
+
+2. Use the script `prepare_final_res.py` to generate the scores in the
+   requested format:
+
+    python prepare_final_res.py -tv MED11 --sys_id "c-color_small" --event_set PS -vv
+
+3. Run the `final_sub.sh` script (this calls the F4DE tool) with the key
+   outputed by `prepare_final_res.py`.
+
+    ./final_sub.sh INRIA-LEAR_MED11_MED11TEST_MEDFull_AutoEAG_c-3chan_jochen_ef_1
+
+    It uses the new F4DE tool, version 3.0.0; you need to export the path to
+    PERL5LIB to make this work:
+
+    export PERL5LIB="/home/lear/oneata/perl5/lib/perl5"

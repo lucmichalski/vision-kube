@@ -1,0 +1,298 @@
+<div id="asset-page" class="main-view">
+      
+  <div data-bind="with: assetView.asset" class="asset-view">
+    <div class="title" data-bind="text: video.metadata.title"></div>
+    <div class="video-player">
+      <div class="video-box">
+        <div data-bind="
+            video: $data, width: 480, height: 320">
+          <span class="video-loading-indicator">Loading video...</span>
+        </div>
+        
+      
+        <div class="below-video">
+          
+          <span class="video-stats">
+            
+            <span class="stat" title="Views">
+              <i class="icon-eye-open"></i>
+              <span data-bind="text: video.stats().views"></span>
+            </span>
+            <span class="stat" title="Downloads">
+              <i class="icon-download"></i>
+              <span data-bind="text: video.stats().downloads"></span>
+            </span>
+            <span class="stat" title="Favorites">
+              <i class="icon-heart"></i>
+              <span data-bind="text: video.stats().favorites"></span>
+            </span>
+            <span class="stat" title="Likes">
+              <i class="icon-thumbs-up"></i>
+              <span data-bind="text: video.stats().likes"></span>
+            </span>
+            <span class="stat" title="Dislikes">
+              <i class="icon-thumbs-down"></i>
+              <span data-bind="text: video.stats().dislikes"></span>
+            </span>
+            
+          </span>
+          
+    
+          
+          <div class="pull-right">
+          
+            <button class="btn btn-small" title="Download Video"
+              data-bind="click: $root.assetView.download">
+              <i class="icon-download"></i></button>
+            <button class="btn btn-small" title="Favorite Video" 
+              data-bind="click: $root.assetView.favorite">
+              <i class="icon-heart"></i></button>
+            <button class="btn btn-small" title="Like Video" 
+              data-bind="click: $root.assetView.like">
+              <i class="icon-thumbs-up"></i></button>
+            <button class="btn btn-small" title="Dislike Video" 
+              data-bind="click: $root.assetView.dislike">
+              <i class="icon-thumbs-down"></i></button>
+          </div>
+          
+          
+        </div>
+        
+      </div>
+    </div>
+   
+    
+    <!-- Video metadata -->
+    <div id="video-metadata" class="metadata collapse-box">
+    
+      <button class="title-btn btn btn-link" 
+        data-toggle="collapse" 
+        data-parent="#video-metadata" 
+        data-target="#video-metadata-collapsible">
+         <i class="icon-chevron-down"></i> Program Information
+      </button>
+      
+      <div id="video-metadata-collapsible" class="collapse in">
+        <div class="program-info" data-bind="with: video.metadata">
+          Date: <span class="date" data-bind="text: publicationDate"></span>
+          License: <span class="license" data-bind="text: license"></span>
+          Categories: <span class="genre" data-bind="text: genres.join(', ')"></span>
+        </div>
+          
+        <div class="summary" data-bind="with: video.metadata">
+          <span data-bind="html: $root.highlightSearchTerms(summary)"></span>
+          <span data-bind="html: $root.highlightSearchTerms(description)"></span>
+        </div>
+          
+        <div class="other-info">
+          
+          <div data-bind="foreach: $root.assetView.displayMetadata">
+            <!-- ko if: $root.assetView.hasMetadata(name) -->
+            <div class="keywords">
+              <strong data-bind="text: title"></strong><strong>:</strong>
+              <span data-bind="foreach:
+                   $root.assetView.asset().video.metadata[name]">
+                <a href="#" class="keyword" 
+                  data-bind="text: $data, click: 
+                    $root.quickSearch.bind($root, $data)"></a>
+              </span>
+            </div>
+            <!-- /ko -->
+          </div>
+          
+          <div class="spoken-words" data-bind="with: segmentOrVideo().speech">
+            <strong>Spoken words: </strong>
+            <span data-bind="html: $root.highlightSearchTerms(spokenWords)"></span>
+          </div>
+          
+          <!-- ko if: segmentOrVideo().visualTags().length > 0 -->
+          <div class="visual-tags" data-bind="with: segmentOrVideo()">
+            <strong>Visual tags: </strong>
+            <span data-bind="text: visualTags().join(', ')"></span>
+          </div>
+          <!-- /ko -->
+        </div>
+      </div>
+      
+      <div id="asset-controls">
+        
+        <!-- Show keyframes -->
+        <a class="btn btn-small" 
+          data-bind="attr: {href: '#/keyframes/' + video.uri }">
+          <i class="icon-th"></i> 
+          Display Keyframes</a>
+          
+        <!-- Edit Video -->
+        <a class="btn btn-small" 
+          data-bind="attr: {href: '#/cutter/' + uri }">
+          <i class="icon-film"></i>
+          Virtual Cutter</a>
+          
+        <!-- Download metadata -->
+        <div class="btn-group">
+          <button class="btn btn-small dropdown-toggle" 
+            data-toggle="dropdown">
+            <i class="icon-info-sign"></i>
+            Download Metadata
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" data-bind="with: $root.assetView" >
+            <li><a href="#" data-bind="
+              click: downloadMetadata.bind($data, 'json')">as JSON...</a></li>
+            <li><a href="#" data-bind="
+              click: downloadMetadata.bind($data, 'yaml')">as YAML...</a></li>
+            <li><a href="#" data-bind="
+              click: downloadMetadata.bind($data, 'csv')">as CSV...</a></li>
+              <li><a href="#" data-bind="
+                click: downloadMetadata.bind($data, 'txt')">as Plain text...</a></li>
+          </ul>
+        </div>
+        
+        <!-- Add to collection -->
+        <div class="btn-group">
+          <button class="btn btn-small dropdown-toggle" 
+            data-toggle="dropdown">
+            <i class="icon-briefcase"></i>
+            Add to Collection
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" data-bind="foreach: $root.collections">
+            <li><a href="#" data-bind="text: name, 
+              click: $root.addVideoToCollection.bind(
+                $root, $root.assetView.asset().video, $data)"></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Video transcript -->
+    <div id="video-transcript" class="metadata collapse-box">
+      <button class="title-btn btn btn-link" 
+        data-toggle="collapse" 
+        data-parent="#video-transcript" 
+        data-target="#video-transcript-collapsible">
+         <i class="icon-chevron-down"></i>Full Transcript/Subtitles
+      </button>
+        
+      <div id="video-transcript-collapsible" class="collapse in" 
+        data-bind="with: $root.assetView">
+        <div class="transcript" data-bind="foreach: transcript">
+          <p>
+          <a class="transcript-time" data-bind="text: utils.formatTime($data.startTimeMillis, true), click: $parent.seekVideo.bind($parent, $data.startTimeMillis)" href="#"></a>
+          <span class="transcript-text" data-bind="text: $data.speech.spokenWords"></span>
+          </p>
+        </div>
+      </div>
+      
+      <button class="btn btn-small" title="Download Video"
+        data-bind="click: $root.assetView.downloadTranscript">
+        <i class="icon-download"></i> Download</button>
+      </div>
+    
+    <!-- Video notes -->
+    <div id="video-notes" class="collapse-box" data-bind="with: $root.assetView">
+      
+      <button class="title-btn btn btn-link" 
+        data-toggle="collapse" 
+        data-parent="#video-notes" 
+        data-target="#video-notes-collapsible">
+         <i class="icon-chevron-down"></i> Notes 
+         (<span class="note-count" data-bind="text: notes().length"></span>)
+         
+      </button>
+      
+      <div id="video-notes-collapsible" class="collapse">
+        
+        
+        
+        <div class="notes" data-bind="foreach: filteredNotes">
+          <div class="note">
+            <span class="note-user" data-bind="text: user"></span>
+            <span class="note-date" data-bind="text: jQuery.timeago(dateCreated)"></span>
+            <span class="note-type" data-bind="text: type"></span>
+            <span class="note-text" data-bind="text: text"></span>
+          </div>
+        </div>
+        
+        <label class="checkbox pull-right" style="font-size: 9pt">
+          <input type="checkbox" data-bind="value: displayOnlyUserNotes"> 
+          Only show notes that I created
+        </label>
+        
+        <div class="new-note" >
+          <textarea id="new-note-text" placeholder="Type new note text here..."
+            data-bind="value: newNoteText"></textarea>
+          <button class="btn btn-mini btn-primary pull-right"
+            data-bind="click: newPublicNote">New Public Note</button>
+          <button class="btn btn-mini pull-right"
+            data-bind="click: newPrivateNote">New Private Note</button>
+        </div>
+        
+      </div>
+      <span class="clearfix"></span>
+    </div>
+    
+    <!-- Related videos -->
+    <div id="related-videos" class="collapse-box" data-bind="with: $root.assetView">
+      
+      <button class="title-btn btn btn-link" 
+        data-toggle="collapse" 
+        data-parent="#related-videos" 
+        data-target="#related-videos-collapsible">
+         <i class="icon-chevron-down"></i> Related Videos
+         (<span class="note-count" data-bind="text: relatedVideos().ranking.length"></span>)
+      </button>
+      
+      <div id="related-videos-collapsible" class="collapse" data-bind="with: relatedVideos">
+        <div class="related" data-bind="foreach: ranking">
+          <span class="result compact">
+            <span class="thumbnail">
+              <img data-bind="attr: {src: keyframe().thumbnailUrl}" width="180" height="110"></img>
+              <button class="play-button" title="Play video"
+                data-bind="click: $root.previewView.show"></button>
+              <a class="title-overlay" data-bind="text: metadata().title, 
+                attr: { href:'#/asset/' + uri }"></a>
+              <span class="duration-overlay" 
+                data-bind="text: video().formattedDuration()"></span>
+            </span>
+          </span>
+        </div>
+      </div>
+      <span class="clearfix"></span>
+    </div>
+    
+    <!-- Related segments -->
+    <div id="related-segments" class="collapse-box" data-bind="with: $root.assetView">
+      
+      <button class="title-btn btn btn-link" 
+        data-toggle="collapse" 
+        data-parent="#related-segments" 
+        data-target="#related-segments-collapsible">
+         <i class="icon-chevron-down"></i> Related Segments
+         (<span class="note-count" data-bind="text: relatedSegments().ranking.length"></span>)
+      </button>
+      
+      <div id="related-segments-collapsible" class="collapse" data-bind="with: relatedSegments">
+        <div class="related" data-bind="foreach: ranking">
+          <span class="result compact">
+            <span class="thumbnail">
+              <img data-bind="attr: {src: keyframe().thumbnailUrl}" width="180" height="110"></img>
+              <button class="play-button" title="Play video"
+                data-bind="click: $root.previewView.show"></button>
+              <a class="title-overlay" data-bind="text: metadata().title, 
+                attr: { href:'#/asset/' + uri }"></a>
+              <span class="duration-overlay" 
+                data-bind="text: video().formattedDuration()"></span>
+              <!-- Segment position bar -->
+              <canvas class="segment-pos" width="175" height="3" data-bind="draw: $data, 
+                  using: $root.resultsView.drawSegmentPosition"></canvas>
+            </span>
+          </span>
+        </div>
+      </div>
+      <span class="clearfix"></span>
+    </div>
+    
+  </div>
+  
+</div>

@@ -1,0 +1,37 @@
+Description=VMX Middle Service
+
+# Requirements
+Requires=etcd.service
+Requires=docker.service
+Requires=middle-discovery@1.service
+
+# Dependency ordering
+After=etcd.service
+After=docker.service
+Before=middle-discovery@1.service
+
+[Service]
+# Let processes take awhile to start up (for first run Docker containers)
+TimeoutStartSec=0
+
+# Change killmode from "control-group" to "none" to let Docker remove
+# work correctly.
+KillMode=none
+
+# Get CoreOS environmental variables
+EnvironmentFile=/etc/environment
+
+# Pre-start and Start
+## Directives with "=-" are allowed to fail without consequence
+ExecStartPre=-/usr/bin/docker kill apache.%i
+ExecStartPre=-/usr/bin/docker rm apache.%i
+ExecStartPre=/usr/bin/docker pull username/apache
+ExecStart=/usr/bin/docker run --name apache.%i -p ${COREOS_PUBLIC_IPV4}:%i:80 \
+username/apache /usr/sbin/apache2ctl -D FOREGROUND
+
+# Stop
+ExecStop=/usr/bin/docker stop apache.%i
+
+[X-Fleet]
+# Don't schedule on the same machine as other Apache instances
+X-Conflicts=apache@*.service

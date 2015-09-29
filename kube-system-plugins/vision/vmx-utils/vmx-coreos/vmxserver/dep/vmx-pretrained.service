@@ -1,0 +1,27 @@
+[Unit]
+Description=Makes sure the pretrained data is available
+
+Requires=vmx-server-binary.service
+After=vmx-server-binary.service
+
+[Service]
+TimeoutStartSec=0
+
+KillMode=none
+
+EnvironmentFile=/etc/environment
+
+Type=oneshot
+RemainAfterExit=yes
+
+ExecStart=/bin/bash -c '\
+ mkdir -p /home/core/vmx/data ; \
+ cd /home/core/vmx/data  ; \
+ wget http://files.vision.ai/vmx/pretrained/3f61ce5c7642bc2f24f7286f600b3e6b ; \
+'
+ExecStartPost=/usr/bin/echo VMX: Pretrained loaded
+ExecStop=/usr/bin/echo stopped pretrained (left the files)
+
+[X-Fleet]
+Global=true
+MachineMetadata="vmxtype=vmxserver"

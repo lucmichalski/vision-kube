@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: etcd-api-cors
+  namespace: kube-system
+  labels:
+    k8s-app: etcd-browser
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "etcd-api-cors"
+spec:
+  ports:
+  - port: 8000
+    protocol: TCP
+    targetPort: ui
+  selector:
+    k8s-app: etcd-api-cors

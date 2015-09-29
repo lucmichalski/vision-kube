@@ -1,0 +1,95 @@
+{% load utils %}
+<div id="filters-pane" data-bind="with: $root.filtersView">
+  <div class="collapsible-content" style="display: none">    
+    <div class="filter-options row-fluid">
+      
+      <!-- Left panel -->
+      <div class="span3">
+        <div class="control-group">
+          <label class="control-label" >Metadata</label>
+          <div class="controls">
+            <div class="input-prepend">
+              <span class="add-on" 
+              style="width: 60px; text-align: right">Title</span>
+              <input class="input-block-level" 
+                type="text"
+                placeholder="contains..."
+                data-bind="value: titleContains">
+            </div>
+            <div class="input-prepend">
+              <span class="add-on" 
+              style="width: 60px; text-align: right">Summary</span>
+              <input class="input-block-level" type="text"
+                placeholder="contains..."
+                data-bind="value: summaryContains">
+            </div>
+            <div class="input-prepend">
+              <span class="add-on" 
+              style="width: 60px; text-align: right">Subject</span>
+              <input class="input-block-level" type="text"
+                placeholder="contains..."
+                data-bind="value: subjectContains">
+            </div>
+          </div>
+        </div>
+        
+        <div class="control-group" >
+          <label class="control-label" >Production date</label>
+          <div class="controls">
+            <label class="checkbox">
+              <input type="checkbox" data-bind="checked: dateFilterEnabled" />
+              Published between <span data-bind="text: startYear">
+            </span> and <span data-bind="text: endYear"></span>
+            </label>
+            <div class="date-range" data-bind="rangeSlider: true, 
+              low: startYear, 
+              high: endYear, 
+              sliderOptions: {min: 1980, max: 2013}, 
+              enable: dateFilterEnabled">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {% for title, stat, selected, custom, common in ui_filters %}
+      
+      <div class="span3"> 
+        <div class="control-group" >
+          <label class="control-label" >{{title}}</label>
+          <div class="controls">
+            
+            {% for val in stats|key:stat|slice:":5" %}
+            <label class="checkbox">
+              <input type="checkbox" value="{{val.value}}" 
+                data-bind="checked: {{selected}}" >{{val.value|title}}
+            </label>
+            {% endfor %}
+            
+            <label class="checkbox">
+              <input type="checkbox" value="custom" 
+                data-bind="checked: {{selected}}">
+                <strong>Custom:</strong>
+            </label>
+            <input type="text" 
+              data-bind="typeahead: {{common}}, value: {{custom}}"
+              placeholder="{{title}}...">
+          </div>
+        </div> 
+      </div>
+      
+      {% endfor %}
+      
+    </div>
+    
+    
+    
+    <div class="filter-buttons pull-right" >
+      <button class="btn btn-small" 
+        data-bind="click: resetFilters">Reset filters</button>
+      <button class="btn btn-small btn-primary" 
+        data-bind="click: applyFilters">Apply filters</button>
+    </div>
+  </div>
+  
+  
+</div>

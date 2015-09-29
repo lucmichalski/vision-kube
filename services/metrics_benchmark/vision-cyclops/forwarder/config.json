@@ -1,0 +1,34 @@
+{
+  "network": {
+    "servers": ["logstash:5000"],
+    "ssl ca": "/etc/logstash/logstash-forwarder.crt",
+    "ssl key": "/etc/logstash/logstash-forwarder.key",
+    "timeout": 15
+  },
+  "files": [
+    {
+    	"paths": ["/opt/logs/false-positives/false-positive.txt" ],
+    	"fields": {"type": "vision-falsepos"}
+    }, 
+    {
+    	"paths": ["/opt/logs/svm/vmx1.x/*/log.txt" ],
+    	"fields": {"type": "vmx1-reco"}
+    }, 
+    {
+        "paths": ["/opt/logs/svm/vmx2.x/*/log.txt" ],
+        "fields": {"type": "vmx2-reco"}
+    },
+    {   "paths": [
+	      "/opt/logs/features2d/ltuengine76/admin_worker*.log",
+	      "/opt/logs/features2d/ltuengine76/app_worker*.log",
+	      "/opt/logs/features2d/ltuengine76/frontoffice*.log",
+	      "/opt/logs/features2d/ltuengine76/kima-server*.log",
+	      "/opt/logs/features2d/ltuengine76/manager*.log",
+	      "/opt/logs/features2d/ltuengine76/processor*.log",
+	      "/opt/logs/features2d/ltuengine76/weki*.log" ],
+	    "fields": {"type": "ltuengine-generic"}
+    },{
+    "paths": ["/opt/logs/features2d/ltuengine76/kima*.log"],
+    "fields": {"type": "ltuengine-kima"}
+    }]
+}

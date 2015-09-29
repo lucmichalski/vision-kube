@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: example
+  annotations:
+    romulus/host: 'seeubaby.blippar.com.com'
+    romulus/path.api: '/api'
+    romulus/path.web: '/web'
+  labels:
+    name: example-multiports
+    romulus/type: external
+    romulus/status=prod
+spec:
+  ports:
+  - port: 80
+    name: web
+  - port: 8888
+    name: api

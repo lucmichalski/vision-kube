@@ -1,0 +1,18 @@
+{
+  "directives.language-select.Language": "directives.language-select.Language",
+  "directives.sidebar.Dashboard": "directives.sidebar.Dashboard",
+  "directives.sidebar.Users": "directives.sidebar.Users",
+  "views.users.list.CreatedAt": "views.users.list.CreatedAt",
+  "views.users.list.ListOfUsers": "views.users.list.ListOfUsers",
+  "views.users.list.Name": "views.users.list.Name",
+  "views.users.list.Username": "views.users.list.Username",
+  "views.users.list.Users": "views.users.list.Users",
+  "views.users.setting.Settings": "views.users.setting.Settings",
+  "views.users.setting.SettingsPanel": "views.users.setting.SettingsPanel",
+  "views.users.view.Firstname": "views.users.view.Firstname",
+  "views.users.view.ID": "views.users.view.ID",
+  "views.users.view.Lastname": "views.users.view.Lastname",
+  "views.users.view.User": "views.users.view.User",
+  "views.users.view.UserDetail": "views.users.view.UserDetail",
+  "views.users.view.Username": "views.users.view.Username"
+}

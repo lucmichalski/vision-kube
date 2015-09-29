@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.openimaj</groupId>
+  <artifactId>openimaj-storm-tools</artifactId>
+  <packaging>pom</packaging>
+  <version>1.4-SNAPSHOT</version>
+  <name>OpenIMAJ Storm Tools</name>
+  <parent>
+    <artifactId>openimaj-storm</artifactId>
+    <groupId>org.openimaj</groupId>
+    <version>1.4-SNAPSHOT</version>
+    <relativePath>../</relativePath>
+  </parent>
+  <inceptionYear>2011</inceptionYear>
+  <description>
+			Tools that provide multimedia analysis algorithms expressed as 
+			Storm topology that can be run locally or on a Storm cluster.
+	  </description>
+  <modules>
+    <module>StormTwitterPreprocessingTool</module>
+    <module>core-storm-tool</module>
+    <!-- <module>NaiveBayesStorm</module> -->
+  </modules>
+</project>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Copyright (c) 2011, The University of Southampton and the individual contributors.
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without modification,
+    are permitted provided that the following conditions are met:
+
+      * 	Redistributions of source code must retain the above copyright notice,
+    	this list of conditions and the following disclaimer.
+
+      *	Redistributions in binary form must reproduce the above copyright notice,
+    	this list of conditions and the following disclaimer in the documentation
+    	and/or other materials provided with the distribution.
+
+      *	Neither the name of the University of Southampton nor the names of its
+    	contributors may be used to endorse or promote products derived from this
+    	software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+    ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+    ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+<config>
+  <luceneMatchVersion>LUCENE_CURRENT</luceneMatchVersion>
+  <abortOnConfigurationError>true</abortOnConfigurationError>
+  <dataDir>${geonames.solr.home:./solr}/data</dataDir>
+
+  <!-- This index shouldn't receive updates... so these settings don't matter -->
+
+  <query>
+    <maxBooleanClauses>1024</maxBooleanClauses>
+
+    <filterCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="128"/>
+    <queryResultCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="32"/>
+    <documentCache class="solr.LRUCache" size="512" initialSize="512" autowarmCount="0"/>
+
+    <enableLazyFieldLoading>true</enableLazyFieldLoading>
+    <queryResultWindowSize>50</queryResultWindowSize>
+    <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+    <HashDocSet maxSize="3000" loadFactor="0.75"/>
+    <listener event="newSearcher" class="solr.QuerySenderListener">
+      <arr name="queries">
+        <lst><str name="q">newcastle</str> <str name="start">0</str><str name="rows">10</str></lst>
+      </arr>
+    </listener>
+
+    <listener event="firstSearcher" class="solr.QuerySenderListener">
+      <arr name="queries">
+        <lst><str name="q">newcastle</str><str name="start">0</str><str name="rows">10</str></lst>
+      </arr>
+    </listener>
+
+    <useColdSearcher>false</useColdSearcher>
+    <maxWarmingSearchers>2</maxWarmingSearchers>
+  </query>
+
+  <requestDispatcher handleSelect="true" >
+    <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="2048" />
+    <httpCaching lastModifiedFrom="openTime" etagSeed="Solr"></httpCaching>
+  </requestDispatcher>
+
+  <requestHandler name="standard" class="solr.SearchHandler" default="true">
+     <lst name="defaults">
+       <str name="echoParams">all</str>
+       <int name="rows">20</int>
+       <str name="fl">basic_name,country_code,display</str>
+     </lst>
+  </requestHandler>
+  <requestHandler name="/update" class="solr.XmlUpdateRequestHandler"> </requestHandler>
+
+</config>

@@ -1,0 +1,86 @@
+
+#
+# Django site administrator and managers
+#
+ADMINS = (
+   ('Admin', 'admin@site.com'),
+)
+MANAGERS = ADMINS
+
+#
+# Absolute path of where to store media files (uploaded images, etc.). This 
+# should be below your web root so that the web server can be used to host
+# these files
+#
+MEDIA_ROOT = '/var/www/axes-research/media/'
+
+#
+# Base URL for media files (uploaded images, etc.). This URL should correspond
+# to the URL for MEDIA_ROOT. 
+#
+MEDIA_URL = '/axes-research/media/'
+
+#
+# Absolute path of where to store static files (css, javascript, etc.). This 
+# should be below your web root so that the web server can be used to host
+# these files
+#
+STATIC_ROOT = '/var/www/axes-research/static/'
+
+#
+# Base URL for static. This URL should correspond to the URL for STATIC_ROOT. 
+#
+STATIC_URL = '/axes-research/static/'
+
+#
+# Where to store the admin interface static files and media.
+#
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+
+#
+# URL of the LIMAS JSON RPC interface to connect to
+#
+SERVICE_URL = 'http://<server>:<port>/json-rpc'
+
+#
+# Mongo DB database name
+#
+DATABASE_NAME = 'axesresearch'
+
+#
+# Time zone of the server
+#
+TIME_ZONE = 'Europe/Dublin'
+
+#
+# Collection name
+#
+DEFAULT_COLLECTION = 'openaxes'
+
+#
+# Is an access code required for registration
+#
+REGISTRATION_CODE_REQUIRED = True
+
+#
+# The axes code for registration
+#
+REGISTRATION_ACCESS_CODE = '<insert access code>'
+
+#
+# Randomly generate a django secret key and paste it in here
+#
+SECRET_KEY = 'd=+^wdh$odyp(sd+n4tiq_-ndr=0ek3xr37hu2-1o!l3d)yzqu'
+
+#
+# Post processing rules for LIMAS responses. A dictionary mapping
+# response keys to a list of regular expression replacement rules to the
+# corresponding values. For example:
+#
+# LIMAS_RESPONSE_POSTPROCESSING_RULES = {
+#     'thumbnailUrl': [
+#         (r'^(.*)$', r'http://<server>/thumbs/thumbnail?image=\1')
+#     ]
+# }
+#
+LIMAS_RESPONSE_POSTPROCESSING_RULES = { }

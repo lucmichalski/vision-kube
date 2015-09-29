@@ -1,0 +1,7 @@
+cmd
+Godeps
+romulus
+*.yml
+*.yaml
+README*
+Makefile

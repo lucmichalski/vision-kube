@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Storages>
+   		<!-- Mongodb storage configuration  -->
+      	<Storage id="Mongodb">
+        	<Parameter name="Classpath"><![CDATA[eu.socialsensor.sfc.storages.MongoDbStorage]]></Parameter>
+                    
+          	<Parameter name="mongodb.host"><![CDATA[xxx.xxx.xxx.xxx]]></Parameter>
+          	<Parameter name="mongodb.database"><![CDATA[PressRelations]]></Parameter>
+      	</Storage>
+            
+      	<!--  Redis storage configuaration --> 
+      	<Storage id="Redis">
+        	<Parameter name="Classpath"><![CDATA[eu.socialsensor.sfc.streams.store.RedisStorage]]></Parameter>
+                    
+          	<Parameter name="redis.host"><![CDATA[xxx.xxx.xxx.xxx]]></Parameter>
+          	<Parameter name="redis.channel.items"><![CDATA[items]]></Parameter>
+          	<Parameter name="redis.channel.media"><![CDATA[mediaitems]]></Parameter>
+         	<Parameter name="redis.channel.webpages"><![CDATA[webpages]]></Parameter>
+     	</Storage> 
+            
+      	<!-- Solr storage configuaration -->
+      	<Storage id="Solr">
+     		<Parameter name="Classpath"><![CDATA[eu.socialsensor.sfc.storages.SolrStorage]]></Parameter>
+         
+         	<Parameter name="solr.hostname"><![CDATA[http://xxx.xxx.xxx.xxx:8080]]></Parameter>
+          	<Parameter name="solr.service"><![CDATA[solr]]></Parameter>
+         	<Parameter name="solr.items.collection"><![CDATA[Items]]></Parameter>
+           	<Parameter name="solr.mediaitems.collection"><![CDATA[MediaItems]]></Parameter>
+      		<Parameter name="solr.webpages.collection"><![CDATA[WebPages]]></Parameter>
+         	<Parameter name="solr.onlyOriginal"><![CDATA[false]]></Parameter>
+    	</Storage>
+    </Storages>
+    
+   	<Filters>
+		<!-- Filter that discards Items with short text -->
+     	<Filter id="LengthFilter">
+       		<Parameter name="Classpath"><![CDATA[eu.socialsensor.sfc.streams.filters.LengthItemFilter]]></Parameter>
+          	<Parameter name="length"><![CDATA[15]]></Parameter>
+      	</Filter>
+  	</Filters>
+    
+    <Processors>
+    	<Processor id="GeoProcessor">
+    		<Parameter name="Classpath">
+        		<![CDATA[eu.socialsensor.sfc.streams.processors.GeoProcessor]]>
+    		</Parameter>    
+		</Processor>
+   		<Processor id="LanguageDetector">
+    		<Parameter name="Classpath"><![CDATA[eu.socialsensor.sfc.streams.processors.LanguageDetector]]></Parameter>
+   			<Parameter name="profileDirectory">
+           		<![CDATA[/disk1_data/workspace/git/socialsensor-stream-manager/src/main/resources/profiles.sm]]>
+           	</Parameter>
+   		</Processor>   		
+    </Processors>
+                
+	<Streams>
+    	<!-- Twitter Stream Handler -->
+     	<Stream id="Twitter">
+        	<Parameter name="Classpath">
+            	<![CDATA[gr.iti.mklab.focused.crawler.bolts.input.TwitterStream]]>
+       		</Parameter>
+            <Parameter name="Key">
+            	<![CDATA[]]>
+          	</Parameter>
+         	<Parameter name="Secret">
+            	<![CDATA[]]>
+ 			</Parameter>
+          	<Parameter name="AccessToken">
+            	<![CDATA[]]>
+         	</Parameter>
+         	<Parameter name="AccessTokenSecret">
+              	<![CDATA[]]>
+          	</Parameter>
+         	<Parameter name="maxRequest">
+            	<![CDATA[400]]>
+         	</Parameter>
+           	<Parameter name="windowLength">
+           		<![CDATA[600000]]>
+         	</Parameter>
+		</Stream>
+        		
+   		<!--  Facebook Stream Handler  -->
+        <Stream id="Facebook">
+        	<Parameter name="Classpath">
+           		<![CDATA[gr.iti.mklab.focused.crawler.bolts.input.FacebookStream]]>
+          	</Parameter>
+        	<Parameter name="AccessToken">
+             	<![CDATA[]]>
+        	</Parameter>
+        	<Parameter name="maxResults">
+             	<![CDATA[10000]]>
+          	</Parameter>
+        	<Parameter name="maxRequests">
+           		<![CDATA[100]]>
+          	</Parameter>
+        	<Parameter name="windowLength">
+				<![CDATA[30000]]>
+			</Parameter>
+      	</Stream>        
+        		
+		<!-- YouTube Handler -->
+       	<Stream id="Youtube">
+        	<Parameter name="Classpath">
+           		<![CDATA[gr.iti.mklab.focused.crawler.bolts.input.YoutubeStream]]>
+           	</Parameter>
+          	<Parameter name="ClientId">
+            	<![CDATA[]]>
+          	</Parameter>
+           	<Parameter name="Key">
+            	<![CDATA[]]>
+          	</Parameter>
+         	<Parameter name="maxRequests">
+         		<![CDATA[10]]>
+           	</Parameter>
+           	<Parameter name="windowLength">
+				<![CDATA[30000]]>
+			</Parameter>
+     	</Stream> 
+               
+		<!-- Flickr Stream Handler  -->
+      	<Stream id="Flickr">
+            <Parameter name="Classpath">
+           		<![CDATA[gr.iti.mklab.focused.crawler.bolts.input.FlickrStream]]>
+           	</Parameter>
+           	<Parameter name="Key">
+            	<![CDATA[]]>
+          	</Parameter>
+          	<Parameter name="Secret">
+            	<![CDATA[]]>
+           	</Parameter>
+          	<Parameter name="maxRequests">
+           		<![CDATA[10]]>
+           	</Parameter>
+          	<Parameter name="windowLength">
+				<![CDATA[30000]]>
+			</Parameter>
+      	</Stream>
+                
+ 		<!-- Google+ Stream Handler -->
+       	<Stream id="GooglePlus">
+      		<Parameter name="Classpath">
+           		<![CDATA[gr.iti.mklab.focused.crawler.bolts.input.GooglePlusStream]]>
+          	</Parameter>
+           	<Parameter name="Key">
+            	<![CDATA[]]>
+           	</Parameter>
+           	<Parameter name="Secret">
+            	<![CDATA[]]>
+          	</Parameter>
+           	<Parameter name="ClientId">
+            	<![CDATA[]]>
+          	</Parameter>
+          	<Parameter name="maxRequests">
+            	<![CDATA[10]]>
+            </Parameter>
+           	<Parameter name="windowLength">
+				<![CDATA[30000]]>
+			</Parameter>                
+       	</Stream>
+                  
+                <!-- Tumblr Stream Handler  
+                <Stream id="Tumblr">
+               		<Parameter name="Classpath">
+                    	<![CDATA[gr.iti.mklab.focused.crawler.bolts.input.TumblrStream]]>
+                  	</Parameter>
+                 	<Parameter name="Key">
+                    	<![CDATA[your.key]]>
+                 	</Parameter>
+                  	<Parameter name="Secret">
+                    	<![CDATA[your.secret.key]]>
+                  	</Parameter>
+                   	<Parameter name="maxRequests">
+                   		<![CDATA[1]]>
+                   	</Parameter>
+                   	<Parameter name="windowLength">
+						<![CDATA[10000]]>
+					</Parameter>
+                </Stream>
+                -->
+                
+      	<!--  Instagram Stream Handler -->
+        <Stream id="Instagram">
+        	<Parameter name="Classpath">
+            	<![CDATA[gr.iti.mklab.focused.crawler.bolts.input.InstagramStream]]>
+           	</Parameter>
+           	<Parameter name="Key">	
+				<![CDATA[]]>
+			</Parameter>
+			<Parameter name="Secret">
+				<![CDATA[]]>
+			</Parameter>
+			<Parameter name="AccessToken">
+				<![CDATA[]]>
+			</Parameter>
+            <Parameter name="maxRequests">
+            	<![CDATA[20]]>
+           	</Parameter>
+           	<Parameter name="windowLength">
+				<![CDATA[30000]]>
+			</Parameter>
+		</Stream> 
+	</Streams>
+        
+</Configuration>

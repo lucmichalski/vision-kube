@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block extra_head %}
+<meta http-equiv="refresh" content="2;url={% url 'auth_login' %}">
+{% endblock %}
+
+{% block content %}
+<div class="alert">
+  <b>Activation Complete:</b> Your account is now activated.  
+</div>
+{% endblock %}

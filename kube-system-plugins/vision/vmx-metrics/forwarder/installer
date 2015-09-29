@@ -1,0 +1,10 @@
+#!/bin/sh
+if mountpoint -q /target; then
+	echo "Installing logstash-forwarder to /target"
+	cp /opt/logstash-forwarder/logstash-forwarder /target
+else
+	echo "/target is not a mountpoint."
+	echo "You can either:"
+	echo "- re-run this container with -v /usr/local/bin:/target"
+	echo "- extract the logstash-forwarder binary (located at /logstash-forwarder)"
+fi

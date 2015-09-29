@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project( VMXwebcam )
+find_package( OpenCV REQUIRED )
+add_executable( .VMXwebcam VMXwebcam.cpp )
+target_link_libraries( .VMXwebcam ${OpenCV_LIBS} )

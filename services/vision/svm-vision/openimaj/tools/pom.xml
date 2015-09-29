@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.openimaj</groupId>
+  <artifactId>openimaj-tools</artifactId>
+  <packaging>pom</packaging>
+  <version>1.4-SNAPSHOT</version>
+  <name>OpenIMAJ Tools</name>
+  <parent>
+    <artifactId>openimaj</artifactId>
+    <groupId>org.openimaj</groupId>
+    <version>1.4-SNAPSHOT</version>
+    <relativePath>../</relativePath>
+  </parent>
+  <inceptionYear>2011</inceptionYear>
+  <description>Sub-modules containing commandline tools exposing OpenIMAJ functionality.</description>
+  <modules>
+    <module>core-tool</module>
+    <module>GlobalFeaturesTool</module>
+    <module>ClusterQuantiserTool</module>
+    <module>LocalFeaturesTool</module>
+    <module>FaceTools</module>
+    <module>FeatureVisualisation</module>
+    <module>CityLandscapeClassifier</module>
+    <module>WebTools</module>
+    <module>OCRTools</module>
+    <module>ImageCollectionTool</module>
+    <module>SimilarityMatrixTool</module>
+    <module>TwitterPreprocessingTool</module>
+    <module>RedditHarvester</module>
+    <module>picslurper</module>
+    <module>ReferencesTool</module>
+    <module>openimaj-processing</module>
+    <module>CBIRTools</module>
+  </modules>
+</project>

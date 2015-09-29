@@ -1,0 +1,82 @@
+<div id="advanced-search-page" class="main-view"
+  data-bind="with: advancedQueryView">
+  
+  <div style="width: 800px; margin: 0 auto" >
+    
+    <h2> Advanced Search </h2>
+    
+    <div id="advanced-search-area">
+      
+      <!-- search clauses -->
+      <div id="advanced-search-clauses" data-bind="foreach: query().clauses">
+        <div class="advanced-search-clause">
+          <!-- ko if: accepts() == 'text' -->
+            <select 
+              data-bind="
+                options: model.AdvancedQueryTextClauseTypes, 
+                optionsText: 'displayName',
+                optionsValue: 'type',
+                value: type"></select>
+            <span class="for">for</span>
+            <input type="text" class="searchtext"
+              placeholder="Search terms..."
+              data-bind="value: text, valueUpdate: 'afterkeydown'">
+          <!-- /ko -->
+          
+          <!-- ko if: accepts() == 'images' -->
+            <select 
+              data-bind="
+                options: model.AdvancedQueryImageClauseTypes, 
+                optionsText: 'displayName',
+                optionsValue: 'type',
+                value: type"></select>
+            <span class="for">for</span>
+            <div class="input-append">
+              <form action="{% url 'upload' %}" 
+                method="POST"
+                enctype="multipart/form-data">
+                <input type="text" class="imagetext"
+                  placeholder="Image URL..."
+                  data-bind="value: text">
+                  {% csrf_token %}
+                  <input class="btn" type="file" name="image" title="Upload..."
+                    data-bind="onChange: 
+                      $parent.uploadImage.bind($parent, $data)">
+                </form>
+            </div>
+          <!-- /ko -->
+          
+          <button class="btn" data-bind="
+            click: $parent.removeClause.bind($parent, $data)">
+            <i class="icon-remove"></i> 
+          </button>
+        </div>
+      </div>
+      
+      <!-- search controls -->
+      <div id="advanced-search-controls"> 
+        <button class="btn btn-small btn-link"
+          data-bind="click: addTextSearchClause"
+          title="Add a new text search clause">
+          <i class="icon-plus"></i> Add text/visual search
+        </button>
+        <button class="btn btn-small btn-link" 
+          data-bind="click: addSimilaritySearchClause"
+          title="Add a new similarity search clause">
+          <i class="icon-plus"></i> Add similarity search
+        </button>
+        <button class="btn btn-small btn-primary pull-right"
+          data-bind="click: search, enable: isNonEmpty">
+          Search <i class="icon-search icon-white"></i>
+        </button>
+        <button class="btn btn-small pull-right"
+          data-bind="click: clear">
+          Reset <i class="icon-remove"></i>
+        </button>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+</div>

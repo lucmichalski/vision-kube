@@ -1,0 +1,25 @@
+[Unit]
+Description=Makes sure the binaries are available
+
+Requires=mcr.service
+
+After=mcr.service
+
+[Service]
+TimeoutStartSec=0
+
+KillMode=none
+
+EnvironmentFile=/etc/environment
+
+RemainAfterExit=yes
+Restart=on-failure
+
+ExecStartPre=/usr/bin/docker pull visionai/vmx-models-populated
+ExecStart=/usr/bin/docker run --name vmxserver-models visionai/vmx-models-populated
+
+ExecStop=/usr/bin/echo stopped server binary (left the files)
+
+[X-Fleet]
+Global=true
+MachineMetadata="vmxtype=vmxserver"

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<style type="text/css">
+body {
+  background-color: rgb(245, 245, 245);
+  font-family: "Candara", Arial;
+  font-size: 9pt;
+  color: #444444;
+  line-height: 10pt;
+  width: 800px;
+  margin: 0px auto;
+}
+
+h2 {
+  border-top: 2px solid #ccc;
+  padding-top: 10px;
+  margin-top: 20px;
+}
+
+h3 {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+}
+
+table thead {
+  text-align: left;
+}
+</style>
+<head>
+</head>
+<body>
+  <h1>System Information</h1>
+  <p>{{os}}</p>
+  <h2>UI</h2>
+  <ul>
+    <li>UI version: {{version}}</li>
+		<li>UI server mode: {{serverMode}}</li>
+    <li>Django version: {{djangoVersion.0}}.{{djangoVersion.1}}.{{djangoVersion.2}}
+      {{djangoVersion.3}} {{djangoVersion.4}}</li>
+    <li>Celery version: {{celeryVersion}}</li>
+    <li>MongoDB version: {{dbVersion}}</li>
+    <li>Database name: {{dbName}}</li>
+    <li>Database file size: {{dbInfo.fileSize|filesizeformat}}</li>
+    <li>Database data size: {{dbInfo.dataSize|filesizeformat}}</li>
+    <li>Database index size: {{dbInfo.indexSize|filesizeformat}}</li>
+    <li>Database storage size: {{dbInfo.storageSize|filesizeformat}}</li>
+    <li>Database collections: {{dbInfo.collections}}</li>
+    <li>Database objects: {{dbInfo.objects}}</li>
+    <li>Database average object size: {{dbInfo.avgObjSize|filesizeformat}}</li>
+    <li>FFmpeg version: {{ffmpegVersion}}</li>
+  </ul>
+  <h3>Registered users</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Full Name</th>
+        <th>Last Login</th>
+        <th>Staff</th>
+      </tr>
+    </thead>
+    {% for u in users %}
+    <tr>
+      <td>{{u.username}}</td>
+      <td>{{u.email}}</td>
+      <td>{{u.firstName}} {{u.lastName}}</td>
+      <td>{{u.lastLogin}}</td>
+      <td>{{u.staff|yesno}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  
+  <h2>LIMAS</h2>
+  <ul>
+    <li>LIMAS URL: <a href="{{limasURL}}">{{limasURL}}</a></li>
+    <li>LIMAS version: {{limasVersionInfo}}</li>
+    <li>LIMAS cache enabled: {{limasCacheEnabled}}</li>
+  </ul>
+  <h3>Service Info</h3>
+  <table>
+    {% for s in limasServiceInfo %}
+    <tr>
+      <td>{{s.name}}</td>
+      <td>{{s.description}}</td>
+      <td>v{{s.version.majorVersion}}.{{s.version.minorVersion}}.{{s.version.revision}}</td>
+      <td>{{s.status}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  
+  <h2>Python</h2>
+  <p>Python version: {{pythonVersion}}</p>
+  <p>Python path:
+  <ul>
+    {% for p in pythonPath %}
+    <li>{{p}}</li>
+    {% endfor %}
+  </ul>
+  </p>
+</body>
+</html>

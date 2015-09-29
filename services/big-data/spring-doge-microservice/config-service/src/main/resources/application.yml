@@ -1,0 +1,12 @@
+server:
+  port: ${PORT:8888}
+
+#conf: /Users/jlong/work/bootiful/bootiful-microservices/code/spring-doge-microservice-configuration
+
+
+
+spring:
+  cloud:
+    config:
+      server:
+        uri: ${conf:https://github.com/joshlong/spring-doge-microservice-configuration}

@@ -1,0 +1,46 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "logstash",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "logstash"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "logstash"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "logstash"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "logstash",
+            "image": "lumichalski/logstash:kube-vs-metrics",
+            "ports": [
+              {
+                "containerPort": 5000
+              }
+            ],
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

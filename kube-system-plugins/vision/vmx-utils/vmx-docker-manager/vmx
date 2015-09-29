@@ -1,0 +1,413 @@
+#!/bin/sh
+# VMX Docker Manager by vision.ai
+# Starts the vision.ai object recognition server
+# Requires docker >= 1.2; and permissions to run docker
+# Visit us on the web: 
+#   https://vision.ai
+# Github repository for this file:
+#   https://github.com/VISIONAI/vmx-docker-manager
+#
+##PARAMS
+cmd=$1
+config=$2
+
+COMMAND=$0
+
+PARAMS=$@
+
+FOLDERNAME=`date +%Y%a%b%d_%H%M%S`
+
+init () {
+  echo "Starting containers..."
+  
+  docker run -d --name vmx-mcr visionai/mcr-2014a 2>/dev/null
+  docker run -d --name vmx-userdata visionai/vmx-userdata 2>/dev/null
+  docker run -d --name vmx-middle$VMXTAG visionai/vmx-middle 2>/dev/null
+  docker run -d --name vmx-server$VMXTAG visionai/vmx-server 2>/dev/null
+  docker run -d --name vmx-appbuilder$VMXTAG visionai/vmx-appbuilder 2>/dev/null
+  touch .vmx-init
+}
+
+
+usage () {
+  echo "VMX Docker Manager by vision.ai"
+  echo "Version: " `git describe --tags --dirty 2>/dev/null || echo no-git`
+  echo "Requires docker >= 1.2; and permissions to run docker"
+  echo "==============================================="
+  echo "Usage: vmx COMMAND [OPTIONS]"
+  echo 
+  echo "Commands:"
+  echo "    start PORT: Start vmx on localhost:PORT"
+  echo "    stop:       Stop vmx"
+  echo "    enter:      Shell access to inspect vmx volumes"
+  echo "    init:       Download and start the containers that have the pre-reqs, mcr, etc."
+  echo "                (This is done automatically the first time you start vmx)"
+  echo "    update TAG: Update your vmx (will stop vmx first)"
+  echo "    backup:     Backup your vmx data (models, session logs, config file)"
+  echo "    restore BACKUP: Restore models/logs/config from folder BACKUP"
+  echo "    start_process PORT: [Advanced Usage] Start a single VMXserver process on localhost:PORT"
+  echo " "
+  echo "Examples:"
+  echo " - Run vmx on port 3000"
+  echo "    $  ./vmx start 3000"
+  echo " - Stop vmx"
+  echo "    $  ./vmx stop"
+  echo " "
+  echo " - Backup your data to " `pwd`/.vmx-backup/
+  echo "    $  ./vmx backup"
+  echo " - Restore from a backup"
+  echo "    $  ./vmx restore .vmx-backup/2014_FriNov21_20_04"
+  echo " "
+  echo " - Update vmx to the latest version (this is the stable one)"
+  echo "    $  ./vmx update"
+  echo "   or"
+  echo "    $  ./vmx update latest"
+  echo " "
+  echo " - Update vmx to dev version (this is the bleeding-edge release)"
+  echo "    $  ./vmx update dev"
+  echo " "
+  echo " - Update the vmx-docker-manager"
+  echo "    $  git pull"
+
+  exit 1
+}
+
+boot2docker_extra() {
+    IS_B2D=`uname -a | grep boot2docker`
+    if [ "$IS_B2D" != "" ]; then
+        VMIP=`ip addr show eth1 |sed -nEe 's/^[ \t]*inet[ \t]*([0-9.]+)\/.*$/\1/p'`
+    elif [ `uname` = "Darwin" ]; then
+        VMIP=`boot2docker ip 2>/dev/null`
+    else
+        VMIP=""
+    fi
+
+    if [ "$VMIP" != "" ]; then
+        echo "You are using boot2docker, your local vmx url will be:"
+        echo "http://"${VMIP}":"${VMXHOSTPORT}
+    fi    
+}
+
+check_perm() {
+  docker run --rm busybox echo >/dev/null 2>&1
+  NON_ROOT_RUN_DOCKER_EXIT_CODE="$?"
+  if [ $NON_ROOT_RUN_DOCKER_EXIT_CODE -eq 1 ] ; then
+    echo "Permissions failed.."
+    echo "try \`sudo $COMMAND $PARAMS\`"
+    exit 1
+  elif [ $NON_ROOT_RUN_DOCKER_EXIT_CODE -ne 0 ]; then
+    echo "Trying to run docker resulted in exit code: $NON_ROOT_RUN_DOCKER_EXIT_CODE"
+    exit $NON_ROOT_RUN_DOCKER_EXIT_CODE
+  fi
+}
+
+restore_userdata () {
+  #Docker does not support copying out of volumes: https://github.com/docker/docker/issues/1992
+  init
+  echo "Restoring models.."
+  docker run --name vmx-tmp \
+        --volumes-from vmx-userdata \
+	-v `pwd`/$RESTOREDIR:/restore \
+        -t \
+        ubuntu \
+	bash -c "find /restore && find /vmx && cp -r /restore/models/* /vmx/models"
+  docker stop vmx-tmp
+  docker rm   vmx-tmp
+  echo "Restoring license..."
+  docker run --name vmx-tmp \
+	--volumes-from vmx-server  \
+        -v `pwd`/$RESTOREDIR:/restore \
+        -t  \
+        ubuntu cp /restore/config.json /vmx/build/config.json
+
+  docker stop vmx-tmp
+  docker rm   vmx-tmp
+}
+
+backup_userdata () {
+  #Docker does not support copying out of volumes: https://github.com/docker/docker/issues/1992
+  docker run --name vmx-tmp --volumes-from vmx-userdata:rw ubuntu /bin/bash -c "cp -r /vmx/sessions /tmp/sessions && cp -r /vmx/models /tmp/models && cd /tmp && find"
+  docker cp vmx-tmp:/tmp/models `pwd`/.vmx-backup/$FOLDERNAME
+  docker cp vmx-tmp:/tmp/sessions `pwd`/.vmx-backup/$FOLDERNAME
+  docker stop vmx-tmp
+  docker rm   vmx-tmp
+}
+
+
+backup_config () {
+  echo "doing config backup..."
+  docker run --name vmx-tmp --volumes-from vmx-server:ro ubuntu cp /vmx/build/config.json /config.json
+  docker cp vmx-tmp:/config.json `pwd`/.vmx-backup/$FOLDERNAME
+  docker stop vmx-tmp
+  docker rm   vmx-tmp
+}
+
+start_vmx () {
+  RUNNING=$(docker ps | grep 'vmx-environment' | wc -l)
+  if [ "$RUNNING" -ne "1" ]; then
+    echo "vmx starting with port $VMXHOSTPORT"
+    echo "--------------------------------------"
+    echo "visit http://localhost:$VMXHOSTPORT   "
+    echo 
+    echo "Ctrl-c to detach terminal from the log"
+    echo "./vmx stop to stop the vmx daemon"
+    echo 
+    boot2docker_extra
+    docker run -t                   \
+      --volumes-from vmx-mcr        \
+      --volumes-from vmx-userdata   \
+      --volumes-from vmx-middle     \
+      --volumes-from vmx-server     \
+      --volumes-from vmx-appbuilder \
+      -p $VMXHOSTPORT:3000          \
+      --name vmx-environment        \
+      --rm                          \
+      visionai/vmx-environment /bin/bash -c "/vmx/middle/vmx | tee /vmx/middle/vmx_log" 2> /dev/null
+
+    #if it fails for some reason, clean up our mess pass the error code
+    prev=$?
+    if [ "$prev" -eq "1" ]; then
+      echo "Failed to start vmx. Try \"./vmx init\" first"
+      docker rm vmx-environment 2> /dev/null
+      exit $prev
+    else
+      echo "Successfully started vmx"
+    fi
+  else
+    echo "Already running vmx-environment"
+    echo "You must first run ./vmx stop"
+    exit 1
+  fi
+}
+
+start_vmx_process () {
+  RUNNING=$(docker ps | grep 'vmx-environment' | wc -l)
+  if [ "$RUNNING" -ne "1" ]; then
+    echo "vmx starting with port $VMXHOSTPORT"
+    echo "--------------------------------------"
+    echo "visit http://localhost:$VMXHOSTPORT   "
+    echo 
+    echo "Ctrl-c to detach terminal from the log"
+    echo "./vmx stop to stop the vmx daemon"
+    echo 
+    boot2docker_extra
+    docker run                      \
+      --volumes-from vmx-mcr        \
+      --volumes-from vmx-userdata   \
+      --volumes-from vmx-middle     \
+      --volumes-from vmx-server     \
+      --volumes-from vmx-appbuilder \
+      -p $VMXHOSTPORT:3000          \
+      --name vmx-environment        \
+      --rm                          \
+      visionai/vmx-environment /bin/bash -c "/vmx/build/VMXserver /vmx/ session_id none :3000 | tee /vmx/log"
+
+    #if it fails for some reason, clean up our mess pass the error code
+    prev=$?
+    if [ "$prev" -eq "1" ]; then
+      echo "Failed to start vmx_process. Try \"./vmx init\" first"
+      docker rm vmx-environment 2> /dev/null
+      exit $prev
+    else
+      echo "Successfully started vmx_process"
+    fi
+  else
+    echo "Already running vmx-environment"
+    echo "You must first run ./vmx stop"
+    exit 1
+  fi
+}
+
+
+stop_vmx () {
+  echo 'Stopping vmx'
+  docker stop vmx-environment 2> /dev/null
+  docker rm   vmx-environment 2> /dev/null
+}
+
+enter_vmx () {
+  RUNNING_INSPECT=$(docker ps -a| grep 'vmx-inspect-environment' | wc -l)
+  if [ "$RUNNING_INSPECT" -ne "1" ]; then
+    echo "Entering a temporary inspect container"
+    docker run -w /vmx/ -i -t        \
+      --volumes-from vmx-mcr         \
+      --volumes-from vmx-userdata    \
+      --volumes-from vmx-middle      \
+      --volumes-from vmx-server      \
+      --volumes-from vmx-appbuilder  \
+      --name vmx-inspect-environment \
+      --rm                           \
+      visionai/vmx-environment /bin/bash
+  else
+    echo "Stopping previous inspection container.."
+    docker stop vmx-inspect-environment 2>/dev/null
+    echo "Removing previous inspection container.."
+    docker rm vmx-inspect-environment 2>/dev/null
+    enter_vmx
+  fi
+    
+}
+
+
+update_vmx(){
+  #stop vmx
+  docker stop vmx-environment 2>/dev/null
+  docker rm vmx-tmp 2>/dev/null
+
+  mkdir -p .vmx-backup/$FOLDERNAME
+  #store the config
+  echo Starting temp container 'vmx-tmp' 
+  docker run --name vmx-tmp --volumes-from vmx-server:ro ubuntu cp /vmx/build/config.json /config.json
+
+  docker cp vmx-tmp:/config.json `pwd`/.vmx-backup/$FOLDERNAME
+  docker stop vmx-tmp 2>/dev/null
+  docker rm vmx-tmp 2>/dev/null
+
+
+  #stop and update 
+  docker stop vmx-middle 2>/dev/null
+  docker stop vmx-server 2>/dev/null
+  docker stop vmx-appbuilder 2>/dev/null
+
+  docker rm vmx-middle 2>/dev/null
+  docker rm vmx-server 2>/dev/null
+  docker rm vmx-appbuilder 2>/dev/null
+
+  docker pull visionai/vmx-middle$VMXTAG
+  docker pull visionai/vmx-server$VMXTAG
+  docker pull visionai/vmx-appbuilder$VMXTAG
+
+  #Update the environment (even though it rarely changes)
+  docker pull visionai/vmx-environment
+
+  docker run --name vmx-middle visionai/vmx-middle$VMXTAG
+  A=$?
+  docker run --name vmx-server visionai/vmx-server$VMXTAG
+  B=$?
+  docker run --name vmx-appbuilder visionai/vmx-appbuilder$VMXTAG
+  C=$?
+
+  #make a temp container for copying
+  docker run --name vmx-tmp --volumes-from vmx-server -v `pwd`/.vmx-backup:/vmx-backup ubuntu cp /vmx-backup/$FOLDERNAME/config.json /vmx/build/config.json
+  docker rm vmx-tmp
+
+  docker rm vmx-environment 2> /dev/null
+  
+  if [ "$A$B$C" = "000" ]; then
+      echo "Successfully updated, you can now restart vmx"
+      echo "To update the vmx-docker-manager, run: git pull"
+  else
+      echo "Problem updating vmx"
+  fi
+  exit 0
+
+}
+
+
+[ $# -lt 1 ] && {
+  usage
+}
+
+check_perm
+
+case "$cmd" in
+  start)
+    if [ $# -lt 2 ]; then
+      echo "Must supply port"
+      usage
+    fi    
+    if [ ! -e ".vmx-init" ]; then
+      echo "Downloading dependencies (this may take a while)"
+      init
+    fi
+    export VMXHOSTPORT=$2
+    start_vmx
+    exit 0
+    ;;
+
+  start_process)
+    if [ $# -lt 2 ]; then
+      echo "Must supply port"
+      usage
+    fi    
+    if [ ! -e ".vmx-init" ]; then
+      echo "Downloading dependencies (this may take a while)"
+      init
+    fi
+    export VMXHOSTPORT=$2
+    start_vmx_process
+    exit 0
+    ;;
+
+
+  stop)
+    stop_vmx
+    echo "Stopped vmx"
+    exit 0
+    ;;
+
+  update)
+    
+    #Keep an empty TAG empy, and turn "dev" into ":dev"
+    export VMXTAG=$2
+    if [ "$VMXTAG" != "" ]; then
+      VMXTAG=":$VMXTAG"
+    fi
+
+    update_vmx
+    init
+    echo "Updated vmx"
+    exit 0
+    ;;
+
+  enter)
+    enter_vmx
+    exit 0
+    ;;
+
+  backup)
+    docker rm vmx-tmp > /dev/null 2> /dev/null
+    backup_userdata
+    backup_config
+    exit 0
+    ;;
+
+  restore)
+    if [ $# -lt 2 ]; then
+      echo "Must supply directory"
+      if [ ! -d .vmx-backup ]; then
+          echo "No .vmx-backup found.. have you done any backups?"
+      else
+	 echo "Try one of the following commands:"
+	 for b in .vmx-backup/*
+         do
+	     echo ./vmx restore $b
+             NMODELS=`ls $b/models 2>/dev/null | wc -l`
+             echo "Has ${NMODELS} models\n"
+         done
+
+         exit 1
+      fi
+    fi    
+    if [ ! -f $RESTOREDIR/config.json ]; then
+      echo config.json not found in $RESTOREDIR
+    fi
+    RESTOREDIR=$2 
+    restore_userdata
+    ;;
+
+  init)
+    init
+    echo "Successfully initialized vmx!"
+    exit 0
+    ;;
+
+  *)
+    usage
+esac
+
+do_not () {
+docker stop vmx-environment
+docker rm vmx-environment
+
+}

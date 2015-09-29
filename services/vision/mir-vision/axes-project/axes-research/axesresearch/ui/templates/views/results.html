@@ -1,0 +1,281 @@
+<!-- Results bar -->
+<div id="results-bar">
+  <div id="view-selector">
+    <strong>VIEWS</strong>: 
+    <span data-bind="foreach: resultsView.viewTypes">
+      <a href="#" class="view-switcher" 
+        data-bind="text: $data, 
+          css: { selected: $root.resultsView.viewType() == $data },
+          click: $root.resultsView.viewType"></a>
+            
+    </span>
+  </div>
+  <div class="results-bar-center">
+    <div id="program-types">
+      <span data-bind="foreach: resultsView.displayTypes">
+        <a href="#" class="program-type" 
+          data-bind="text: $data + ' (' + $root.resultsView.countResults($data) + ')', 
+            css: { selected: $root.resultsView.displayType() == $data },
+            click: $root.resultsView.displayType"></a>
+      </span>
+    </div>
+  </div>
+  <div id="sort-by">
+    <strong>SORT BY</strong>:
+    <select class="btn-small" data-bind="options: resultsView.availableSortCriteria, 
+      value: resultsView.sortBy"></select>
+  </div>
+</div>
+
+<div id="feedback-buttons" data-bind="if: preferences().showFeedbackButtons">
+  <button class="btn btn-small" 
+    data-bind="click: resultsView.submitPositiveFeedback"
+    title="These search results are good"><i class="icon-thumbs-up"></i></button><br/>
+  <button class="btn btn-small"
+    data-bind="click: resultsView.submitNegativeFeedback"
+    title="These search results are poor"><i class="icon-thumbs-down"></i></button>
+</div>
+
+<!-- Result list -->
+<div class="main-view" id="results-page">
+  
+  
+      
+  <!-- Thumbnail results -->
+  <div id="thumbnail-view" class="results-view"
+    data-bind="if: resultsView.viewType() == resultsView.viewTypes[0]">
+    <div data-bind="foreach: resultsView.results">
+      <span class="result compact">
+        <span class="thumbnail">
+          
+          <!-- Thumbnail image -->
+          <img data-bind="attr: {src: keyframe().thumbnailUrl}" 
+            width="180" height="110"></img>
+          
+          <!-- Play button -->
+          <button class="play-button" title="Play video"
+            data-bind="click: $root.previewView.show"></button>
+          
+          <!-- Video title overlay -->
+          <a class="title-overlay" data-bind="text: metadata().title,
+            attr: {href:'#/asset/' + uri }"></a>
+            
+          <!-- Video duration overlay -->
+          <span class="duration-overlay" 
+            data-bind="text: video().formattedDuration()"></span>
+            
+          <!-- Segment position bar -->
+          <canvas class="segment-pos" width="181" height="3" data-bind="draw: $data, 
+              using: $root.resultsView.drawSegmentPosition"></canvas>
+              
+          
+        </span>
+        
+        <!-- Controls under video thumbnail -->
+        <div class="controls">
+          
+          <!-- Add to collection -->
+          <div class="btn-group pull-right">
+            <button class="btn btn-mini dropdown-toggle" 
+              title="Add result to collection"
+              data-toggle="dropdown">
+              
+              Add to
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" >
+              <!-- ko foreach: $root.collections -->
+              <li><a href="#" data-bind="text: name, 
+                click: $root.addVideoToCollection.bind(
+                  $root, $parent.video(), $data)"></a></li>
+              <!-- /ko -->
+              <li class="divider"></li>
+              <li><a href="#" data-bind="
+                click: $root.addVideoToFavorites.bind($root, video)">
+                Favorites</a></li>
+            </ul>
+          </div>
+          
+          <!-- Quick similarity search -->
+          <button class="btn btn-mini" 
+            title="Search for similar keyframes"
+              data-bind="
+              click: $root.quickSimilaritySearchForResult.bind($root, $data),
+              enable: model.QueryType.hasInstanceSearch()">
+            <i class="icon-search"></i> 
+          </button>
+          
+          <!-- Add to similarity search -->
+          <button class="btn btn-mini" 
+            title="Add keyframe to similarity search"
+              data-bind="
+              click: $root.addResultToSimilaritySearch.bind($root, $data),
+              enable: model.QueryType.hasSimilaritySearch()">
+            <i class="icon-zoom-in"></i> 
+          </button>
+          
+          <!-- Show keyframes -->
+          <a class="btn btn-mini" 
+            title="Show keyframes"
+            data-bind="attr: {href: '#/keyframes/' + videoUri() }">
+            <i class="icon-th"></i> 
+          </a>
+          
+        </div>
+      </span>
+    </div>
+  </div>
+  
+  <!-- Detailed results -->
+  <div id="detailed-view" class="results-view"
+    data-bind="if: resultsView.viewType() == resultsView.viewTypes[1]">
+    <div data-bind="foreach: resultsView.results">
+      <span class="result detailed">
+        <div class="detailed-left">
+          
+          <!-- Detailed thumbnail -->
+          <span class="thumbnail">
+            <img data-bind="attr: {src: keyframe().thumbnailUrl }" 
+              width="180" height="110"></img>
+            <button class="play-button" title="Play video" 
+              data-bind="click: $root.previewView.show"></button>
+            <span class="duration-overlay" 
+              data-bind="text: video().formattedDuration()"></span>
+            <canvas class="segment-pos" width="181" height="3" 
+              data-bind="draw: $data, 
+                using: $root.resultsView.drawSegmentPosition"></canvas>
+          </span>
+          
+          <!-- Controls under video thumbnail -->
+          <div class="controls">
+            
+            <!-- Add to collection -->
+            <div class="btn-group pull-right">
+              <button class="btn btn-mini dropdown-toggle" 
+                title="Add result to collection"
+                data-toggle="dropdown">
+                
+                Add to Collection
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" >
+                <!-- ko foreach: $root.collections -->
+                <li><a href="#" data-bind="text: name, 
+                  click: $root.addVideoToCollection.bind(
+                    $root, $parent.video(), $data)"></a></li>
+                <!-- /ko -->
+                <li class="divider"></li>
+                <li><a href="#" data-bind="
+                  click: $root.addVideoToFavorites.bind($root, video)">
+                  Favorites</a></li>
+              </ul>
+            </div>
+            
+            <!-- Quick similarity search -->
+            <button class="btn btn-mini" 
+              title="Search for similar keyframes"
+                data-bind="
+                click: $root.quickSimilaritySearchForResult.bind($root, $data),
+                enable: model.QueryType.hasInstanceSearch()">
+              <i class="icon-search"></i> 
+            </button>
+            
+            <!-- Add to similarity search -->
+            <button class="btn btn-mini" 
+              title="Add keyframe to similarity search"
+                data-bind="
+                click: $root.addResultToSimilaritySearch.bind($root, $data),
+                enable: model.QueryType.hasSimilaritySearch()">
+              <i class="icon-zoom-in"></i> 
+            </button>
+            
+          </div>
+          
+          <!--<span class="decoration"></span>
+          <span class="similar">
+            <span class="similar-video"></span>
+            <span class="similar-video"></span>
+            <span class="similar-video"></span>
+            <span class="similar-video"></span>
+            <span class="similar-video-text">Similar videos</span>
+          </span>-->
+        </div>
+        
+        <!-- Detailed metadata -->
+        <div class="detailed-middle" >
+          <a class="title" data-bind="text: metadata().title,
+            attr: { href:'#/asset/' + uri }"></a>
+          <div class="program-info" data-bind="with: metadata">
+            Date: <span class="date" data-bind="text: publicationDate"></span>
+            License: <span class="license" data-bind="text: license"></span>
+            Category: <span class="genre" data-bind="text: genres[0]"></span>
+            Type: <span class="type" data-bind="text: $parent.type"></span>
+          </div>
+          <div class="summary" data-bind="with: metadata">
+            <div data-bind="html: $root.highlightSearchTerms(summary)"></div>
+            <div data-bind="html: $root.highlightSearchTerms(description)"></div>
+          </div>
+          <div class="other-info">
+            <div class="keywords" data-bind="with: metadata">
+              Keywords: 
+              <span data-bind="foreach: keywords">
+                <a href="#" class="keyword" 
+                  data-bind="html: $root.highlightSearchTerms($data), click: 
+                    $root.quickSearch.bind($root, $data)"></a>
+                
+                
+              </span>
+            </div>
+            <div class="spoken-words" data-bind="with: segmentOrVideo().speech">
+              Spoken words: 
+              <span data-bind="html:
+                 $root.highlightSearchTerms(spokenWords)"></span>
+            </div>
+            
+          </div>
+          
+          <!-- Show keyframes -->
+          <a class="btn btn-small" 
+            style="position: absolute; bottom: 15px; right: 5px;"
+            data-bind="attr: {href: '#/keyframes/' + videoUri() }">
+            <i class="icon-th"></i> 
+            Show Keyframes</a>
+        </div>
+        
+        <!-- Scores, etc, on right -->
+        <div class="detailed-right">
+          <div class="score relevance-score" 
+            title="Match score">
+            <span data-bind="text: formattedScore"></span>
+            <i class="icon-search icon-white"></i>
+          </div>
+          <div class="score view-count" 
+            title="View count">
+            <span data-bind="text: viewCount"></span>
+            <i class="icon-eye-open icon-white"></i>
+          </div>
+          <div class="score download-count" 
+            title="Download count">
+            <span data-bind="text: downloadCount"></span>
+            <i class="icon-download-alt icon-white"></i>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+  
+  <div data-bind="if: resultsView.resultCount() == 0 && !$root.loading()" 
+    class="no-results">
+    No results were found
+  </div>
+  
+  <!-- ko with: resultsView -->
+  <div class="display-more-footer" data-bind="if: canDisplayMore">
+    <div style="margin-bottom: 5px">
+    <span data-bind="text: undisplayedResultCount"></span> results not displayed
+    </div>
+    <button class="btn btn-small btn-primary"
+      data-bind="click: displayMore">Show More</button>
+  </div>
+  <!-- /ko -->
+</div>

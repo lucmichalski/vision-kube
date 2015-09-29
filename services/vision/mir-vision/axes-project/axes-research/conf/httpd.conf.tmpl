@@ -1,0 +1,16 @@
+
+#
+# Links the wsgi script to a particular web path. Full paths must be
+# used here. 
+#
+WSGIScriptAlias /base/url /path/to/axes-research/axesresearch/wsgi.py
+
+#
+# Permission settings.
+#
+<Directory /path/to/axes-research/axesresearch>
+  <Files wsgi.py>
+    Order deny,allow
+    Allow from all
+  </Files>
+</Directory>

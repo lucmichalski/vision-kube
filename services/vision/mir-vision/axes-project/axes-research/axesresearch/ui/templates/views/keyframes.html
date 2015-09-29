@@ -1,0 +1,57 @@
+<div id="keyframe-page" class="main-view" data-bind="with: keyframeView">
+
+  <span data-bind="if: video">
+    <!-- ko with: video -->
+    <div class="title" data-bind="text: metadata.title"></div>
+    
+    <div class="video-player">
+      <div class="video-box">
+        
+        <video id="keyframe-video-player" 
+          width="480" height="320" 
+          data-bind="videoLoadingIndicator: '#kf-video-loading-indicator'" controls>
+          <!-- ko foreach: sources -->
+          <source data-bind="attr: {src: url, type: format}">
+          <!-- /ko -->
+        </video>
+        <span id="kf-video-loading-indicator"
+          class="video-loading-indicator">Loading video...</span>
+        
+      </div>
+    </div>
+    <!-- /ko -->
+    
+  </span>
+  
+  <div class="keyframes" data-bind="foreach: displayedKeyframes">
+    <span class="keyframe">
+      <img class="keyframe" data-bind="attr: {src: keyframe.thumbnailUrl}" 
+        width="88" height="77"></img>
+      <span class="startTime" data-bind="text: utils.formatTime(startTimeMillis)"></span>
+      <span class="buttons">
+        <button class="btn btn-link btn-mini"
+          data-bind="click: $root.addKeyframeToSimilaritySearch.bind($root, keyframe)"
+          title="Add keyframe to similarity search">
+          <i class="icon-search icon-white"></i>
+        </button>
+        <button class="btn btn-link btn-mini"
+          data-bind="click: $parent.seekVideo.bind($parent, startTimeMillis)"
+          title="Seek video playback to this keyframe">
+          <i class="icon-play icon-white"></i>
+        </button>
+        <a class="btn btn-link btn-mini" rel="prettyPhoto[keyframes]"
+          title="Show full size keyframe" data-bind="attr: {href: keyframe.imageUrl}">
+          <i class="icon-eye-open icon-white"></i>
+        </a>
+      </span>
+    </span>
+  </div>
+	
+  <div class="display-more-footer" data-bind="if: canDisplayMore">
+    <div style="margin-bottom: 5px">
+    <span data-bind="text: undisplayedResultCount"></span> keyframes not displayed
+    </div>
+    <button class="btn btn-small btn-primary"
+      data-bind="click: displayMore">Show More</button>
+  </div>
+</div>

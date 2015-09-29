@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: visionai-vmx-backend
+  namespace: kube-system
+  labels:
+    k8s-app: visionai-vmx-backend
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "Vision.AI VMX"
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: ui
+  selector:
+    k8s-app: visionai-vmx-backend

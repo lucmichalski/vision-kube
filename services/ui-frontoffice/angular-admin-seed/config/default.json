@@ -1,0 +1,30 @@
+{
+    "server": {
+        "port": 3000
+    },
+    "redis": {
+        "host": "192.168.1.191",
+        "port": "6379",
+        "password": "9asEitDaHoicCihapohavyahifeyFripmuDradwawb",
+        "prefix": "q"
+    },
+    "db": {
+        "dialect": "sqlite",
+        "storage": "./db/db.sqlite",
+        "database": "",
+        "username": "",
+        "password": ""
+    },
+    "unauthorization": ["/api/v1/users/login", "/api/v1/users/create"],
+    "mailer": {
+        "from": "no-reply@example.com",
+        "host": "smtp.gmail.com",
+        "secureConnection": true,
+        "port": 465,
+        "transportMethod": "SMTP",
+        "auth": {
+            "user": "gmail.user@gmail.com",
+            "pass": "userpass"
+        }
+    }
+}

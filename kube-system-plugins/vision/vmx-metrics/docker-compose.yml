@@ -1,0 +1,61 @@
+elasticsearch:
+  image: lucmichalski/elasticsearch:vmx
+  volumes:
+    - /opt/data/elasticsearch:/var/lib/elasticsearch
+  restart: always
+
+logstash:
+  image: lucmichalski/logstash:vmx
+  volumes:
+    - /opt/logs:/opt/logs
+    - ./logstash/conf.d:/etc/logstash/conf.d
+    - ./logstash/mappings:/etc/logstash/mappings
+    - ./logstash/patterns:/opt/logstash/patterns_extra
+  ports:
+    - 5000
+  links:
+    - elasticsearch
+  restart: always
+
+kibana:
+  image: lucmichalski/kibana:vmx
+  links:
+    - elasticsearch
+  restart: always
+
+nginx:
+  image:lucmichalski/nginx:vmx
+  ports:
+    - 443
+  links:
+    - kibana
+  restart: always
+
+forwarder:
+  image: lucmichalski/forwarder:nginx
+  links:
+    - logstash
+  volumes:
+    - /opt/logs:/opt/logs
+    - /usr/local/bin:/target
+
+hdfs:
+  image: lucmichalski/hdfs:vmx
+  command: /etc/bootstrap.sh -d -bash
+
+mazerunner:
+  image: lucmichalski/mazrunner:vmx
+  links:
+   - hdfs
+
+graphdb:
+  image: lucmichalski/graphdb:vmx
+  ports:
+   -  7474
+   -  1337
+  volumes:
+   - /opt/logs:/opt/logs
+   - /opt/data:/opt/data
+  links:
+   - mazerunner
+   - hdfs

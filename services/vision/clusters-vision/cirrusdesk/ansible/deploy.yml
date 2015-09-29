@@ -1,0 +1,83 @@
+---
+
+- hosts: all  
+  sudo: True
+  vars:    
+    webapps_dir: /srv/webapps    # root path on server where web apps are stored
+    repo_url: https://github.com/heathkh/iwct-webclient.git
+    repo_remote: origin
+    repo_version: master
+    app_base: /server # path of django BASE_DIR relative to /{{webapps_dir}}/{{app_name}}/src/, usually the django project name
+    wsgi_file: /server/wsgi.py # path of the wsgi.py relative to {{app_base}}  
+    wsgi_callable: application
+  vars_files:
+    - settings.yml
+    
+  tasks:
+  
+    - name: ensure apache is not running
+      service: name=apache2 state=stopped
+      sudo: True
+  
+    - name: ensure log directory
+      action: file dest=${webapps_dir}/${app_name}/log state=directory
+      
+    - name: deploy code from repository
+      action: git repo=$repo_url dest=${webapps_dir}/${app_name}/src remote=$repo_remote version=$repo_version
+
+    - name: install dependencies into virtualenv
+      action: pip requirements=${webapps_dir}/${app_name}/src/requirements.txt virtualenv=${webapps_dir}/${app_name}/venv state=present extra_args=--upgrade
+
+    - name: create supervisor program config
+      action: template src=templates/supervisor.ini dest=/etc/supervisor/${app_name}.ini
+      sudo: True
+      notify:
+        - restart supervisor
+        - restart app
+    
+    - name: ensure app is stopped
+      action: supervisorctl name=${app_name} state=stopped   
+      
+    - name: create nginx site config
+      action: template src=templates/nginx_site.conf dest=/etc/nginx/sites-available/${app_name}.conf
+      sudo: True
+      notify:
+        - restart nginx
+
+    - name: link nginx config
+      action: file src=/etc/nginx/sites-available/${app_name}.conf dest=/etc/nginx/sites-enabled/${app_name}.conf state=link
+      sudo: True
+     
+     
+    - name: create default db
+      mysql_db: login_user=root login_password={{mysql_root_password}} db={{app_name}} state=present
+    
+    - name: create db user
+      mysql_user: login_user=root login_password={{mysql_root_password}} name={{app_name}} password={{app_db_password}} priv=*.*:ALL state=present
+     
+    - name: configure django app with local settings
+      template: src=templates/local_settings.py.j2 dest={{ webapps_dir }}/{{ app_name }}/src/{{app_base}}/{{app_base}}/local_settings.py
+      
+    - name: configure django app with local settings
+      template: src=templates/initial_data.json.j2 dest={{ webapps_dir }}/{{ app_name }}/src/{{app_base}}/fixtures/initial_data.json
+     
+    - name: run syncdb on database
+      django_manage: command=syncdb  app_path={{ webapps_dir }}/{{ app_name }}/src/{{app_base}} virtualenv={{webapps_dir}}/{{app_name}}/venv
+        #settings={{ app_name }}
+        #pythonpath={{ settings_dir }}
+
+    - name: start app
+      action: supervisorctl name=${app_name} state=started
+
+  handlers:
+    - name: restart app
+      supervisorctl: name=${app_name} state=restarted
+      sudo: True
+
+    - name: restart nginx
+      service: name=nginx state=restarted
+      sudo: True
+      
+    - name: restart supervisor
+      supervisorctl: name=${app_name} state=restarted
+      sudo: True

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: ltuengine76-rest
+  labels:
+    name: ltuengine76-rest
+spec:
+  replicas: 10
+  selector:
+    name: ltuengine76-rest
+  template:
+    metadata:
+      labels:
+        name: ltuengine76-rest
+    spec:
+      containers:
+      - name: ltuengine76-rest
+        image: lucmichalski/docker-ltuengine-76c:v2
+        ports:
+          - containerPort: 8888
+            name: frontofficeui
+          - containerPort: 8080
+            name: apiquery
+          - containerPort: 7789
+            name: apimodify
+          - containerPort: 1789
+            name: apibulk

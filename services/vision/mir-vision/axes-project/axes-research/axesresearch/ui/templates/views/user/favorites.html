@@ -1,0 +1,27 @@
+<div class="favorites-page" data-bind="with: currentView">
+  <h2>Favorites</h2>
+  
+  <div data-bind="foreach: favorites">
+    <div class="recent-video">
+      <div class="thumbnail">
+        <img data-bind="attr: {src: keyframe.thumbnailUrl }"></img>
+        <span class="duration-overlay" 
+          data-bind="text: utils.formatTime(durationMillis)"></span>
+        <button class="play-button" title="Play video"
+          data-bind="click: $root.previewView.showForVideo"></button>
+      </div>
+      <div class="lastViewed">Last viewed on: 
+        <span class="date" data-bind="text: stats.lastViewed || 'Unknown'"></span>
+      </div>
+      <a class="title" data-bind="text: metadata.title,
+        attr: { href:'#/asset/' + uri }"></a>
+      <div class="summary" >
+        <span data-bind="text: metadata.summary"></span>
+        <span data-bind="text: metadata.description"></span>
+      </div>
+    </div>
+  </div>
+  <div data-bind="if: favorites().length == 0" class="noneindicator">
+    No Favorites
+  </div>  
+</div>

@@ -1,0 +1,41 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "elasticsearch",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "elasticsearch"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "elasticsearch"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "elasticsearch"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "elasticsearch",
+            "image": "lucmichalski/elasticsearch:kube-vs-metrics",
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

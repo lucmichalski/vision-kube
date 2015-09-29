@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div id="searchbar">
+  <!-- Home button -->
+  <div id="logo">
+    <a href="#/" data-bind="click: goHome">
+        <img src="{{ STATIC_URL }}img/AXESresearch.png"></img></a>
+  </div>
+  
+  <span class="logged-in-as">
+    Logged in as {{user.username}}
+  </span>
+
+  <!-- Search pane -->
+  {% include "views/search.html" %}
+    
+  <!-- Search filters -->
+  {% include "views/filters.html" %}
+</div>
+  
+<!-- Site content -->
+<div id="content">
+    
+  <!-- Home view -->
+  <div data-bind="if: currentView() == initialView">
+    {% include "views/home.html" %}
+  </div>
+  
+  <!-- Advanced search view -->
+  <div data-bind="if: currentView() == advancedQueryView">
+    {% include "views/advanced.html" %}
+  </div>
+    
+  <!-- Result view -->
+  <div data-bind="if: currentView() == resultsView">
+    {% include "views/results.html" %}
+  </div>
+    
+  <!-- Asset view -->
+  <div data-bind="if: currentView() == assetView">
+    {% include "views/asset.html" %}
+  </div>
+  
+  <!-- Keyframe view -->
+  <div data-bind="if: currentView() == keyframeView">
+    {% include "views/keyframes.html" %}
+  </div>
+  
+  <!-- Video cutter view -->
+  <div data-bind="if: currentView() == cutterView">
+    {% include "views/cutter.html" %}
+  </div>
+  
+  <!-- Popular view -->
+  <div data-bind="if: currentView() == popularView" >
+    {% include "views/popular.html" %}
+  </div>
+  
+  <!-- User view -->
+  <div data-bind="if: currentView() == userView" >
+    {% include "views/user.html" %}
+  </div>
+</div>
+
+<!-- Video preview overlay -->
+<div data-bind="if: previewView.visible">
+  <div id="video-preview" data-bind="
+      video: previewView.result, 
+      draggable: true, 
+      cancel: 'video'">
+    <button class="btn btn-link" data-bind="click: previewView.hide">
+      <i class="icon-remove icon-white"></i>
+    </button>
+    <span class="video-loading-indicator">Loading video...</span>
+  </div>
+</div>
+
+<!-- Centralized loading indicator -->
+<div id="loader" data-bind="visible: loading">
+  <img src="{{ STATIC_URL }}img/loader.gif" width="128" height="128">
+</div>
+
+<!-- Loading status indicator -->
+<div id="status-indicator" 
+  data-bind="text: statusText, visible: statusText">Loading...</div>
+
+<!-- page footer -->  
+<footer>
+  <p>AXES RESEARCH v{{ version }}</p>
+  <ul>
+    <li><a href="http://www.axes-project.eu/">AXES Project</a></li>
+    <li><a href="http://www.axes-project.eu/?page_id=2">About AXES</a></li>
+  </ul>
+</footer>
+    
+{% endblock body %}

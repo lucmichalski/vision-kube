@@ -1,0 +1,41 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "vulcand-havok",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "vulcand-havok"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "vulcand-havok"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "vulcand-havok"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "vulcand-havok",
+            "image": "ehazlett/havok",
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

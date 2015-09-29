@@ -1,0 +1,11 @@
+This folder should contain your videos or a symbolic link to them.
+For example, if your videos are stored in "/data/myvideos/", you can use this command:
+
+ln -s /data/myvideos myvideos
+
+All scripts will assume the videos are available in this folder.
+The video's name is its unique identifier throughout all steps.
+Videos can have any character in their name, including spaces, & = ' .. etc.
+
+
+

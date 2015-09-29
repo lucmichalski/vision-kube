@@ -1,0 +1,255 @@
+<div class="asset-view">
+  
+  <div class="view-banner">
+    {{asset.metadata.title}}
+  </div>
+  
+  <div class="asset-view-content">
+  
+    <!-- begin: left panel -->
+    <div class="left" ng-controller="VideoController">
+      
+    
+      <!-- begin: video -->
+      <div class="videobox" >
+        <videogular
+          vg-player-ready="onPlayerReady" 
+          vg-complete="onCompleteVideo" 
+          vg-update-time="onUpdateTime" 
+          vg-update-size="onUpdateSize" 
+          vg-update-volume="onUpdateVolume" 
+          vg-update-state="onUpdateState"
+          vg-width="config.width" 
+          vg-height="config.height" 
+          vg-theme="config.theme.url" 
+          vg-autoplay="config.autoPlay"
+          vg-responsive="config.responsive">
+      
+          <video class="videoPlayer" preload="metadata">
+            <source ng-repeat="src in videoSources" 
+              type="{{src.format}}" 
+              ng-src="{{src.href}}">
+          </video>
+      
+          <vg-buffering></vg-buffering>
+          <vg-overlay-play vg-play-icon="config.theme.playIcon"></vg-overlay-play>
+          <vg-controls 
+            vg-autohide="config.autoHide" 
+            vg-autohide-time="config.autoHideTime" 
+            style="height: 50px;">
+        
+            <vg-play-pause-button 
+              vg-play-icon="config.theme.playIcon" 
+              vg-pause-icon="config.theme.pauseIcon"></vg-play-pause-button>
+        
+            <vg-timeDisplay>{{ currentTime }}</vg-timeDisplay>
+            <vg-scrubBar>
+              <vg-scrubbarcurrenttime></vg-scrubbarcurrenttime>
+            </vg-scrubBar>
+            <vg-timeDisplay>{{ totalTime }}</vg-timeDisplay>
+        
+            <vg-volume>
+              <vg-mutebutton
+                vg-volume-level-3-icon="config.theme.volumeLevel3Icon"
+                vg-volume-level-2-icon="config.theme.volumeLevel2Icon"
+                vg-volume-level-1-icon="config.theme.volumeLevel1Icon"
+                vg-volume-level-0-icon="config.theme.volumeLevel0Icon"
+                vg-mute-icon="config.theme.muteIcon">
+              </vg-mutebutton>
+              <vg-volumebar></vg-volumebar>
+            </vg-volume>
+            <vg-fullscreenButton 
+              vg-enter-full-screen-icon="config.theme.enterFullScreenIcon" 
+              vg-exit-full-screen-icon="config.theme.exitFullScreenIcon">
+            </vg-fullscreenButton>
+          </vg-controls>
+        </videogular>
+      </div>
+      <!-- end: video -->
+    
+      <!-- begin: video buttons -->
+      <div class="video-buttons">
+        <a ng-click="bookmark()" class="video-button"
+          ng-class="{active: asset.bookmarked}">
+          <span class="icomatic">bookmark</span>
+          Bookmark</a>
+        <a ng-click="like()" class="video-button"
+          ng-class="{active: asset.liked}">
+          <span class="icomatic">like</span>
+          Like</a>
+        <a ng-click="share()" class="video-button">
+          <span class="icomatic">share</span>
+          Share</a>
+        <a ng-click="search()" class="video-button"
+           ng-if="instanceSearchAvailable">
+          <span class="icomatic">search</span>
+          Find Visually Similar</a>
+      </div>
+      <!-- end: video buttons -->
+    
+      <!-- begin: metadata area -->
+      <div class="metadata">
+        
+        <div class="socialStats">
+          
+          <span class="views">
+            {{stats.views}} views
+          </span>
+          <span class="likes">
+            {{stats.likes}} likes
+          </span>
+        </div>
+      
+        <!-- begin: program info -->
+        <div class="programInfo" >
+          Date: <span class="date" >
+            {{asset.metadata.publicationDate}}
+          </span>
+          License: <span class="license" >
+            {{asset.metadata.license}}
+          </span>
+          Categories: <span class="genre" >
+            {{asset.metadata.genres.join(', ') || 'None'}}
+          </span>
+          Type: <span class="type" >
+            {{asset.type}}
+          </span>
+        </div>
+        <!-- end: program info -->
+      
+        <!-- begin: video summary -->
+        <div class="description">
+          {{asset.metadata.description}}
+        </div>
+        <!-- end: video summary -->
+      
+        <!-- begin: other metadata -->
+        <div class="other-info">
+          <div class="info" ng-repeat="item in metadata">
+            <strong>{{item.title}}: </strong>
+            <span> 
+              <a ng-repeat="keyword in item.value" 
+                 href="#" 
+                 class="keyword">{{keyword}}</a>
+            </span>
+          </div>
+        </div>
+        <!-- end: other metadata -->
+        
+        <div class="detailedInfo">
+          <div class="detailedInfoMenu">
+            <a ng-class="{active: assetSubview == 'faces'}"
+              ng-click="setSubview('faces')">Faces</a>
+            <a ng-class="{active: assetSubview == 'keyframes'}"
+              ng-click="setSubview('keyframes')">Keyframes</a>
+            <a ng-class="{active: assetSubview == 'transcript'}"
+              ng-click="setSubview('transcript')">Transcript</a>
+          </div>
+          
+           <div ng-switch="assetSubview">
+            
+             <!-- begin: transcript -->
+             <div ng-switch-when="transcript" class="transcript" 
+               ng-controller="TranscriptController">
+               
+               <a class="transcript-item" 
+                 ng-repeat="segment in videoTranscript"
+                 ng-click="seek(segment.startTime/1000.0)">
+                 <span class="transcript-time">
+                   {{(segment.startTime/1000.0)|duration}}
+                 </span>
+                 <span class="transcript-text">
+                   {{segment.speech.spokenWords}}
+                 </span>
+               </a>
+             </div>
+             <!-- end: transcript -->
+          
+             <!-- begin: keyframes -->
+             <div ng-switch-when="keyframes" class="keyframes" 
+               ng-controller="KeyframesController">
+               
+               <a class="keyframe-item" ng-repeat="segment in videoKeyframes"
+                 ng-click="seek(segment.startTime/1000.0)">
+                 <img class="thumbnail"
+                   ng-src="{{segment.keyframe.thumbnailUrl}}" />
+                 <span class="keyframe-time">
+                   {{(segment.startTime/1000.0)|duration}}
+                 </span>
+               </a>
+             </div>
+             <!-- end: keyframes -->
+             
+             <!-- begin: faces -->
+             <div ng-switch-when="faces" class="keyframes" 
+               ng-controller="FaceTracksController">
+               
+               <a class="keyframe-item" ng-repeat="faceTrack in faceTracks"
+                 ng-click="seek(faceTrack.startTime/1000.0)">
+                 <img class="thumbnail"
+                   ng-src="{{faceTrack.keyframe.thumbnailUrl}}" />
+                 <span class="keyframe-time">
+                   {{(faceTrack.startTime/1000.0)|duration}}
+                 </span>
+               </a>
+             </div>
+             <!-- end: faces -->
+            
+            
+          </div>
+          
+        </div>
+      
+      </div>
+      <!-- end: metadata area -->
+    
+    </div>
+  
+    <!-- begin: right panel -->
+    <div class="right topcoat-list" ng-controller="RelatedContentController">
+    
+      <!-- begin: related clips -->
+      <h3 class="topcoat-list__header">
+        <span class='icomatic'>videocamera</span>
+        Related Video Clips
+      </h3>
+      <ul class="topcoat-list__container">
+        <li class="topcoat-list__item relatedVideo" 
+          ng-repeat="result in relatedSegments">
+          <a ng-click="goForward('asset/' + result.asset.uri)" >
+            <img ng-src="{{result.asset.keyframe.thumbnailUrl}}" 
+              class="thumbnail"/>
+            <span class="title">{{result.asset.metadata.title}}
+        
+              <span class="summary">{{result.asset.metadata.summary}}</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+      <!-- end: related clips -->
+    
+      <!-- begin: related videos -->
+      <h3 class="topcoat-list__header">
+        <span class='icomatic'>videocamera</span>
+        Related Full Videos
+      </h3>
+      <ul class="topcoat-list__container">
+        <li class="topcoat-list__item relatedVideo" 
+          ng-repeat="result in relatedVideos">
+          <a ng-click="goForward('asset/' + result.asset.uri)" >
+            <img ng-src="{{result.asset.keyframe.thumbnailUrl}}" 
+              class="thumbnail"/>
+            <span class="title">{{result.asset.metadata.title}}
+        
+              <span class="summary">{{result.asset.metadata.summary}}</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+      <!-- end: related videos -->
+    
+    </div>
+    <!-- end: right panel -->
+  </div>
+  
+</div>

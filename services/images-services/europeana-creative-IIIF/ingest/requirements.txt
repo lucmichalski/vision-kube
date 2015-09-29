@@ -1,0 +1,9 @@
+bleach
+boto
+celery
+Flask
+fakeredis
+redis
+filechunkio
+simplejson
+requests

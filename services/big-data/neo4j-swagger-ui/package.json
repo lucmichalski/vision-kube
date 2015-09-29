@@ -1,0 +1,33 @@
+{
+  "name": "neo4j-swagger-ui",
+  "version": "0.0.10",
+  "description": "Neo4j Swagger UI is a neo4j enhanced, dependency-free collection of HTML, Javascript, and CSS assets that dynamically generate beautiful documentation from a Swagger-compliant API.",
+  "scripts": {
+    "build": "PATH=$PATH:./node_modules/.bin cake dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tinj/neo4j-swagger-ui.git"
+  },
+  "author": {
+    "name": "Mat Tyndall",
+    "email": "mat@tinj.com",
+    "url": "http://tinj.com"
+  },
+  "keywords": [
+    "neo4j",
+    "api",
+    "swagger"
+  ],
+  "license": "Apache",
+  "bugs": {
+    "url": "https://github.com/tinj/neo4j-swagger-ui/issues"
+  },
+  "dependencies": {
+    "coffee-script": "~1.5.0",
+    "swagger-client": "~2.0",
+    "handlebars": "~1.0.10",
+    "less": "~1.4.2"
+  }
+}

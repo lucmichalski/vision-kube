@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+{% block content %}
+
+ <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        
+        {% if user.is_authenticated %}
+          <h1>Your workstation awaits!</h1>
+          <p>Welcome back {{ user.username }}...</p>
+          <p><a href="{% url 'workstations' %}" class="btn btn-primary btn-large">Go to your workstations &raquo;</a></p>
+        {% else  %}
+          <h1>Launch a workstation!</h1>
+          <p>Login to get started building <a href="http://graphics.stanford.edu/imagewebs/">Image Webs</a> with the <a href="https://image-web-cloud-tools.readthedocs.org/en/latest/">Image Webs Cloud Tools.</a></p>
+          <p><a href="{% url 'auth_login' %}" class="btn btn-primary btn-large">Login &raquo;</a></p>
+        {% endif %}
+      </div>
+
+
+{% endblock %}

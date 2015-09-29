@@ -1,0 +1,112 @@
+
+
+.topicList {
+  .topicShuffleButton {
+    display: block;
+    margin: 30px auto 30px auto;
+    width: 300px;
+  }
+}
+
+.text-fader-dark {
+  position: absolute;
+  z-index: 1000;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 10px 0;
+  text-align: center; 
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, transparent),color-stop(1, black));
+  background-image: -webkit-linear-gradient(top, transparent, black);
+  background-image: -moz-linear-gradient(top, transparent, black);
+  background-image: -ms-linear-gradient(top, transparent, black);
+  background-image: -o-linear-gradient(top, transparent, black);
+}
+
+.topic {
+  @include box-sizing(border-box);
+  position: relative;
+  display: block;
+  clear: both;
+  width: 100%;
+  height: 240px;
+  background: #95a5a6;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  margin-top: 20px;
+}
+
+.topicName {
+  @include box-sizing(border-box);
+  position: absolute;
+  display: block;
+  left: 0;
+  bottom: 0;
+  width: 220px;
+  padding: 25px;
+  color: #2c3e50;
+  text-transform: uppercase;
+  font-size: 24pt;
+  font-weight: lighter;
+  white-space: normal;
+  text-align: right;
+}
+
+.topicName.hideName {
+  display: none;
+}
+
+.topicExamples {
+  @include box-sizing(border-box);
+  position: absolute;
+  display: block;
+  top: 0px;
+  left: 220px;
+  height: 240px;
+  padding: 20px;
+  padding-left: 5px;
+}
+
+.topicExamples.hideName {
+  left: 15px;
+}
+
+.topicExample {
+  @include box-sizing(border-box);
+  position: relative;
+  display: inline-block;
+  width: 300px;
+  height: 200px;
+  margin-right: 3px;
+  overflow: hidden;
+  
+  .thumbnail {
+    position: absolute;
+    left: -4px;
+    top: -4px;
+    right: -4px;
+    width: 308px;
+    height: 208px;
+    border: none;
+  }
+  
+  .title {
+    @include box-sizing(border-box);
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 300px;
+    height: 50px;
+    background: rgba(0,0,0,0.75);
+    color: #ecf0f1;
+    text-transform: uppercase;
+    font-size: 13px;
+    vertical-align: top;
+    padding: 10px;
+    overflow: hidden;
+    white-space: normal;
+    font-weight: lighter;
+  }
+}

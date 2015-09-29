@@ -1,0 +1,52 @@
+Description=VMX Middle Service
+
+# Requirements
+Requires=etcd.service
+Requires=docker.service
+Requires=vmxmcr.service
+Requires=vmxuserdata.service
+Requires=vmxmiddle.service
+Requires=vmxappbuilder.service
+Requires=middle-discovery@%i.service
+
+# Dependency ordering
+After=etcd.service
+After=docker.service
+After=userdata.service
+After=appbuilder.service
+After=mcr.service
+Before=middle-discovery@%i.service
+
+[Service]
+# Let processes take awhile to start up (for first run Docker containers)
+TimeoutStartSec=0
+
+# Change killmode from "control-group" to "none" to let Docker remove
+# work correctly.
+KillMode=none
+
+# Get CoreOS environmental variables
+EnvironmentFile=/etc/environment
+
+# Pre-start and Start
+## Directives with "=-" are allowed to fail without consequence
+ExecStartPre=-/usr/bin/docker kill vmxmiddle.%i
+ExecStartPre=-/usr/bin/docker rm vmxmiddle.%i
+ExecStartPre=/usr/bin/docker pull visionai/vmxmiddle
+ExecStart=/usr/bin/docker run -t        \
+      --volumes-from vmx-mcr            \
+      --volumes-from vmx-userdata       \
+      --volumes-from vmx-middle         \
+      --volumes-from vmx-server         \
+      --volumes-from vmx-appbuilder     \
+      -p ${COREOS_PUBLIC_IPV4}:%i:3000  \
+      --name vmx-environment%i          \
+      --rm                              \
+      visionai/vmx-environment /bin/bash -c "/vmx/middle/vmx | tee /vmx/middle/vmx_log"
+
+# Stop
+ExecStop=/usr/bin/docker stop vmx-environment%i
+
+[X-Fleet]
+# Don't schedule on the same machine as other Middle Instances
+X-Conflicts=middle@*.service

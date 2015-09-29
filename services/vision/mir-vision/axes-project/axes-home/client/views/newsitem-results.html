@@ -1,0 +1,17 @@
+<div id="results-page">
+  
+  <div class="results-news-item">
+    <div class="results-news-item-content">
+      <span class="icomatic">rss</span>
+      <span class="results-news-item-title"
+        ng-bind-html="newsItem.title"></span>
+      <span class="results-news-item-summary"
+        ng-bind-html="newsItem.summary"></span>
+      <span class="text-fader"></span>
+    </div>
+  </div>
+  
+  <span ng-include="'views/partial/results-bar.html'"></span>
+  <span ng-include="'views/partial/results-list.html'"></span>
+</div>
+

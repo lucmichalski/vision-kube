@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/ContentServiceApi">
+	
+  <!--Below are references to global resources that should be defined in Tomcat's server.xml to be available and used
+	by application. Define those variables in GlobalNamingResources section of mentioned file, e.g.:
+	
+	  <GlobalNamingResources>
+	
+          <Environment name="mcs/cassandra/hosts" value="CASSANDRA_HOST"
+                               type="java.lang.String" override="false"/>
+    [...]-->
+    
+   <!-- MCS registration of service in COS -->
+   
+   <ResourceLink
+        name="cos/listenAddress"
+        global="cos/listenAddress"
+        type="java.lang.String"/>
+         
+   <!-- COS -->
+    
+   <ResourceLink
+        name="cos/zookeeper/zookeeperAddress"
+        global="cos/zookeeper/zookeeperAddress"
+        type="java.lang.String"/>        
+        
+   <ResourceLink
+        name="cos/zookeeper/zookeeperConnectionTimeout"
+        global="cos/zookeeper/zookeeperConnectionTimeout"
+        type="java.lang.Integer"/>       
+        
+    <ResourceLink
+        name="cos/zookeeper/zookeeperSessionTimeout"
+        global="cos/zookeeper/zookeeperSessionTimeout"
+        type="java.lang.Integer"/>       
+        
+    <ResourceLink
+        name="cos/zookeeper/zookeeperPath"
+        global="cos/zookeeper/zookeeperPath"
+        type="java.lang.String"/>        
+        
+   <ResourceLink
+        name="cos/datacenterLocation"
+        global="cos/datacenterLocation"
+        type="java.lang.String"/>             
+           
+    <!--  -->
+   	<!-- Properties bellow this line are only needed if cos profile is not activated -->
+   	<!--  -->
+	
+    <!-- MCS -->
+    
+    <ResourceLink
+        name="mcs/cassandra/hosts"
+        global="mcs/cassandra/hosts"
+        type="java.lang.String"/>
+    
+    <ResourceLink 
+        name="mcs/cassandra/port"
+        global="mcs/cassandra/port"
+        type="java.lang.Integer" />
+    
+    <ResourceLink
+        name="mcs/cassandra/keyspace"
+        global="mcs/cassandra/keyspace"
+        type="java.lang.String"/>
+    
+    <ResourceLink
+        name="mcs/cassandra/user"
+        global="mcs/cassandra/user"
+        type="java.lang.String"/>
+    
+    <ResourceLink
+        name="mcs/cassandra/password"
+        global="mcs/cassandra/password"
+        type="java.lang.String"/>
+
+    <ResourceLink
+        name="mcs/swift/provider"
+        global="mcs/swift/provider"
+        type="java.lang.String"/>
+
+    <ResourceLink
+        name="mcs/swift/container"
+        global="mcs/swift/container"
+        type="java.lang.String"/>
+    <ResourceLink
+        name="mcs/swift/endpointList"
+        global="mcs/swift/endpointList"
+        type="java.lang.String"/>
+    <ResourceLink
+        name="mcs/swift/user"
+        global="mcs/swift/user"
+        type="java.lang.String"/>
+    <ResourceLink
+        name="mcs/swift/password"
+        global="mcs/swift/password"
+        type="java.lang.String"/>
+    <ResourceLink 
+        global="mcs/uis-url" 
+        name="mcs/uis-url" 
+        type="java.lang.String"/>  
+    <ResourceLink
+        name="kafka/brokerList"
+        global="kafka/brokerList"
+        type="java.lang.String"/>
+    <ResourceLink
+        name="kafka/topic"
+        global="kafka/topic"
+        type="java.lang.String"/>   
+    
+    <!-- AAS -->
+    
+    <ResourceLink
+        name="aas/cassandra/hosts"
+        global="aas/cassandra/hosts"
+        type="java.lang.String"/>
+    
+    <ResourceLink 
+        name="aas/cassandra/port"
+        global="aas/cassandra/port"
+        type="java.lang.Integer" />
+    
+    <ResourceLink
+        name="aas/cassandra/authorization-keyspace"
+        global="aas/cassandra/authorization-keyspace"
+        type="java.lang.String"/>
+    
+    <ResourceLink
+        name="aas/cassandra/authentication-keyspace"
+        global="aas/cassandra/authentication-keyspace"
+        type="java.lang.String"/>
+    
+    <ResourceLink
+        name="aas/cassandra/user"
+        global="aas/cassandra/user"
+        type="java.lang.String"/>
+    
+    <ResourceLink
+        name="aas/cassandra/password"
+        global="aas/cassandra/password"
+        type="java.lang.String"/>
+    
+    <ResourceLink
+        name="aas/cassandra/autoCreateTables"
+        global="aas/cassandra/autoCreateTables"
+        type="java.lang.Boolean"/>
+        
+</Context>

@@ -1,0 +1,48 @@
+[Unit]
+Description=VMX Server Discovery
+
+# Requirements
+Requires=etcd.service
+Requires=vmxserver@%i.service
+
+# Dependency ordering
+After=etcd.service
+BindsTo=vmxserver@%i.service
+
+[Service]
+# Let processes take awhile to start up (for first run Docker containers)
+TimeoutStartSec=0
+
+# work correctly.
+KillMode=none
+
+# Get CoreOS environmental variables
+EnvironmentFile=/etc/environment
+
+# Pre-start and Start
+ExecStart=/bin/bash -c '\
+    FIRST_RUN="true" ; \
+    while true; do \
+        source /etc/profile.d/etcdctl.sh; \
+        curl ${COREOS_PRIVATE_IPV4}:%i/check; \
+        if [ $? -eq 0 ]; then \
+          echo vmxserver worker up at ${COREOS_PRIVATE_IPV4}; \
+          etcdctl set /vmxserver/available/${COREOS_PRIVATE_IPV4}/%i \'available\' --ttl 30; \
+        else \
+          echo vmxserver not up at ${COREOS_PRIVATE_IPV4}; \
+          etcdctl rm /vmxserver/available/${COREOS_PRIVATE_IPV4}/%i ; \
+        fi; \
+        if [ $FIRST_RUN == "true" ]; then \
+          REDIS_SERVER=$(etcdctl ls /services/redis | cut -d'/' -f4 | head -n 1) ; \
+          echo "First time we have seen this up.. updating redis server at $REDIS_SERVER" ; \
+          docker run --rm redis redis-cli -h $REDIS_SERVER LPUSH vmxworkers_ready "${COREOS_PRIVATE_IPV4}:%i" ; \
+          FIRST_RUN=false ; \
+        fi; \
+      sleep 20; \
+    done \
+'
+ExecStop=/usr/bin/etcdctl rm /vmxserver/available/${COREOS_PRIVATE_IPV4}/%i
+
+[X-Fleet]
+# Schedule on the same machine as the associated Middle Service
+X-ConditionMachineOf=vmxserver@%i.service

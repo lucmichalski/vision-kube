@@ -1,0 +1,83 @@
+<div id="browse-page">
+  
+  <!-- tab bar -->
+  <div class="tabBar">
+    
+    <!-- topics -->
+    <a ng-class="{active: browseSubview == 'topics' 
+      && topicType == 'categories'}"
+      ng-click="go('browse/topics/categories')">Categories</a>
+    <a ng-class="{active: browseSubview == 'topics' 
+      && topicType == 'persons'}"
+      ng-click="go('browse/topics/persons')">People</a>
+    <a ng-class="{active: browseSubview == 'topics' 
+      && topicType == 'places'}"
+      ng-click="go('browse/topics/places')">Places</a>
+    <a ng-class="{active: browseSubview == 'topics' 
+      && topicType == 'events'}"
+      ng-click="go('browse/topics/events')">Events/Activities</a>
+      
+    <!-- popular -->
+    <a ng-class="{active: browseSubview == 'popular'}"
+      ng-click="go('browse/popular')">Popular Videos</a>
+  </div>
+  
+  <div ng-switch="browseSubview">
+    
+    <!-- begin: popular -->
+    <div ng-switch-when="popular" 
+      ng-controller="PopularVideosController" 
+      class="resultList interestingItems">
+      
+      <a ng-click="goForward('asset/' + asset.uri)" 
+         class="popularVideo resultBox Grid" 
+         ng-repeat="asset in popularVideos">
+       
+         <img ng-src="{{asset.videoKeyframe.imageUrl}}" class="thumbnail"/> 
+         <span class="title">{{asset.metadata.title}}</span>
+         <span class="summary">{{asset.metadata.summary}}</span>
+      </a>
+    </div>
+    <!-- end: popular -->
+    
+    <!-- begin: topics -->
+    <div ng-switch-when="topics" 
+      ng-controller="TopicsController"
+      class="topicList">
+      
+      <button ng-if="interestingTopics"
+        class="topcoat-button topicShuffleButton"
+        ng-click="fetchTopics()">
+        Fetch More Random Topics!
+      </button>
+      
+      <div ng-repeat="topic in interestingTopics" class="topic">
+        <div class="topicName" ng-class="{hideName: hideNames}">
+          {{topic.name}}
+        </div>
+        <div class="topicExamples" ng-class="{hideName: hideNames}">
+        
+          <a ng-click="goForward('asset/' + example.asset.uri)" 
+             class="topicExample" 
+             ng-repeat="example in topic.collectionExamples">
+       
+             <img ng-src="{{example.asset.keyframe.imageUrl}}" class="thumbnail"/> 
+             <span class="title">{{example.asset.metadata.title}}
+               <span class="text-fader-dark"></span>
+             </span>
+          </a>
+        </div>
+      </div>
+    
+      <button 
+        ng-if="interestingTopics"
+        class="topcoat-button topicShuffleButton"
+        ng-click="fetchTopics()">
+        Fetch More Random Topics!
+      </button>
+    </div>
+    <!-- end: topics -->
+    
+  </div>
+  
+</div>

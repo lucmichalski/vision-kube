@@ -1,0 +1,49 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "kong",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "kong"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "kong"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "kong"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "kong",
+            "image": "",
+            "ports": [
+              {
+                "containerPort": 8001
+              },
+              {
+                "containerPort": 8000
+              }
+            ],
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+{% block content %}
+<form id="add_storage_form" action="{% url 'add_storage' instance_id %}" method="post">
+{% csrf_token %}
+<h2 class="form-signin-heading">Add storage to workstation</h2>
+{{ form | as_bootstrap}}
+<input type="submit" value="Submit" />
+</form>
+
+<div class="alert alert-danger">
+  <b>Warning:</b>  Your workstation will be shutdown.  Be sure you've saved any currently open files.  
+</div>
+
+<div class="alert">
+  <b>Note:</b>  After clicking "submit", please be patient.  The page will reload when your workstation storage has been expanded.  This may take up to 5 minutes, depending on how much storage is created.
+</div>
+
+
+<script>    
+  $('#add_storage_form').submit(function() {
+    ShowWaitDialog();
+    return true;
+  });      
+</script>
+
+
+{% endblock %}

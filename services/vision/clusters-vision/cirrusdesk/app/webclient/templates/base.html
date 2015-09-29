@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+{% load bootstrap3 %}
+{% load i18n %}
+<html lang="en">
+<head>
+	<title>{% block title %}Cirrus Desktop{% endblock %}</title>
+	<link rel="shortcut icon" href="{{ STATIC_URL }}img/cloud.png" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+	<style type="text/css">
+  body {
+    padding-top: 60px;
+  }
+  @media (max-width: 980px) {
+    body {
+      padding-top: 0;
+    }
+  }
+  </style>
+	
+	<script>
+		function ShowWaitDialog(){
+	    $('#wait_dialog').modal('show');
+	  }
+	  function HideWaitDialog(){
+	    $('#wait_dialog').modal('hide');
+	  }
+  </script>
+  
+  
+  {% block extra_head %}{% endblock %}
+	
+</head>
+
+<body>
+
+<div  id="wait_dialog" class="modal hide fade" data-keyboard="false" data-backdrop="static" >  
+  <div class="modal-body">
+     <center>
+     <div class="modal-header">
+    <h3>Working...</h3>
+  </div>
+       <img src="{{ STATIC_URL }}/img/loading.gif" id="loading-indicator"  />
+     </center>
+  </div>
+</div>
+
+  <div id="header">
+	  {% block header %}	  
+	  <div class="navbar navbar-fixed-top">
+	    <div class="navbar-inner">
+	      <div class="container">
+	        <a class="brand" href="{% url 'index' %}">Cirrus Desktop</a>
+	        <ul class="nav pull-right">
+	          {% if user.is_authenticated %}
+	          <li class="dropdown"></li>
+	          <li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Logged in as <b>{{ user.username }}</b> <i class="icon-user"></i> <b class="caret"></b></a>
+		          <ul class="dropdown-menu">
+		          <li><a href="{% url 'workstations' %}"></b> <i class="icon-list"></i>&nbsp; &nbsp; Workstations</a></li>
+		            <li><a href="{% url 'auth_password_change' %}"><i class="icon-wrench"></i>&nbsp; &nbsp; Change password</a></li>
+		            <li class="divider"></li>
+		            <li><a href="{% url 'auth_logout' %}"><i class="icon-off"></i>&nbsp; &nbsp;  Log out</a></li>
+		          </ul>
+	          </li>
+						{% else %}
+						  <li><a href="{% url 'auth_login' %}">Login</a></li>					    
+						{% endif %}
+	        </ul>
+	      </div>
+	    </div>
+	  </div>
+  {% endblock %}
+  </div> <!-- header -->
+	 
+	<div class="container">
+    {% bootstrap_messages %}
+    {% block content %}Empty page{% endblock %}
+    <p><hr></p>
+    <footer class="row">
+        <div class="span6" >
+        </div>
+       <div class="span6" style="text-align:right">
+	       <p> 
+	         Powered by <a href="https://github.com/heathkh/cirruscluster">Cirrus Cluster</a> | &copy; <a href="mailto:heathkh@alumni.stanford.edu">Kyle Heath</a> 2013 
+	       </p>
+       </div>
+    </footer>
+	</div> <!-- container -->
+	    
+    
+    
+    
+</body>
+
+</html>

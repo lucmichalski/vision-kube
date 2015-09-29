@@ -1,0 +1,35 @@
+Description=VMX App Builder service
+
+# Requirements
+Requires=etcd.service
+Requires=docker.service
+
+# Dependency ordering
+After=etcd.service
+After=docker.service
+Before=middle-discovery@%i.service
+
+[Service]
+# Let processes take awhile to start up (for first run Docker containers)
+TimeoutStartSec=0
+
+# Change killmode from "control-group" to "none" to let Docker remove
+# work correctly.
+KillMode=none
+
+# Get CoreOS environmental variables
+EnvironmentFile=/etc/environment
+
+# Pre-start and Start
+## Directives with "=-" are allowed to fail without consequence
+ExecStartPre=-/usr/bin/docker kill vmxappbuilder
+ExecStartPre=-/usr/bin/docker rm vmxappbuilder
+ExecStartPre=/usr/bin/docker pull visionai/vmxappbuilder
+ExecStart=/usr/bin/docker run -d --name vmxappbuilder 
+
+# Stop
+ExecStop=/usr/bin/docker stop vmxappbuilder
+
+[X-Fleet]
+# Schedule on the same machine as the associated Middle Service
+X-ConditionMachineOf=middle@%i.service

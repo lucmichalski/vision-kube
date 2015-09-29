@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="cpuVisorApp">
+    <head>
+        <title>CPU VISOR Demo Webservice</title>
+        <link rel="stylesheet" href="vendor/bootstrap-css/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/directives.css">
+        <link rel="stylesheet" href="css/angular-strap.css">
+    </head>
+    <body>
+        <div class="view-container">
+            <div ng-view class="view-frame"></div>
+        </div>
+
+        <script src="vendor/jquery/src/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.17/socket.io.js"></script>
+        <!-- NOTE: socket.io 1.x+ required for node server to work, but older version required for python server -->
+        <!--<script src="https://cdn.socket.io/socket.io-1.3.0.js"></script>-->
+        <script src="vendor/angular/angular.js"></script>
+        <script src="vendor/angular-route/angular-route.min.js"></script>
+        <script src="vendor/angular-resource/angular-resource.min.js"></script>
+        <script src="vendor/angular-animate/angular-animate.min.js"></script>
+        <script src="vendor/angular-socket-io/socket.js"></script>
+        <script src="vendor/angular-strap/dist/angular-strap.min.js"></script>
+        <script src="vendor/angular-strap/dist/angular-strap.tpl.min.js"></script>
+
+        <script src="js/app.js"></script>
+        <script src="js/controllers.js"></script>
+        <script src="js/services.js"></script>
+        <script src="js/directives.js"></script>
+    </body>
+</html>

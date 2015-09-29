@@ -1,0 +1,29 @@
+<div class="profile-view">
+  
+  <div ng-if="profile">
+    <div class="profile-image">
+      <img ng-src="{{profile.image|avatar}}" width="120" height="120" />
+    </div>
+    <div class="profile-info">
+      <h1 class="fullName">{{profile.firstName}} {{profile.lastName}}</h1>
+      <h2 class="email">{{profile.email}}</h2>
+      <button class="topcoat-button" ng-click="logout()">
+        Log out
+      </button>
+    </div>
+  </div>
+  
+  <div ng-if="!profile" class="login-needed">
+    
+    <h1>You are logged out!</h1>
+    
+    <button class="topcoat-button--cta" ng-click="go('/login')">
+      Log in
+    </button>
+    
+    <button class="topcoat-button" ng-click="goForward('/register')" >
+       New user? Register here
+    </button>
+  </div>
+  
+</div>

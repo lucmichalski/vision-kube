@@ -1,0 +1,16 @@
+---
+applications:
+- name: webapp
+  memory: 512M
+  instances: 1
+  host: webapp-${random-word}
+  domain: cfapps.io
+  path: target/webapp.jar
+  services:
+    - doge-rabbitmq
+    - config-service
+    - eureka-service
+  env:
+    SPRING_PROFILES_ACTIVE: cloud
+    DEBUG: "true"
+    debug: "true"

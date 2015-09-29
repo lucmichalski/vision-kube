@@ -1,0 +1,75 @@
+<!-- search results -->
+<div class="searchResults">
+  
+  <!-- none found message -->
+  <div ng-if="results.length == 0" class="noresults">
+    We could not find any video clips matching your search 
+    <span ng-if="queryText">for
+      <span class="searchText">&ldquo;{{queryText}}&rdquo;</span>
+    </span> 
+    <div class="sadFace">:(</div>  
+  </div>
+  
+  <!-- results -->
+  <div ng-repeat="item in results|groupResults:groupingCriteria|limitTo:maxResultsToDisplay"
+     class="resultBox" 
+     ng-class="viewMode">
+     
+     <!-- clickable keyframe -->
+     <a ng-click="goForward('asset/' + item.asset.uri)">
+       <img ng-src="{{item.asset.keyframe.thumbnailUrl}}" class="thumbnail"/> 
+     </a>
+     
+     <!-- title and summary -->
+     <span class="title">{{item.asset.metadata.title}}</span> 
+     <span class="summary" ng-bind-html="item.asset.metadata.summary"></span>
+     
+     <!-- result explanation -->
+     <a class="result-explain" ns-popover
+        ns-popover-template="result-explain-popover"
+        ns-popover-trigger="click"
+        ns-popover-theme="ns-popover-tooltip-theme"
+        ns-popover-hide-on-click="true"
+        ns-popover-timeout="5">
+       <span aria-hidden="true" ng-repeat="e in item.explanations" 
+         ng-class="e.iconClass" class="result-explain-icon" 
+         title="{{e.description}}" alt="{{e.description}}"> </span>
+     </a>
+     
+     <!-- popover template -->
+     <script type="text/ng-template" id="result-explain-popover">
+       <div class="triangle"></div>
+       <div class="ns-popover-tooltip">
+         <b>Matched on:</b>
+         <ul>
+           <li ng-repeat="e in item.explanations" >
+             <span aria-hidden="true" ng-class="e.iconClass" 
+                class="result-explain-icon" > </span>
+             <span>{{e.description}}</span>
+           </li>
+         </ul>
+       </div>
+     </script>
+     
+     <!-- view counter -->
+     <span class="views">
+        <span class="nviews">
+          {{videoStats[item.asset.videoUri].views}} 
+        </span>
+        <span class="viewtext">
+          views
+        </span>
+     </span>
+     
+  </div>
+  
+  <!-- show more -->
+  <div>
+    <button class="topcoat-button--cta showMoreButton" 
+      ng-click="showMore()"
+      ng-disabled="!canShowMore()"
+      ng-if="results.length != 0">
+      Show more&hellip;
+    </button>
+  </div>
+</div>

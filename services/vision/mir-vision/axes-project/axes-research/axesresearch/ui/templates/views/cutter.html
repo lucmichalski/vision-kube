@@ -1,0 +1,112 @@
+<div id="cutter-page" class="main-view">
+      
+  <div class="asset-view" 
+    data-bind="with: cutterView">
+  	
+    <!-- title -->
+    <div class="title">Virtual Cutter</div>
+    
+    <!-- cutter -->
+    <div id="video-cutter" 
+      class="video-player" >
+      
+      <div class="video-box">
+        <div data-bind="
+            video: asset, 
+            width: 480, 
+            height: 320, 
+            autoplay: false, 
+            controls: true,
+            duration: videoDuration,
+            owner: player">
+            <span class="video-loading-indicator">Loading video...</span>
+        </div>
+      </div> 
+      
+      <!-- controls -->
+      <div id="cutter-controls">
+        <button class="btn btn-mini" 
+          title="Set start of segment to be current video position"
+          data-bind="click:setStart">
+          <i class="icon-flag"></i>
+        </button>
+        
+        <button class="btn btn-mini" 
+          title="Jump to start of segment"
+          data-bind="click:jumpToStartOfSegment">
+          <i class="icon-step-backward"></i> 
+        </button>
+        
+        <span class="segment-time" 
+          data-bind="text: formattedStartTime"></span>
+        
+        <button class="btn btn-mini pull-right"
+          title="Set end of segment to be current video position"
+          data-bind="click:setEnd">  
+          <i class="icon-flag"></i>
+        </button>
+        
+        <button class="btn btn-mini pull-right"
+           title="Jump to end of segment"
+           data-bind="click:jumpToEndOfSegment">
+          <i class="icon-step-forward"></i> 
+        </button>
+        
+        <span class="pull-right segment-time" 
+          data-bind="text: formattedEndTime"></span>
+        
+        <div id="segment-slider"
+          data-bind="rangeSlider: true, 
+            low: startTime, 
+            high: endTime, 
+            min: 0,
+            max: videoDuration, 
+            enable: true">
+        </div>
+      </div> 
+    </div>
+    
+    <!-- cut starter -->
+    <div id="cutter-task-starter">
+   
+      <span class="cut-info">
+        <strong>Cut start time:</strong> <span class="segment-time" 
+          data-bind="text: formattedStartTime"></span></span>
+          
+      <span class="cut-info">
+        <strong>duration:</strong> <span class="segment-time" 
+          data-bind="text: formattedDuration"></span></span>
+      
+      <span class="cut-info">
+        <strong>end time:</strong> <span class="segment-time" 
+          data-bind="text: formattedEndTime"></span></span>
+
+      <button class="btn btn-mini btn-info pull-right"
+        title="Start processing video cut"
+        data-bind="click: cut, enable: !hasActiveJob()">
+        <i class="icon-cog icon-white"></i> Process
+      </button>
+      
+      <button class="btn btn-mini pull-right"
+        title="Jump to start of segment and start playback"
+        data-bind="click: playSegment">
+        <i class="icon-play"></i> 
+      </button>
+      
+    </div>
+    
+    <!-- ko if: cutJob() -->
+    <div id="cutter-job">
+      <div data-bind="if: cutJob().status() == 'STARTED' || cutJob().status() == 'PENDING'">
+        <img src="{{ STATIC_URL }}/img/small-loader.gif">
+        Processing video cut... 
+      </div>
+      <div data-bind="if: cutJob().status() == 'SUCCESS'">
+        Video cut processing complete. <br>
+        <a data-bind="attr: {href: cutJob().downloadUrl()}">Download video</a>
+      </div>
+    </div>
+    <!-- /ko -->
+    
+  </div>
+</div>

@@ -1,0 +1,49 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "graphdb",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "graphdb"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "graphdb"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "graphdb"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "graphdb",
+            "image": "",
+            "ports": [
+              {
+                "containerPort": 7474
+              },
+              {
+                "containerPort": 1337
+              }
+            ],
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

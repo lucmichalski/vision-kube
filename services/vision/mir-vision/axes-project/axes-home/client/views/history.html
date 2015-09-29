@@ -1,0 +1,37 @@
+<div id="history-page">
+  
+  <div ng-if="!loggedIn" class="login-needed">
+    
+    <h1>You need to be logged in to view history</h1>
+    
+    <button class="topcoat-button--cta" ng-click="go('/login')">
+      Log in
+    </button>
+    
+    <button class="topcoat-button" ng-click="goForward('/register')" >
+       New user? Register here
+    </button>
+  </div>
+  
+  <div ng-if="loggedIn">
+    
+    <!-- begin: history -->
+    <div 
+      class="resultList interestingItems history">
+      
+      <a ng-click="goForward('asset/' + historyItem.asset.uri)" 
+         class="historyItem resultBox List" 
+         ng-repeat="historyItem in history">
+       
+         <img ng-src="{{historyItem.asset.videoKeyframe.imageUrl}}" 
+           class="thumbnail"/> 
+         <span class="title">{{historyItem.asset.metadata.title}}</span>
+         <span class="summary">{{historyItem.asset.metadata.summary}}</span>
+         <span class="viewed-on">Viewed on: {{historyItem.timestamp}}</span>
+         
+      </a>
+    </div>
+    <!-- end: popular -->
+    
+  </div>
+</div>

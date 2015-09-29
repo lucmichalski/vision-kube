@@ -1,0 +1,41 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "cassandra",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "cassandra"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "cassandra"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "cassandra"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "cassandra",
+            "image": "mashape/cassandra",
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 2
+  }
+}

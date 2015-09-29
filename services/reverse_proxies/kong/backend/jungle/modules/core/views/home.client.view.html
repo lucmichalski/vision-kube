@@ -1,0 +1,93 @@
+<section data-ng-controller="HomeController">
+	<div ng-if="!storage.kongurl" class="alert alert-danger" role="alert">
+		Not connected to any Kong's instance. <br />
+		Please connect to an instance by entering the address in the form above.
+	</div>
+	<div class="row" ng-if="!storage.kongurl">
+		<div class="col-md-12">
+			<div class="panel panel-default panel-warning">
+			  <div class="panel-heading">How to connect your KONG instance</div>
+			  <div class="panel-body">
+			    <ol>
+			    	<li>Add your Kong Admin API in the your Kong apis list</li>
+			    	<li></li>
+			    	<li>First add your Kong Admin API in the Kong</li>
+			    </ol>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<div class="row" ng-if="storage.kongurl">
+		<div class="col-md-12">
+			<div class="panel panel-default panel-info">
+			  <div class="panel-heading">Server info</div>
+			  <div class="panel-body">
+			    <table class="table table-striped">
+			    	<tr>
+			    		<td>Host</td>
+			    		<td>{{storage.kongurl}}</td>
+			    	</tr>
+			    	<tr>
+			    		<td>Hostname</td>
+			    		<td>{{serverInfo.hostname}}</td>
+			    	</tr>
+			    	<tr>
+			    		<td>Kong version</td>
+			    		<td>{{serverInfo.version}}</td>
+			    	</tr>
+			    	<tr>
+			    		<td>Lua version</td>
+			    		<td>{{serverInfo.lua_version}}</td>
+			    	</tr>
+			    	<tr>
+			    		<td>Plugins</td>
+			    		<td>
+			    			<span ng-repeat="plugin in serverInfo.plugins.available_on_server">
+		    					<span ng-repeat="p in pluginsAvailable | filter : {name : plugin}">
+		    						<a href="{{p.docUrl}}" class="label label-success" ng-if="(isArray(serverInfo.plugins.enabled_in_cluster) && serverInfo.plugins.enabled_in_cluster.indexOf(plugin) !== -1)" tooltip="Plugin active in some API" tooltip-placement="bottom">{{plugin}}</a>
+		    						<a class="label label-default" ng-if="!isArray(serverInfo.plugins.enabled_in_cluster) || serverInfo.plugins.enabled_in_cluster.indexOf(plugin) === -1" href="{{p.docUrl}}">{{plugin}}</a>
+		    					</span>
+			    			</span>
+							
+			    		</td>
+			    	</tr>
+			    </table>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<div class="jumbotron text-center">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+				<img alt="JUNGLE" class="img-responsive text-center" src="modules/core/img/brand/logo.png" />
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<p class="lead">
+				Open-Source User Interface for <a href="http://getkong.org">KONG</a>
+			</p>
+		</div>
+		<div class="row">
+			<p>
+				<a class="btn btn-primary btn-lg" href="https://github.com/rsdevigo/jungle" target="_blank">Learn more</a>
+			</p>
+		</div>
+	</div>
+
+	<div class="well">
+		<h2>KONG Documentation</h2>
+		<p>
+			<ul>
+				<li><a target="_blank" href="http://getkong.org/docs/{{serverInfo.version}}">KONG Documentation</a>
+				</li>
+				<li><a target="_blank" href="http://getkong.org/plugins">KONG PLugins</a>
+				</li>
+				<li><a target="_blank" href="http://http://getkong.org/community/">KONG Community</a>
+				</li>
+				<li><a target="_blank" href="https://github.com/Mashape/kong">Github</a>
+				</li>
+			</ul>
+		</p>
+	</div>
+</section>

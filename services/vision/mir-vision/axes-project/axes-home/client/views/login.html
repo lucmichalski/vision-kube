@@ -1,0 +1,35 @@
+<div class="login-view">
+  <form id="login-form" novalidate ng-submit="login()">
+  
+    <label for="username">Username</label>
+    <input type="text" 
+      class="topcoat-text-input" 
+      name="username" 
+      value="" 
+      id="username" 
+      placeholder="username"
+      ng-model="username">
+  
+    <label for="password">Password</label>
+    <input type="password" 
+      class="topcoat-text-input" 
+      name="password" 
+      value="" 
+      id="password" 
+      placeholder="password"
+      ng-model="password" >
+  
+    <button class="topcoat-button--cta" type="submit">
+      Login
+    </button>
+  
+    <span class="error"> 
+      {{error}} 
+    </span>
+    
+  </form>
+  
+  <button class="topcoat-button" ng-click="goForward('/register')" >
+     New user? Register here
+  </button>
+</div>

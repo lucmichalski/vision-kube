@@ -1,0 +1,25 @@
+<div class="news-view">
+  <div class="news-source" ng-repeat="source in newsSources"
+    ng-style='{background: colors[$index%colors.length]}'>
+    
+    <a class="news-source-title" 
+      ng-click="searchNewsSource(source.uri)">
+      <span class="icomatic">rss</span>
+      {{source.name}}
+    </a>
+    <div class="news-items">
+      <a class="news-item" 
+        ng-repeat="item in newsItems[source.uri]"
+        ng-click="searchNewsItem(item.uri)">
+        <span class="news-item-title" ng-bind-html="item.title"></span>
+        <span class="news-item-date">Added {{item.timestamp|timeago}}</span>
+        <span class="news-item-summary" 
+          ng-bind-html="item.summary"
+          ng-show="!hideSummary"></span>
+        <span class="text-fader"></span>
+      </a>
+      
+    </div>
+    
+  </div>
+</div>

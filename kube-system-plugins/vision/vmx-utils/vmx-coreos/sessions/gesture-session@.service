@@ -1,0 +1,36 @@
+[Unit]
+Description= Run a single gesture session
+
+# Requirements
+Requires=etcd.service
+Requires=vmx.service
+
+# Dependency ordering
+After=etcd.service
+After=vmx.service
+
+[Service]
+TimeoutStartSec=30
+TimeoutSec=60
+
+
+KillMode=none
+RemainAfterExit=yes
+
+EnvironmentFile=/etc/environment
+
+
+ExecStart=/bin/bash -c '\
+      source /etc/profile.d/etcdctl.sh; \
+      source /etc/environment; \
+      REDIS_SERVER=$(etcdctl ls /services/redis | cut -d"/" -f4 | head -n 1) ; \
+      OUTPUT=$(curl -s -X POST -H "Content-Type: application/json" -d \'{"uuids":["569a262df94ae8aaab2dd866e7abb8b893c7"],"compiled":"true"}\' "http://localhost:3000/session" ) ; \
+      SID=$(echo "$OUTPUT" | cut -d \'"\' -f6) ; \
+      docker run --rm redis redis-cli -h "$REDIS_SERVER" sadd sessionids "$SID" ; \
+      docker run --rm redis redis-cli -h "$REDIS_SERVER" hset sessions "$SID" "$COREOS_PRIVATE_IPV4" ; \
+      echo "sid is $SID, ip is $COREOS_PRIVATE_IPV4 and we are done, output is $OUTPUT" ; \
+      '
+
+[X-Fleet]
+# Schedule on the same machine as the associated Middle Service
+MachineOf=vmx.service

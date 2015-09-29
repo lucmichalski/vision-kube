@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.openimaj</groupId>
+  <artifactId>openimaj-hadoop-tools</artifactId>
+  <packaging>pom</packaging>
+  <version>1.4-SNAPSHOT</version>
+  <name>OpenIMAJ Hadoop Tools</name>
+  <parent>
+    <artifactId>openimaj-hadoop</artifactId>
+    <groupId>org.openimaj</groupId>
+    <version>1.4-SNAPSHOT</version>
+    <relativePath>../</relativePath>
+  </parent>
+  <inceptionYear>2011</inceptionYear>
+  <description>
+			Tools that provide multimedia analysis algorithms expressed as 
+			Map-Reduce jobs that can be run on a Hadoop cluster.
+	  </description>
+  <modules>
+    <module>core-hadoop-tool</module>
+    <module>HadoopFastKMeans</module>
+    <module>HadoopDownloader</module>
+    <module>HadoopLocalFeaturesTool</module>
+    <module>SequenceFileTool</module>
+    <module>HadoopGlobalFeaturesTool</module>
+    <module>HadoopClusterQuantiserTool</module>
+    <module>HadoopTwitterPreprocessingTool</module>
+    <module>HadoopTwitterTokenTool</module>
+    <module>SequenceFileIndexer</module>
+    <module>HadoopEXIFTool</module>
+    <module>SequenceFileMerger</module>
+    <module>HadoopImageIndexer</module>
+  </modules>
+</project>

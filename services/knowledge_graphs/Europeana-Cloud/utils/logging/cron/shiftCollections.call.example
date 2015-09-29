@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#exit script of first failed command
+set -e
+#forbid using unset variables in bash script
+set -u
+#wildcard * 
+shopt -s nullglob
+
+#this script is intended to be run by cron, but it can also be called manually for test purposes
+#it might be not sh compatible, so cron call should begin with /bin/bash
+
+numPreserve=7
+solrHTTP='http://localhost:8080/solr'
+#it might be necessary to substitute all $USER with actual user for script to work in cron
+#this directory has to exist and solr (tomcat) has to be able to create new directories inside
+dataDirRoot="/home/$USER/install/solr/coreRoot"
+configSrcDir="/home/$USER/ecloud/repo/solr/custom/src/main/resources/solr_files/log_analysis/solr/conf"
+configTempDir="/home/$USER/install/solr/configTemp"
+#we don't need zookeeper to run on the same machine, but we need its lib directory, so you can install/copy it alone
+zkHome="/home/$USER/zookeeper/zookeeper"
+zkHost='hell15:2181'
+solrLibDir="/home/$USER/install/tomcat/tomcat/webapps/solr/WEB-INF/lib"
+
+scriptAbsolutePath=/home/$USER/ecloud/repo/utils/logging/cron/shiftCollections.sh
+
+$scriptAbsolutePath $numPreserve $solrHTTP $dataDirRoot $configSrcDir $configTempDir $zkHome $zkHost $solrLibDir
+#use this version if your server time is not UTC (for timezones that are 'later' than UTC, e.g. Warsaw):
+#echo "/bin/bash $scriptAbsolutePath $numPreserve $solrHTTP $dataDirRoot $configSrcDir $configTempDir $zkHome $zkHost $solrLibDir" | at `date -d '00:00 utc' +%H:%M`
+#if everything works as expected you can redirect the output of command to dev null so it does not clutter the mailbox
+#echo "/bin/bash $scriptAbsolutePath $numPreserve $solrHTTP $dataDirRoot $configSrcDir $configTempDir $zkHome $zkHost $solrLibDir > /dev/null 2>&1" | at `date -d '00:00 utc' +%H:%M`
+

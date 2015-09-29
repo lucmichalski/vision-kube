@@ -1,0 +1,5 @@
+<map id="learner_save" name="learner_save">
+<area shape="rect" id="node2" href="$libartos_8cc.html#a7f0b115c2293574072fc57cc5e5b6137" title="is_valid_learner_handle" alt="" coords="163,5,320,32"/>
+<area shape="rect" id="node3" href="$class_a_r_t_o_s_1_1_model_learner_base.html#a3239865136bcb217fc55e925c6249901" title="ARTOS::ModelLearnerBase\l::getModels" alt="" coords="149,57,333,98"/>
+<area shape="rect" id="node4" href="$class_a_r_t_o_s_1_1_model_learner_base.html#a67b999c285472ac03522f8c327d7aa61" title="ARTOS::ModelLearnerBase\l::save" alt="" coords="149,122,333,163"/>
+</map>

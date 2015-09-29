@@ -1,0 +1,78 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix food: <http://purl.org/foodontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix : <http://foodpedia.tk/resource/> .
+
+:FOODpedia a void:Dataset;
+  foaf:homepage <http://foodpedia.tk/>;
+  dcterms:title "FOODpedia";
+  dcterms:description "Russian food products and ingredients as a Linked Open Dataset";
+
+  dcterms:creator :Kolchin_Maxim;
+  dcterms:publisher <http://lod.ifmo.ru/resource/Laboratory87807>;
+  dcterms:contributor :Alexander_Chistyakov, :Maxim_Lapaev, :Rezeda_Khaydarova;
+
+  dcterms:source <http://www.goodsmatrix.ru/>, <http://dbpedia.org/>, <http://aims.fao.org/>;
+
+  dcterms:license <http://opendefinition.org/licenses/cc-by/>;
+
+  void:feature <http://www.w3.org/ns/formats/RDF_XML>, <http://www.w3.org/ns/formats/Turtle>;
+
+  void:sparqlEndpoint <http://foodpedia.tk/sparql>;
+
+  void:exampleResource :4607065004378, :4600384006160, :2220085000025;
+
+  void:vocabulary <http://purl.org/foodontology#>, <http://purl.org/goodrelations/v1#>;
+  void:classPartition [ void:class food:Food ],
+                      [ void:class food:FoodAdditive ],
+                      [ void:class food:Ingredient ];
+
+#object properties
+  void:propertyPartition  [
+                            void:property food:containsIngredient ;
+                            void:triples 48180
+                          ],
+#data properties
+                          [
+                            void:property food:carbohydratesPer100gAsDouble;
+                            void:triples 12039
+                          ],
+                          [ void:property food:containsGMO ],
+                          [
+                            void:property food:energyPer100gAsDouble;
+                            void:triples 14302
+                          ],
+                          [
+                            void:property food:fatPer100gAsDouble;
+                            void:triples 13439
+                          ],
+                          [
+                            void:property food:ingredientsListAsText;
+                            void:triples 22690
+                          ],
+                          [
+                            void:property food:proteinsPer100gAsDouble;
+                            void:triples 13598
+                          ];
+#statistics
+  void:triples 329939 ;
+  void:entities 24395 .
+
+:Kolchin_Maxim a foaf:Person ;
+  owl:sameAs <http://lod.ifmo.ru/resource/Person145348> ;
+  foaf:mbox <mailto:kolchinmax@niuitmo.ru> .
+
+:Alexander_Chistyakov a foaf:Person ;
+  foaf:firstName "Alexander" ;
+  foaf:lastName "Chistyakov" .
+
+:Rezeda_Khaydarova a foaf:Person ;
+  foaf:firstName "Rezeda" ;
+  foaf:lastName "Khaydarova" .
+
+:Maxim_Lapaev a foaf:Person ;
+  foaf:firstName "Maxim" ;
+  foaf:lastName "Lapaev" .

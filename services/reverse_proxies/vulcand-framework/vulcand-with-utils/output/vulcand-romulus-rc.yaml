@@ -1,0 +1,41 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "vulcand-romulus",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "vulcand-romulus"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "vulcand-romulus"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "vulcand-romulus"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "vulcand-romulus",
+            "image": "exoplay/romulusd",
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

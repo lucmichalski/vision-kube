@@ -1,0 +1,34 @@
+<ul class="graph-diagram-markup" data-internal-scale="2.65" data-external-scale="1">
+  <li class="node" data-node-id="0" data-x="-101.53172609141437" data-y="-68.28516223935944">
+    <span class="caption">Question</span><dl class="properties"><dt>id</dt><dd>234234</dd><dt>title</dt><dd>"A question"</dd><dt>votes</dt><dd>[up, down]</dd><dt>created</dt><dd>01-01-2014 1700</dd><dt>stars</dt><dd>2</dd><dt>closed</dt><dd>true</dd></dl></li>
+  <li class="node" data-node-id="1" data-x="-374.061628084359" data-y="-144.65463550196196">
+    <span class="caption">User</span><dl class="properties"><dt>name</dt><dd>"User"</dd><dt>id</dt><dd>234234</dd><dt>rating</dt><dd>123213</dd></dl></li>
+  <li class="node" data-node-id="2" data-x="-148.18123673419564" data-y="-288.8122216049503">
+    <span class="caption">Answer</span><dl class="properties"><dt>id</dt><dd>32934</dd><dt>votes</dt><dd>[up,down]</dd><dt>created</dt><dd>01-01-2014 1700</dd></dl></li>
+  <li class="node" data-node-id="4" data-x="47.611838862581074" data-y="-199.68687064692682">
+    <span class="caption">Tag</span><dl class="properties"><dt>name</dt><dd>"Tag"</dd></dl></li>
+  <li class="node" data-node-id="5" data-x="181.65245401634365" data-y="-68.28516223935944">
+    <span class="caption">Tag</span>
+  </li>
+  <li class="relationship" data-from="1" data-to="0">
+    <span class="type">ASKED</span>
+  </li>
+  <li class="relationship" data-from="2" data-to="0">
+    <span class="type">ANSWERS</span>
+  </li>
+  <li class="relationship" data-from="1" data-to="2">
+    <span class="type">PROVIDED</span>
+  </li>
+  <li class="relationship" data-from="1" data-to="2">
+    <span class="type">EDITED</span>
+  </li>
+  <li class="relationship" data-from="0" data-to="4">
+    <span class="type">TAGGED</span>
+  </li>
+  <li class="relationship" data-from="1" data-to="0">
+    <span class="type">EDITED</span>
+  </li>
+  <li class="relationship" data-from="4" data-to="5">
+    <span class="type">SYNONYM</span>
+  </li>
+</ul>

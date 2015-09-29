@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block pagescripts %}
+{% endblock pagescripts %}
+
+{% block body %}
+
+<hgroup class="login">
+  <h1>AXES Research Search System</h1>
+</hgroup>
+
+<div id="login-content">
+	<form id="login-form" action="{% url "login" %}" method='POST'>
+		{% csrf_token %}
+		<label for="username">User name:</label>
+		<input type="text" name="username" value="" id="username">
+		<label for="password">Password:</label>
+		<input type="password" name="password" value="" id="password">
+    
+		<button type="submit" class="btn pull-right" value="Login">Submit</button>
+		<input id="next" type="hidden" name="next" value="{% url "index" %}" />
+    
+	</form>
+</div>
+
+<div style="text-align: center">
+  Don't have and account? <a href="{% url "register" %}">Click here to register.</a>
+</div>
+
+
+{% if form.errors %}
+<div id="login-error">
+	<p class="error">Sorry, that's not a valid username or password</p>
+</div>
+{% endif %}
+
+<script type="text/javascript">
+  // forward the client side route so the redirect from login includes it
+  $('#next').attr('value', '{% url "index" %}' + location.hash);
+</script>
+
+{% endblock body %}

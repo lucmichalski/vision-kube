@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h3>Frontends</h3>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Backend ID</th>
+          <th>Route</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+      {{#each frontend in model}}
+        <tr>
+          <td>{{#link-to "frontend.index" frontend.id}} {{frontend.id}} {{/link-to}}</td>
+          <td>{{frontend.backendId}}</td>
+          <td>{{frontend.route}}</td>
+          <td>{{frontend.type}}</td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>

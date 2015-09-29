@@ -1,0 +1,55 @@
+
+.slide-forward.ng-enter,
+.slide-forward.ng-leave,
+.slide-back.ng-enter,
+.slide-back.ng-leave {
+    position: absolute;
+    top: 0; 
+    right: 0; 
+    bottom: 0; 
+    left: 0;
+    background: inherit;
+    @include transition( .25s ease-in-out);
+}
+
+// Slide forward transition
+
+.slide-forward.ng-enter {
+  @include transform(translateX(100%));
+  z-index: 101;
+}
+
+.slide-forward.ng-enter.ng-enter-active {
+  @include transform(translateX(0));
+}
+
+.slide-forward.ng-leave {
+  @include transform(translateX(0));
+  z-index: 100;
+}
+
+.slide-forward.ng-leave.ng-leave-active {
+  @include transform(translateX(-100%));
+}
+
+// Slide back transition
+
+.slide-back.ng-enter {
+  @include transform(translateX(-100%));
+  z-index: 100;
+}
+
+.slide-back.ng-enter.ng-enter-active {
+  @include transform(translateX(0));
+}
+
+.slide-back.ng-leave {
+  @include transform(translateX(0));
+  z-index: 101;
+}
+
+.slide-back.ng-leave.ng-leave-active {
+  @include transform(translateX(100%));
+}
+
+

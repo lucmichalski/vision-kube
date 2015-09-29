@@ -1,0 +1,17 @@
+Description=Redis
+
+Requires=redis-discovery.service
+
+Before=redis-discovery.service
+
+[Service]
+TimeoutStartSec=0
+
+KillMode=none
+
+EnvironmentFile=/etc/environment
+
+ExecStartPre=-/usr/bin/docker rm vmxredis
+ExecStartPre=-/usr/bin/docker pull redis
+ExecStart=/usr/bin/docker run --name vmxredis --rm -p 6379:6379 redis redis-server --appendonly yes
+ExecStop=/usr/bin/docker stop vmxredis

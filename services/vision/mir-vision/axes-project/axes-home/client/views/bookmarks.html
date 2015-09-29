@@ -1,0 +1,37 @@
+<div id="bookmarks-page">
+  
+  <div ng-if="!loggedIn" class="login-needed">
+    
+    <h1>You need to be logged in to view bookmarks</h1>
+    
+    <button class="topcoat-button--cta" ng-click="go('/login')">
+      Log in
+    </button>
+    
+    <button class="topcoat-button" ng-click="goForward('/register')" >
+       New user? Register here
+    </button>
+  </div>
+  
+  <div ng-if="loggedIn">
+    
+    <!-- begin: bookmarks -->
+    <div 
+      class="resultList interestingItems bookmarks">
+      
+      <a ng-click="goForward('asset/' + bookmark.asset.uri)" 
+         class="bookmark resultBox List" 
+         ng-repeat="bookmark in bookmarks">
+       
+         <img ng-src="{{bookmark.asset.videoKeyframe.imageUrl}}" 
+           class="thumbnail"/> 
+         <span class="title">{{bookmark.asset.metadata.title}}</span>
+         <span class="summary">{{bookmark.asset.metadata.summary}}</span>
+         <span class="viewed-on">Bookmarked: {{bookmark.timestamp}}</span>
+         
+      </a>
+    </div>
+    <!-- end: bookmarks -->
+    
+  </div>
+</div>

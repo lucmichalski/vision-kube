@@ -1,0 +1,20 @@
+[Unit]
+Description= Runs the baby mamma front end
+
+[Service]
+TimeoutStartSec=0
+TimeoutSec=60
+
+KillMode=none
+Restart=on-failure
+
+RemainAfterExit=yes
+
+EnvironmentFile=/etc/environment
+
+ExecStart=/usr/bin/docker pull gdoteof/babymamma
+
+
+[X-Fleet]
+# Schedule on the same machine as the associated Middle Service
+MachineMetadata="vmxtype=webworker"

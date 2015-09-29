@@ -1,0 +1,26 @@
+[Unit]
+Description=Makes sure the vmx middle libraries
+
+Requires=mcr.service
+
+After=mcr.service
+
+[Service]
+TimeoutStartSec=0
+
+KillMode=none
+
+EnvironmentFile=/etc/environment
+
+RemainAfterExit=yes
+Restart=on-failure
+
+ExecStartPre=-/usr/bin/docker rm vmx-middle
+ExecStartPre=/usr/bin/docker pull visionai/vmx-middle
+ExecStart=/usr/bin/docker run --name vmx-middle visionai/vmx-middle
+
+ExecStop=/usr/bin/echo stopped server binary (left the files)
+
+[X-Fleet]
+Global=true
+MachineMetadata="vmxtype=vmxserver"

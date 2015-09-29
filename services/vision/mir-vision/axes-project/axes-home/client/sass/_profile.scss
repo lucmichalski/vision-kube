@@ -1,0 +1,60 @@
+.profile-view, .friend-view {
+  
+  text-align: center;
+  
+  .profile-image {
+    @include box-sizing(border-box);
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    padding-top: 20px;
+    text-align: center;
+    
+    img {
+      border-radius: 75px;
+      padding: 8px;
+      border: 1px solid #777;
+      background: rgba(255,255,255,0.075);
+    }
+  }
+  
+  .profile-info {
+    @include box-sizing(border-box);
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    
+    
+    h1, h2 {
+      color: $text-color;
+      margin: 0;
+    }
+    
+    h1 {
+      font-size: 18pt;
+      color: $highlight-color;
+    }
+    
+    h2 {
+      font-size: 11pt;
+      color: $text-color;
+      font-weight: normal;
+    }
+    
+    
+    
+  }
+  
+  h1 {
+      margin: 100px 0px;
+      font-weight: normal;
+  }
+  
+  button {
+    margin: 30px 10px;
+    text-align: center;
+    width: 60%;
+  }
+  
+  
+}

@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: visionai-vmx-backend-ui-v1
+  namespace: kube-system
+  labels:
+    k8s-app: visionai-vmx-ui-backend
+    version: v1
+    kubernetes.io/cluster-service: "true"
+spec:
+  replicas: 1
+  selector:
+    k8s-app: visionai-vmx-ui-backend
+    version: v1
+  template:
+    metadata:
+      labels:
+        k8s-app: visionai-vmx-ui-backend
+        version: v1
+        kubernetes.io/cluster-service: "true"
+    spec:
+      containers:
+      - name: visionai-vmx-backend-v1.x
+        image: visionai/vmx-kitematic
+        resources:
+          limits:
+            cpu: 100m
+        ports:
+        - containerPort: 3000
+          name: ui
+          protocol: TCP

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% block title%} Login {% endblock %}
+{% block extra_head %}
+<style type="text/css">
+ .form-signin {
+   max-width: 230px;
+   padding: 19px 29px 29px;
+   margin: 0 auto 20px;
+   background-color: #fff;
+   border: 1px solid #e5e5e5;
+   -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+           border-radius: 5px;
+   -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           box-shadow: 0 1px 2px rgba(0,0,0,.05);
+ }
+ </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <form class="form-signin" method="post" action=".">
+    <h2 class="form-signin-heading">Please sign in</h2>    
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}" />  
+      {% bootstrap_form form %}      
+      <div class = "form">
+        <button type="submit" class="btn btn-primary btn-large">Sign in</button>
+        <a class="pull-right" href="{% url 'auth_password_reset' %}">Forgot password</a>
+      </div>
+      <hr>
+      <a class="btn btn-success" href="{% url 'registration_register' %}">Create a new account</a>
+        
+  </form>
+  
+</div> <!-- /container -->
+
+
+{% endblock %}

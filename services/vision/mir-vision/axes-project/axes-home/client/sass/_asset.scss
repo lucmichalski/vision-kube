@@ -1,0 +1,262 @@
+
+.asset-view .view-banner {
+  background: #3498DB;
+  text-align: center;
+}
+
+.asset-view-content {
+  @include box(horizontal, center, stretch);
+  margin: 10px;
+  
+  .topcoat-list__header .icomatic {
+    margin-left: -10px;
+    margin-right: 5px;
+    //color: #D35400;
+  }
+  
+  .left {
+    @include box(vertical, start, stretch);
+    @include box-flex(2);
+    min-width: 640px;
+    border: 1px solid #ccc;
+  }
+  
+  .videobox {
+    @include box(horizontal, center, stretch);
+    @include box-flex(0);
+    @include box-sizing(border-box);
+    background: black;
+    width: 100%;
+    color: white;
+
+    .video {
+      @include box-flex(1);
+      height: 400px;
+      width: 500px;
+      background: black;
+    }
+  }
+  
+  .video-buttons {
+    @include box(horizontal, end, end);
+    @include box-flex(0);
+    width: 100%;
+    height: 35px;
+    background: #111;
+    border-top: 4px solid #D35400;
+    //border-right: 1px solid rgba(0,0,0,0.8);
+    color: #eee;
+    margin-bottom: 0px;
+    font-size: 10pt;
+
+    .video-button {
+      @include box-flex(0);
+      margin: 0px 20px;
+      line-height: 35px;
+      color: rgba(255,255,255,0.9);
+      cursor: pointer;
+    }
+    
+    .video-button.active .icomatic {
+      color: #D35400;
+    }
+  }
+  
+  .metadata {
+    @include box-sizing(border-box);
+    @include box(vertical, start, stretch);
+    @include box-flex(1);
+    @include scrollable;
+    background: #eee;
+    //border: 1px solid #ccc;
+    padding: 5px 10px;
+    width: 100%;
+    
+    .programInfo {
+      @include box-flex(0);
+      @include one-liner;
+      font-size: 10pt;
+      margin: 5px 0;
+      color: #7F8C8D;
+      
+      span {
+        display: inline-block;
+        margin-right: 20px;
+      }
+    }
+    
+    .description {
+      @include box-flex(0);
+      font-size: 11pt;
+      margin: 0 0 7px 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .other-info {
+      @include box-flex(0);
+      font-size: 11pt;
+      margin: 0 0 5px 0;
+      
+      .info {
+        margin-bottom: 5px;
+      }
+      
+      .keyword:after {
+        content: ", ";
+      }
+    }
+  }
+  
+  .right {
+    @include box(vertical, start, stretch);
+    @include box-flex(1);
+    margin-left: 10px;
+    border-left: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    text-align: left;
+    width: 330px;
+    min-width: 300px;
+  }
+  
+  .relatedVideo {
+    height: 110px;
+    padding: 0;
+    position: relative;
+    
+    img {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      display: block;
+      float: left;
+      clear: none;
+    }
+    
+    .title {
+      position: absolute;
+      top: 14px;
+      bottom: 13px;
+      right: 15px;
+      left: 145px;
+      display: block;
+      float: left;
+      clear: none;
+      overflow: hidden;
+      font-size: 10pt;
+    }
+    
+    .summary {
+      display: block;
+      margin-top: 5px;
+      font-size: 8pt;
+      color: #aaa;
+      
+    }
+  }
+}
+
+.socialStats {
+  margin: 5px;
+  text-align: right;
+  
+  .views {
+    display: block;
+    font-size: 24pt;
+    color: #34495E;
+    clear: both;
+    font-weight: bold;
+  }
+  
+  
+  .likes {
+    display: block;
+    color: #34495E;
+    font-size: 10pt;
+    font-weight: bold;
+    margin-top: -5px;
+  }
+}
+
+.detailedInfoMenu {
+  margin: 5px -10px 5px -10px;
+  height: 30px;
+  border-bottom: 1px solid #BDC3C7;
+  line-height: 27px;
+  
+  a {
+    display: inline-block;
+    margin: 0px 10px;
+    font-size: 10pt;
+    padding: 0px 5px;
+  }
+  
+  a.active {
+    border-bottom: 3px solid #C0392B;
+  }
+}
+
+.detailedInfo {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.transcript {
+  max-height: 600px;
+  overflow: scroll;
+  font-size: 9pt;
+  
+  .transcript-item {
+    display: block;
+  }
+  
+  .transcript-time {
+    color: #2980B9;
+  }
+}
+
+.keyframes {
+  max-height: 600px;
+  overflow: scroll;
+  text-align: center;
+  margin-top: 10px;
+  
+  .keyframe-item {
+    position: relative;
+  }
+  
+  img {
+    padding: 5px;
+    margin: 4px 5px;
+    width: 180px;
+    height: 135px;
+    border: 1px solid #eee;
+    background: white;
+  }
+  
+  .keyframe-time {
+    color: rgba(255,255,255,0.9);
+    position: absolute;
+    top: 20px;
+    right: 5px;
+    padding: 0px 10px;
+    font-size: 8pt;
+    line-height: 20px;
+    height: 20px;
+    background: #E74C3C;
+  }
+}
+
+.share-modal-content {
+  padding: 0 5px;
+  
+  h1 {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  p {
+    font-size: 14px;
+    color: #333;
+  }
+}

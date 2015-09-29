@@ -1,0 +1,41 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "kibana",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "kibana"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "kibana"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "kibana"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "kibana",
+            "image": "lucmichalski/kibana:kube-vs-metrics",
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

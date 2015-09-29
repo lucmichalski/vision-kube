@@ -1,0 +1,181 @@
+<div id="basic-search-pane" data-bind="with: queryView">
+  
+  <!-- Main menu buttons -->
+  <div id="menu-buttons" class="btn-group pull-right">
+    <a class="btn btn-mini" href="#/most/viewed" title="Popular videos">
+      <i class="icon-star"></i> Popular Videos
+    </a>
+    <a class="btn btn-mini" href="#/user" title="Profile and collections">
+      <i class="icon-briefcase"></i> My Collections</a>
+    <a class="btn btn-mini"  href="#/logout" title="Log out">
+      <i class="icon-off"></i> Log Out</a>
+  </div>
+      
+  <!-- Main search box -->
+  <div class="searchbox" >
+    
+    <input id="searchtext" type="search" data-bind="
+      enable: $root.hasSimpleQuery,
+      value: query().text,
+      valueUpdate: 'afterkeydown',
+      executeOnEnter: search" />
+      
+    <span id="example-image-indicator" 
+        data-bind="if: queryImageCount() > 0">
+        + <span data-bind="text: queryImageCount()"></span> Images
+    </span>
+    
+    <button id="clear-search-button" class="btn btn-link btn-mini" 
+      data-bind="click: clearQuery">
+      &times;
+    </button>
+    
+    <!-- Search type button -->
+    <button id="search-type-menu-btn" class="mainbutton btn btn-link btn-mini"
+      data-bind="
+        enable: $root.hasSimpleQuery,
+        searchBoxDropDown: '#search-type-menu', side: '-right',
+        hideMenuOnClick: true">
+      <i class="icon-chevron-down"></i>
+    </button>
+    
+    <!-- Search type drop down menu -->
+    <div id="search-type-menu" class="menu" style="display: none" 
+      data-bind="if: $root.hasSimpleQuery">
+      
+      {% if UI_ENABLE_MAGIC_SEARCH %}
+      <ul data-bind="
+        listSelector: query().textQueryType, 
+        optionValues: model.QueryType.magic,
+        optionText: model.QueryType.getDescription,
+        optionTooltip: model.QueryType.getTooltip">
+      </ul>
+      {% endif %}
+      
+      <p>Text search on:</p>
+      <ul data-bind="
+        listSelector: query().textQueryType, 
+        optionValues: model.QueryType.text,
+        optionText: model.QueryType.getDescription,
+        optionTooltip: model.QueryType.getTooltip">
+      </ul>
+      <p>Or visual search for:</p>  
+      <ul data-bind="
+        listSelector: query().textQueryType, 
+        optionValues: model.QueryType.visual,
+        optionText: model.QueryType.getDescription,
+        optionTooltip: model.QueryType.getTooltip">
+      </ul>
+      
+    </div>
+    
+    <!-- Image search button -->
+    <button id="image-search-btn"
+      class="mainbutton btn btn-link btn-mini"
+      data-bind="
+        enable: ($root.hasSimpleQuery && model.QueryType.hasSimilaritySearch()),
+        searchBoxDropDown: '#image-search-dropdown'">
+      <i class="icon-camera"></i>
+    </button>
+    
+    <!--Image search drop down -->
+    <!-- ko if: $root.hasSimpleQuery -->
+    <div id="image-search-dropdown" class="menu" style="display: none"
+        data-bind="with: query">
+      <p>Similarity Search:</p>
+      
+      <!-- Similarity search images -->
+      <div id="image-search-box" data-bind="foreach: queryImages">
+          <span class="query-image">
+              <img data-bind="attr: {src: thumbnailUrl}" width="75" height="75"></img>
+              <button class="remove-button btn btn-link"
+                  data-bind="click: $root.queryView.removeQueryImage.bind($parent, $data)">
+              </button>
+          </span>
+      </div>
+      
+      <div>
+        
+        <!-- Image types -->
+        <span data-bind="foreach: model.QueryType.image">
+          <label class="radio inline" >
+            <input type="radio" name="image-search-type" 
+              data-bind="attr: {value: $data}, 
+                checked: $root.queryView.query().imageQueryType"> 
+            <span data-bind="text: model.QueryType.getDescription($data),
+              attr: {title: model.QueryType.getTooltip($data)}"></span>
+          </label>
+        </span>
+        
+        <!-- Image buttons -->
+        <button 
+          data-toggle="modal"
+          data-target="#image-upload-modal"
+          class="btn btn-mini pull-right">
+            <i class="icon-plus"></i> Add Image
+        </button>
+        <button class="btn btn-mini pull-right" 
+            data-bind="click: $parent.clearQueryImages"
+            style="margin-right: 5px">
+          <i class="icon-remove-circle"></i> Remove All
+        </button>
+      </div>
+    </div>
+    
+    <!-- Upload image modal -->
+    <div id="image-upload-modal" 
+      class="modal hide" role="dialog" 
+      aria-hidden="true" 
+      aria-labelledby="image-upload-title">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+          aria-hidden="true">&times;</button>
+        <h3 id="image-upload-title">Upload an image</h3>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'upload' %}" id="image-upload" method="POST"
+           enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="file" name="image" title="Choose Image"></input>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button href="#" class="btn" 
+          data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button href="#" class="btn btn-primary" 
+          data-bind="click: uploadImage">Upload</button>
+      </div>
+    </div>
+    
+    <!-- /ko -->
+    
+    
+   
+    <!-- Search button -->
+    <button class="mainbutton searchbtn" data-bind="
+      enable: $root.hasSimpleQuery,
+      click: search"></button>
+    
+    <a href="#/advanced-search" title="Advanced Search"
+      id="advanced-search-button">Advanced Search</a>
+  </div>
+      
+  <!-- Related queries area -->
+  <div class="related-terms-area" data-bind="visible: relatedTerms().length > 0">
+    <b>Related Queries:</b>
+    <span data-bind="foreach: relatedTerms">
+      <button class="btn btn-link related-term" 
+        data-bind="text: $data.displayName, click: $parent.searchRelatedQuery"></a>
+    </span>
+  </div>
+      
+  <!-- Show advanced search pane button -->
+  <button id="show-filters" data-bind="
+    click: $root.filtersView.fetchCollectionStatsIfNecessary,
+    slideToggle: '#filters-pane > .collapsible-content',
+    initiallyVisible: false"
+    title="Show search filters menu">
+    <i class="icon-filter"></i> Filter Results</button>
+    
+</div>
+

@@ -1,0 +1,10 @@
+<div id="history-page" data-bind="with: currentView">
+  <h2>Search History</h2>
+  
+  <div data-bind="foreach: history">
+    {% include "views/components/historyitem.html" %}
+  </div>
+  <div data-bind="if: history().length == 0" class="noneindicator">
+    No Search History
+  </div>
+</div>

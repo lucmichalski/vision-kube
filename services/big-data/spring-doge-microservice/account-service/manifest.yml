@@ -1,0 +1,17 @@
+---
+applications:
+- name: account-service
+  memory: 512M
+  instances: 1
+  host: account-service-${random-word}
+  domain: cfapps.io
+  path: target/account-service.jar
+  services:
+    - doge-rabbitmq
+    - doge-postgresql
+    - config-service
+    - eureka-service
+  env:
+    SPRING_PROFILES_ACTIVE: cloud
+    DEBUG: "true"
+    debug: "true"

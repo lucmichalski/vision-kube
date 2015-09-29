@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: findobject-rest
+  labels:
+    name: findobject-rest
+spec:
+  replicas: 10
+  selector:
+    name: findobject-rest
+  template:
+    metadata:
+      labels:
+        name: findobject-rest
+    spec:
+      containers:
+      - name: findobject-rest
+        image: lucmichalski/kube-findobject-ocv3:kube
+        ports:
+        - containerPort: 4400

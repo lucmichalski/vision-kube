@@ -1,0 +1,17 @@
+import numpy as np
+from yael import ynumpy
+dir(ynumpy)
+ynumpy.gmm_read("features_k256.gmm"=)
+ynumpy.gmm_read("features_k256.gmm")
+res = ynumpy.gmm_read("features_k256.gmm")
+w = ynumpy.gmm_read("features_k256.gmm")
+w[0]
+f2 = ynumpy.fvecs_read("/home/clear/xmartin/cAXESOpen/results/fisher/vf3dbe16c85c67b95faa180ff967e0ecf.mp4/hof_fisher_vectors_k_256_descriptor.fvecs")
+f2
+f2[0]
+f2[0][:256]
+f2[0][:256] + w[0]
+res2 = f2[0][:256] + w[0]
+res
+res2
+res2.sum()

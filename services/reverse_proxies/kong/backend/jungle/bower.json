@@ -1,0 +1,24 @@
+{
+	"name": "jungle",
+	"version": "0.0.1",
+	"description": "GUI of Kong API Gateway",
+	"dependencies": {
+		"bootstrap": "~3",
+		"angular": "*",
+		"angular-resource": "~1.2",
+		"angular-mocks": "~1.2",
+		"angular-cookies": "~1.2",
+		"angular-animate": "~1.2",
+		"angular-touch": "~1.2",
+		"angular-sanitize": "~1.2",
+		"angular-bootstrap": "~0.11.2",
+		"angular-ui-utils": "~0.1.1",
+		"angular-ui-router": "*",
+		"font-awesome": "*",
+		"angular-breadcrumb": "*",
+		"uri.js":"*",
+		"angular-xeditable": "*",
+		"ngstorage":"*",
+		"ngInfiniteScroll":"*"
+	}
+}

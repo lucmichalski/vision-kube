@@ -1,0 +1,1 @@
+ unzip wget build-essential make git-core ca-certificates

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="axeshome">
+<head>
+  
+    <!-- meta -->
+    <meta charset="utf-8" />
+    <meta name="author" content="Kevin McGuinness" />
+    <meta name="description" content="AXES Home" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    
+    <!-- stylesheets -->
+    <link rel="stylesheet" type="text/css" href="css/topcoat-mobile-light.css" />
+    <link rel="stylesheet" type="text/css" href="css/videogular.css" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="css/ngDialog.css" />
+    <link rel="stylesheet" type="text/css" href="css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" type="text/css" href="css/ns-popover.css" />
+    
+    <!-- title -->
+    <title>AXES Home</title>
+    
+    <!-- external scripts -->
+    <script src="http://platform.twitter.com/widgets.js"></script>
+  
+    <!-- libs -->
+    <script type="text/javascript" src="lib/jquery/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="lib/jquery/jquery.timeago.js"></script>
+    <script type="text/javascript" src="lib/angular/angular.js"></script>
+    <script type="text/javascript" src="lib/angular/angular-route.js"></script>
+    <script type="text/javascript" src="lib/angular/angular-resource.js"></script>
+    <script type="text/javascript" src="lib/angular/angular-sanitize.js"></script>
+    <script type="text/javascript" src="lib/angular/angular-animate.js"></script>
+    <script type="text/javascript" src="lib/angular/angular-cookies.js"></script>
+    <script type="text/javascript" src="lib/videogular/videogular.js"></script>
+  	<script type="text/javascript" src="lib/videogular/controls.js"></script>
+  	<script type="text/javascript" src="lib/videogular/overlay-play.js"></script>
+  	<script type="text/javascript" src="lib/videogular/buffering.js"></script>
+  	<script type="text/javascript" src="lib/videogular/poster.js"></script>
+    <script type="text/javascript" src="lib/ngDialog/ngDialog.min.js"></script>
+    <script type="text/javascript" src="lib/nsPopover/nsPopover.js"></script>
+  
+    <!-- app scripts -->
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/services.js"></script>
+    <script type="text/javascript" src="js/controllers.js"></script>
+    <script type="text/javascript" src="js/filters.js"></script>
+    <script type="text/javascript" src="js/directives.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
+    
+</head>
+<body ng-controller="MainController">
+  
+  <!-- begin: slide-out menu -->
+  <nav class="sidenav" >
+    <div class="topcoat-list">
+      <ul class="topcoat-list__container">
+        <li class="topcoat-list__item" ng-repeat="item in menu.items"
+          ng-class="{current: isCurrentPage(item.href)}">
+          <a href="{{item.href}}" ng-click="hideMenu()">
+            <span class='icomatic'>{{item.icon}}</span>
+            {{item.text}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <!-- end: slide-out menu -->
+  
+  <!-- begin: content -->
+  <div class="content" ng-class="{'slide-out': menu.visible}">
+    <div class="navbar topcoat-navigation-bar">
+    
+      <!-- Button -->
+      <div class="topcoat-navigation-bar__item left third">
+        <a class="topcoat-icon-button--quiet" ng-click="goBack()"
+          ng-show="nav.backAvailable">
+          <span class="topcoat-icon icon-back"></span>
+        </a>
+        <a class="topcoat-icon-button--quiet" ng-click="toggleMenu()"
+          ng-show="nav.menuAvailable">
+          <span class="topcoat-icon topcoat-icon--menu-stack"></span>
+          <strong>&nbsp;Menu</strong>
+        </a>
+        <span class="logged-in-as" ng-if="loginService.user" ng-cloak>
+          Logged in as: {{loginService.user.username}}
+        </span>
+      </div>
+    
+      <!-- Title -->
+      <div class="topcoat-navigation-bar__item center third">
+        <h1 class="title"><a href="#/">
+          <img src="img/axes45.jpg"/> 
+          <span ng-cloak>{{titleText}}</span>
+        </a></h1>
+      </div>
+    
+      <!-- Search -->
+      <div class="topcoat-navigation-bar__item right third">
+        <form novalidate ng-submit="search()">
+          <input type="search" value="" ng-model="searchText"
+            placeholder="Search..." class="topcoat-search-input">
+      
+          <input type="submit" 
+            style="position: absolute; left: -9999px; width: 1px; height: 1px;">
+        </form>
+      </div>
+    </div>
+  
+    <!-- begin: page -->
+    <div class="page" ng-hide="isLoading">
+      <div ng-view ng-class="slideAnimation"></div>
+    </div>
+    <!-- end: page -->
+    
+  </div>
+  <!-- end: content -->
+  
+  <div class="loading-indicator" ng-if="isLoading">
+    <div class="loading-icon"></div>
+    <button class="topcoat-button" ng-click="abortLoading()">Abort</button>
+  </div>
+  
+</body>
+</html>

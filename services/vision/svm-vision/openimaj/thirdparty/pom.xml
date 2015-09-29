@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.openimaj</groupId>
+  <artifactId>thirdparty</artifactId>
+  <packaging>pom</packaging>
+  <version>1.4-SNAPSHOT</version>
+  <name>OpenIMAJ Third Party Ported Libraries</name>
+  <parent>
+    <artifactId>openimaj</artifactId>
+    <groupId>org.openimaj</groupId>
+    <version>1.4-SNAPSHOT</version>
+    <relativePath>../</relativePath>
+  </parent>
+  <inceptionYear>2011</inceptionYear>
+  <description>
+		Useful third-party libraries (possibly originally written in other languages) 
+		that have been ported to Java and integrated with OpenIMAJ. Not all modules
+		have the same license.
+  </description>
+  <modules>
+    <module>klt-tracker</module>
+    <module>tld</module>
+    <module>ImprovedArgs4J</module>
+    <module>IREval</module>
+    <module>FaceTracker</module>
+    <module>processing-core</module>
+    <module>MatrixLib</module>
+    <module>JTransforms</module>
+  </modules>
+</project>

@@ -1,0 +1,15 @@
+---
+applications:
+- name: config-service
+  memory: 512M
+  instances: 1
+#  host: config-service
+  host: config-service-${random-word}
+  domain: cfapps.io
+  path: target/config-service.jar
+  services:
+      - doge-rabbitmq
+  env:
+    SPRING_PROFILES_ACTIVE: cloud
+    DEBUG: "true"
+    debug: "true"

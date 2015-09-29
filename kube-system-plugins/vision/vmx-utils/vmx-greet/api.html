@@ -1,0 +1,97 @@
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<title>VMX Hello World</title>
+</head>
+<body>
+<h1>VMX Hello World</h1>
+Target Object:<br/>
+<img id="model_image" style="width:50px">
+<br/>
+Target Location:<br/>
+<div style="width:320;height:240;background-color:black;">
+<div id="box" style="width:0px;height:0px;position:relative;">
+</div>
+</div>
+<br/>
+
+<h3>Settings</h3>
+VMX Server IP:<input id="url_input"></input>
+<button type="button" onclick="change_host()">Submit</button>
+
+<br/>
+
+<h3>Resulting json stream</h3>
+
+<div id="result"> </div>
+<script>
+
+function change_host() {
+  host = $('#url_input').val();
+  start();
+}
+function change_sound() {
+  audio_file = $('#sound_input').val();
+  start();
+}
+
+var session = "";
+var last_sound = -1;
+
+var scores = [-10];
+var audio_file = "flute_c_long_01.wav";
+$('#sound_input').val(audio_file);
+
+var host = "localhost:3000";
+$('#url_input').val(host);
+
+function loop() {
+$.get( "http://"+host+"/session/"+session+"/log.txt", function( data ) {
+  if (data.output && data.output.objects) {
+    $( "#result" ).html( JSON.stringify(data.output.objects));
+    if (data.output.objects.length == 0) {
+      return;
+    }
+    var bb = data.output.objects[0].bb;
+    $( "#box" ).css('left',bb[0]);
+    $( "#box" ).css('top',bb[1]);
+    $( "#box" ).css('width',bb[2]-bb[0]);
+    $( "#box" ).css('height',bb[3]-bb[1]);
+    var color = 'green';
+    if (data.output.objects[0].score < -1) {
+      color = 'black';
+    }
+    scores[scores.length] = data.output.objects[0].score;
+    $( "#box" ).css('background-color',color);           
+  }
+  //repeat the loop
+  setTimeout(function() { loop();}, 100);
+});
+
+}
+
+function start() {
+  // Get a listing of sessions and return the first session
+  $.get( "http://"+host+"/session", function( data ) {
+    var sessions = data.data.map(function(x) {return x.session;});
+    if (sessions.length == 0) {
+      console.log('no sessions');
+      return;
+    }
+    session = sessions[0];
+    var model = data.data.filter(function(x) {return session==x.session;});
+    $('#model_image').attr("src","http://"+host+"/"+model[0].model.image);
+    if (sessions.length > 1) {
+      console.log('warning: more than one session');
+    }
+    loop();
+  }).fail(function(msg) {
+    console.log('Cannot connect to',host);
+  });
+};
+
+start();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<div data-bind="with: currentView" class="user-subview">
+  <div class="row-fluid">
+    <button 
+      data-toggle="collapse" data-target="#create-collection"
+      class="btn btn-primary pull-right">Create New Collection</button>  
+  </div>
+  <div class="row-fluid">
+    <div id="create-collection" class="collapse">
+      
+      <form id="create-collection-form">
+        <fieldset>
+          <label>Collection name:</label>
+          <input type="text" placeholder="Type something…" 
+            data-bind="value: newCollection().name">
+          
+        </fieldset>
+        <button class="btn" 
+          data-toggle="collapse" 
+          data-target="#create-collection">Cancel</button>
+        <button class="btn btn-primary" 
+          data-toggle="collapse" 
+          data-target="#create-collection"
+          data-bind="click: createCollection">Create</button>
+      </form>
+      
+    </div>
+  </div>
+  
+  <div class="row-fluid">
+    <div data-bind="foreach: collections">
+      <div class="collection">
+        <!-- Remove collection button -->
+        <button class="btn btn-link remove-collection" 
+          title="Remove Collection"
+          data-bind="click: $parent.removeCollection.bind($parent, $data)">&times;</button>
+        
+        <!-- Collection title -->
+        <div class="collection-title">
+          <span class="collection-name" data-bind="text: name"></span>
+          (<span data-bind="text: videos().length"></span> videos)
+        </div>
+        
+        <!-- Collection videos -->
+        <div data-bind="foreach: videos">
+          <div class="video">
+            
+            <!-- Remove video from collection button -->
+            <button class="btn btn-link remove-video-from-collection" 
+              title="Remove video from collection"
+              data-bind="click: $root.removeVideoFromCollection.bind($root, $data, $parent)"
+              >&times;</button>
+            
+            <!-- Video thumbnail -->
+            <div class="thumbnail">
+              <img data-bind="attr: {src: keyframe.thumbnailUrl }"></img>
+              
+              <!-- Video duration overlay -->
+              <span class="duration-overlay" 
+                data-bind="text: utils.formatTime(durationMillis())"></span>
+            </div>
+            
+            <!-- Video title -->
+            <a class="title" data-bind="text: metadata.title,
+              attr: { href:'#/asset/' + uri() }"></a>
+              
+            <!-- Video info -->
+            <div class="program-info" data-bind="with: metadata">
+              Date: <span class="date" data-bind="text: publicationDate"></span>
+              Category: <span class="genre" data-bind="text: genres()[0]"></span>
+            </div>
+            
+            <div class="summary" >
+              <span data-bind="text: metadata.summary"></span>
+              <span data-bind="text: metadata.description"></span>
+            </div>
+            
+          </div>
+        </div>  
+      </div>
+      <div style="display: block; clear: both"></div>
+    </div>
+  </div>         
+
+  
+</div>
+

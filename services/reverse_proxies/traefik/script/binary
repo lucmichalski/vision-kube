@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+if ! test -e gen.go; then
+	echo >&2 'error: generate must be run before binary'
+	false
+fi
+
+rm -f dist/traefik
+rm -rf Godeps/_workspace/pkg
+
+# Build binaries
+CGO_ENABLED=0 godep go build -a -installsuffix nocgo -o dist/traefik .
+

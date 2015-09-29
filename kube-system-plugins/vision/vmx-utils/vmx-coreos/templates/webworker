@@ -1,0 +1,23 @@
+#cloud-config
+
+coreos:
+  fleet:
+    etcd_servers: http://10.132.85.148:4001
+    public-ip: $private_ipv4   # used for fleetctl ssh command
+    metadata: "vmxtype=webworker"
+  units:
+    - name: fleet.service
+      command: start
+
+write_files:
+  - path: /etc/profile.d/etcdctl.sh
+    permissions: 0644
+    owner: core
+    content: |
+      export ETCDCTL_PEERS="http://10.132.85.148:4001"
+  - path: /etc/profile.d/fleetctl.sh
+    permissions: 0644
+    owner: core
+    content: |
+      export FLEETCTL_ENDPOINT=unix:///var/run/fleet.sock
+      export FLEETCTL_EXPERIMENTAL_API=true

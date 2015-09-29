@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block extra_head %}
+{%endblock%}
+
+{% block content %}
+<form id="target" action="{% url 'create_workstation' %}" method="post">
+{% csrf_token %}
+<h2 class="form-signin-heading">Configure your new workstation</h2>
+{{ form | as_bootstrap}}
+<input type="submit" value="Submit" />
+</form>
+
+<div class="alert">
+  <b>Note:</b>  After clicking "submit", please be patient.  The page will reload when your workstation has been created.  
+</div>
+
+<script>    
+	$('#target').submit(function() {
+	  ShowWaitDialog();
+	  return true;
+	});      
+</script>
+
+{% endblock %}
+
+
+  

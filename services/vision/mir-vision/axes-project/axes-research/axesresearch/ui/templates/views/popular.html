@@ -1,0 +1,128 @@
+<!-- Result list -->
+<div class="main-view" id="popular-page" data-bind="with: popularView">
+  
+  <div id="popular-menu">
+    <span data-bind="foreach: availableTypes">
+      <a data-bind="
+        text: 'Most ' + $data, 
+        attr: {href: '#/most/' + $data}, 
+        css: {selected: $data == $parent.type()}"></a>
+    </span>
+  </div>
+  
+  <div data-bind="foreach: displayedResults">
+    <span class="result detailed">
+      <div class="detailed-left">
+        <span class="thumbnail">
+          <!-- Thumbnail image -->
+          <img data-bind="attr: {src: keyframe.thumbnailUrl}" 
+          width="180" height="110"></img>
+          
+          <!-- Play button -->
+          <button class="play-button" title="Play video"
+            data-bind="click: $root.previewView.showForVideo"></button>
+        </span>
+          
+        <!-- Controls under video thumbnail -->
+        <div class="controls">
+          
+          <!-- Add to collection -->
+          <div class="btn-group pull-right">
+            <button class="btn btn-mini dropdown-toggle" 
+              title="Add result to collection"
+              data-toggle="dropdown">
+              
+              Add to Collection
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" >
+              <!-- ko foreach: $root.collections -->
+              <li><a href="#" data-bind="text: name, 
+                click: $root.addVideoToCollection.bind(
+                  $root, $parent, $data)"></a></li>
+              <!-- /ko -->
+              <li class="divider"></li>
+              <li><a href="#" data-bind="
+                click: $root.addVideoToFavorites.bind($root, $data)">
+                Favorites</a></li>
+            </ul>
+          </div>
+          
+          <!-- Quick similarity search -->
+          <button class="btn btn-mini" 
+            title="Search for similar keyframes"
+              data-bind="
+              click: $root.quickSimilaritySearchForKeyframe.bind($root, keyframe)">
+            <i class="icon-search"></i> 
+          </button>
+          
+          <!-- Add to similarity search -->
+          <button class="btn btn-mini" 
+            title="Add keyframe to similarity search"
+              data-bind="
+              click: $root.addKeyframeToSimilaritySearch.bind($root, keyframe)">
+            <i class="icon-zoom-in"></i> 
+          </button>
+        </div>
+      </div>
+      
+      <!-- Detailed metadata -->
+      <div class="detailed-middle" >
+        <a class="title" data-bind="text: metadata.title,
+          attr: { href:'#/asset/' + ko.utils.unwrapObservable(uri) }"></a>
+        <div class="program-info" data-bind="with: metadata">
+          Date: <span class="date" data-bind="text: publicationDate"></span>
+          Category: <span class="genre" data-bind="text: genres()[0]"></span>
+        </div>
+        
+        <div class="summary" data-bind="with: metadata">
+          <div data-bind="html: summary"></div>
+          <div data-bind="html: description"></div>
+        </div>
+        
+        <div class="other-info">
+          <div class="keywords" data-bind="with: metadata">
+            Keywords: 
+            <span data-bind="foreach: keywords">
+              <a href="#" class="keyword" 
+                data-bind="text: $data, click: 
+                  $root.quickSearch.bind($root, $data)"></a>
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Scores, etc, on right -->
+      <div class="detailed-right" data-bind="with: stats">
+        <div class="score view-count" 
+          title="View count">
+          <span data-bind="text: views"></span>
+          <i class="icon-eye-open icon-white"></i>
+        </div>
+        <div class="score download-count" 
+          title="Download count">
+          <span data-bind="text: downloads"></span>
+          <i class="icon-download-alt icon-white"></i>
+        </div>
+        <div class="score like-count" 
+          title="Likes">
+          <span data-bind="text: likes"></span>
+          <i class="icon-thumbs-up icon-white"></i>
+        </div>
+        <div class="score favorite-count" 
+          title="Favourited">
+          <span data-bind="text: favorites"></span>
+          <i class="icon-heart icon-white"></i>
+        </div>
+      </div>
+    </span>
+  </div>
+    
+  <div class="display-more-footer" data-bind="if: canDisplayMore">
+    <div style="margin-bottom: 5px">
+    <span data-bind="text: undisplayedResultCount"></span> results not displayed
+    </div>
+    <button class="btn btn-small btn-primary"
+      data-bind="click: displayMore">Show More</button>
+  </div>
+</div>

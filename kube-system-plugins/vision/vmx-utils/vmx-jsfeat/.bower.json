@@ -1,0 +1,13 @@
+{
+  "name": "jsfeat",
+  "homepage": "https://github.com/inspirit/jsfeat",
+  "_release": "ab56868280",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "ab56868280ae12c735243a569e907580e9697fe3"
+  },
+  "_source": "git://github.com/inspirit/jsfeat.git",
+  "_target": "*",
+  "_originalSource": "jsfeat"
+}

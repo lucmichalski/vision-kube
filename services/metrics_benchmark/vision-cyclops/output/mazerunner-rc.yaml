@@ -1,0 +1,41 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "mazerunner",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "mazerunner"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "mazerunner"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "mazerunner"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "mazerunner",
+            "image": "lucmichalski/mazerunner:kube-vs-metrics",
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

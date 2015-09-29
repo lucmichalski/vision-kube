@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block pagescripts %}
+{% endblock pagescripts %}
+
+{% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="offset2 span8">
+      <hgroup class="register" style="text-align:center; margin-top:50px; margin-bottom:50px">
+        <h1>AXES RESEARCH Registration</h1>
+      </hgroup>
+
+      <div id="register-content" class="well" style="background: white; padding-bottom: 40px">
+      	<form id="registration-form" action="{% url "register" %}" method='POST'>
+          {% csrf_token %}
+      		{{ form.as_p }}
+      		<input type="hidden" name="next" value="{% url "index" %}" />
+          <button type="submit" 
+            class="btn btn-primary pull-right" 
+            value="Login">Register</button>
+      	</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock body %}

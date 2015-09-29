@@ -1,0 +1,68 @@
+<div class="registration-view">
+  <h1>Sign up</h1>
+  <form id="registration-form" novalidate ng-submit="register()">
+    
+    <label for="firstName">First Name</label>
+    <input type="text" 
+      class="topcoat-text-input" 
+      name="firstName" 
+      value="" 
+      id="firstName" 
+      placeholder="Your first name..."
+      ng-model="registrationDetails.firstName">
+    
+    <label for="firstName">Last Name</label>
+    <input type="text" 
+      class="topcoat-text-input" 
+      name="firstName" 
+      value="" 
+      id="firstName" 
+      placeholder="Your last name..."
+      ng-model="registrationDetails.lastName">
+  
+    <label for="email">Email</label>
+    <input type="email" 
+      class="topcoat-text-input" 
+      name="email" 
+      value="" 
+      id="email" 
+      placeholder="user@mydomain.com"
+      ng-model="registrationDetails.email">
+    
+    <label for="username">Username</label>
+    <input type="text" 
+      class="topcoat-text-input" 
+      name="username" 
+      value="" 
+      id="username" 
+      placeholder="Username"
+      ng-model="registrationDetails.username">
+  
+    <label for="password1">Password</label>
+    <input type="password" 
+      class="topcoat-text-input" 
+      name="password1" 
+      value="" 
+      id="password1" 
+      placeholder="Password"
+      ng-model="registrationDetails.password1" >
+    
+    <label for="password2">Confirm Password</label>
+    <input type="password" 
+      class="topcoat-text-input" 
+      name="password2" 
+      value="" 
+      id="password2" 
+      placeholder="Confirm password"
+      ng-model="registrationDetails.password2" >
+  
+    <button class="topcoat-button--cta" type="submit">
+      Register
+    </button>
+  
+    <span class="error"> 
+      {{error}} 
+    </span>
+    
+  </form>
+</div>

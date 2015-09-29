@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Purpose:  Mount the s3 bucket and run reprepro
+
+# safety in bashing
+set -u
+set -e
+
+mkdir -p /home/core/s3-blippar
+
+s3fs $AWS_BUCKET /home/core/s3-blippar -ouse_cache=/var/cache/s3-blippar
+
+eval "$@"
+
+umount /home/core/s3-blippar

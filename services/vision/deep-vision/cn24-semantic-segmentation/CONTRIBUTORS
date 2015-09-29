@@ -1,0 +1,13 @@
+Contributors from the Computer Vision Group of the Friedrich Schiller University Jena:
+ Dipl.-Inf. Sven Sickert
+ Marcel Simon M.Sc.
+ Dr. rer. nat. Erik Rodner
+ 
+Contributors from GitHub:
+ lolz0r (RGB regression)
+
+FindSQLite3.CMake (New BSD License):
+ Andreas Schneider
+
+GetGitRevisionDescription.cmake (Boost License 1.0):
+ Ryan A. Pavlik

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Delete old binaries
+rm /opt/go/bin/worker
+rm /opt/go/bin/elastic-thought
+rm /opt/go/bin/envcheck
+
+# Go get ElasticThought
+go get -u -v -t github.com/tleyden/elastic-thought/...
+

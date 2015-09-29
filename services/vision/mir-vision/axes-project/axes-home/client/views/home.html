@@ -1,0 +1,39 @@
+<div id="home-page" >
+  <div class="interestingItems">
+    
+    <div class="homeTopic" ng-repeat="topic in topics">
+      
+      <h2>{{topic.name}}</h2>
+      
+      <a ng-click="goForward('asset/' + item.asset.uri)" 
+         class="interestingItem resultBox Grid" 
+         ng-repeat="item in topic.collectionExamples">
+       
+         <img ng-src="{{item.asset.keyframe.thumbnailUrl}}" class="thumbnail"/> 
+         <span class="title">{{item.asset.metadata.title}}</span>
+         <span class="summary">{{item.asset.metadata.summary}}</span>
+      </a>
+      
+    </div>
+    
+    <!-- 
+      More interesting videos is disabled for now, until if/when we have
+      a better implementation in the backend 
+    -->
+    
+    <!--
+    <h2>More Interesting Videos</h2>
+    <a ng-click="goForward('asset/' + item.asset.uri)" 
+       class="interestingItem resultBox Grid" 
+       ng-repeat="item in interestingItems">
+       
+       <img ng-src="{{item.asset.keyframe.thumbnailUrl}}" class="thumbnail"/> 
+       <span class="title">{{item.asset.metadata.title}}</span>
+       <span class="summary">{{item.asset.metadata.summary}}</span>
+    </a>
+    -->
+    
+  </div>
+ 
+</div>
+  

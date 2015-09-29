@@ -1,0 +1,35 @@
+---   
+
+- hosts: dasgizmo
+  sudo: true
+  user: heathkh
+  vars_files:
+    - settings.yml
+  roles:
+    #- {role: core}
+    - {role: mysql}
+    #- {role: psad}
+    #- {role: mysql}
+    #- {role: nginx, delete_default_vhost: true}
+   
+#  tasks:             
+    
+#    - name: write nginx.conf
+#      template: src=templates/nginx.conf dest=/etc/nginx/nginx.conf
+#
+#    - name: create supervisord config folder
+#      file: dest=/etc/supervisor state=directory owner=root
+#
+#    - name: create supervisord config
+#      template: src=templates/supervisord.conf dest=/etc/supervisord.conf
+#
+#    - name: create supervisord init script
+#      template: src=templates/supervisord.sh dest=/etc/init.d/supervisord mode=0755
+#
+#    - name: start supervisord service and have it run during system startup
+#      service: name=supervisord state=started enabled=yes
+#
+#    - name: create webapps directory
+#      file: dest=/srv/webapps state=directory
+      
+           

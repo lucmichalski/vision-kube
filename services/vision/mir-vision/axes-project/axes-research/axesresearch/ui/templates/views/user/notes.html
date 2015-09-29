@@ -1,0 +1,15 @@
+<div id="notes-page" data-bind="with: currentView">
+  <div class="notes" data-bind="foreach: notes">
+    <div class="note">
+      
+      <span class="note-user" data-bind="text: user"></span>
+      <span class="note-date" data-bind="text: jQuery.timeago(dateCreated)"></span>
+      <span class="note-type" data-bind="text: type"></span>
+      <button class="btn btn-link remove-note" alt="Remove Note"
+          data-bind="click: $parent.removeNote.bind($parent, $data)">&times;</button>
+      
+      <a class="note-text" 
+        data-bind="text: text, attr: { href: '#/asset/' + videoUri }" href="#"></a>
+    </div>
+  </div>
+</div>

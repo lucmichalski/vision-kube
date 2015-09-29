@@ -1,0 +1,56 @@
+<div class="user-view" data-bind="with: userView">
+    
+  <div class="container-fluid">
+    <div class="row-fluid">
+        
+        <div class="span2">
+          <ul class="nav nav-list" data-bind="foreach: views">
+            <li data-bind="css: {active: $data == $root.userView.currentView()}">
+            <a data-bind="text: name, 
+              attr: {href: link}, 
+              css: {selected: $data == $root.userView.currentView() }"></a>
+            </li>
+          </ul>
+        </div>
+          
+        <div class="span10">
+          <!-- Collections view -->
+          <div data-bind="if: currentView() == collectionsView">
+            {% include "views/user/collections.html" %}
+          </div>
+          
+          <!-- Favorites view -->
+          <div data-bind="if: currentView() == favoritesView">
+            {% include "views/user/favorites.html" %}
+          </div>
+          
+          <!-- Search History view -->
+          <div data-bind="if: currentView() == historyView">
+            {% include "views/user/history.html" %}
+          </div>
+          
+          <!-- Recent view -->
+          <div data-bind="if: currentView() == recentView">
+            {% include "views/user/recent.html" %}
+          </div>
+          
+          <!-- Notes view -->
+          <div data-bind="if: currentView() == notesView">
+            {% include "views/user/notes.html" %}
+          </div>
+          
+          <!-- Jobs view -->
+          <div data-bind="if: currentView() == jobsView">
+            {% include "views/user/jobs.html" %}
+          </div>
+          
+          <!-- Preferences view -->
+          <div data-bind="if: currentView() == preferencesView">
+            {% include "views/user/preferences.html" %}
+          </div>
+        </div>
+        
+        
+      </div>
+  </div>
+</div>

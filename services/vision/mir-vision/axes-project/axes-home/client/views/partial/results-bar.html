@@ -1,0 +1,25 @@
+
+<!-- results info bar -->
+<div class="results-info view-banner arrow_box">
+  <span class="view-controls">View:
+    <a ng-click="showGrid()"
+       ng-class="{active: viewMode == 'Grid'}"> 
+      <span class="icomatic">tileview</span>
+    </a>
+    <a ng-click="showList()"
+       ng-class="{active: viewMode == 'List'}"> 
+      <span class="icomatic">listview</span>
+    </a>
+  </span>
+  
+  <span class="results-info">
+    Found {{results.length}} clips in {{videoCount}} videos
+  </span>
+  
+  <span class="group-controls">Show:
+    <a ng-click="groupVideos()"
+      ng-class="{active: groupingCriteria == 'Videos'}"> Videos</a>
+    <a ng-click="groupClips()"
+      ng-class="{active: groupingCriteria == 'Clips'}"> Clips</a>
+  </span>
+</div>

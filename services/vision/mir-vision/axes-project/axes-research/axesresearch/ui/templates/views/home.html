@@ -1,0 +1,50 @@
+<div id="initial-page" class="container">
+  
+  <div class="row-fluid">
+    
+    <!-- Recently viewed box -->
+    <div id="recentbox" class="span6 box">
+      <hgroup>
+        <h1><i class="icon-eye-open"></i> Recently Viewed Videos</h1>
+      </hgroup>
+      <div data-bind="foreach: recent">
+        <div class="recent-video">
+          <div class="thumbnail">
+            <img data-bind="attr: {src: keyframe.thumbnailUrl }"></img>
+            <span class="duration-overlay" 
+              data-bind="text: utils.formatTime(durationMillis)"></span>
+            <button class="play-button" title="Play video"
+              data-bind="click: $root.previewView.showForVideo"></button>
+          </div>
+          <div class="lastViewed">Last viewed on: 
+            <span class="date" data-bind="text: stats.lastViewed || 'Unknown'"></span>
+          </div>
+          <a class="title" data-bind="text: metadata.title,
+            attr: { href:'#/asset/' + videoUri + '/'}"></a>
+          <div class="summary" >
+            <span data-bind="text: metadata.summary"></span>
+            <span data-bind="text: metadata.description"></span>
+          </div>
+        </div>
+      </div>
+      <div data-bind="if: recent().length == 0" class="noneindicator">
+        No Recently Viewed Videos
+      </div>  
+    </div>
+    
+    <!-- Search history box -->
+    <div id="historybox" class="span6 box" >
+      <hgroup>
+        <h1><i class="icon-search"></i> Recent Queries</h1>
+      </hgroup>
+      <div data-bind="foreach: history">
+        {% include "views/components/historyitem.html" %}
+      </div>
+      <div data-bind="if: history().length == 0" class="noneindicator">
+        No Search History
+      </div>
+    </div>
+  
+  </div>
+  
+</div>

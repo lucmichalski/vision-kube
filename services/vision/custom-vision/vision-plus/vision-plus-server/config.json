@@ -1,0 +1,13 @@
+{
+    "data": "/vmx/data",
+    "pretrained": "3f61ce5c7642bc2f24f7286f600b3e6b",
+    "user": "d7d42952-646c-4d32-b909-768af9d5a380",
+    "models": "./models",
+    "MCR": "/root/MATLAB/R2014a/v83",
+    "log_images": false,
+    "log_memory": false,
+    "sessions": "./sessions",
+    "license": "b374c61ab11d6a95a6f441e77fb30abbf07041b41a6b0b9b7c547ba595dbde90597398478af3db4e2a517f97ba6c2e68715dcc3216efef018fcacf314a0a4f45",
+    "perform_tests": true,
+    "display_images": false
+}

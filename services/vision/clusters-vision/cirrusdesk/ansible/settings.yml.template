@@ -1,0 +1,12 @@
+---
+
+app_server_domain: exmaple.com
+app_server_port: 80
+mysql_root_password: dbrootpassword
+app_name: my_app_name
+app_db_password: my_app_db_password
+DJANGO_DEBUG: True
+DJANGO_EMAIL_HOST: smtp.gmail.com
+DJANGO_EMAIL_USER: your@mail.com
+DJANGO_EMAIL_HOST_PASSWORD: your mail server password
+DJANGO_SECRET_KEY: '^f)54k-cy64wvx2+ygas54ru&g*76417s^+^ri!$)1m23s-!^#yr'

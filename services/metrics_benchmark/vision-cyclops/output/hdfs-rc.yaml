@@ -1,0 +1,41 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "hdfs",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "hdfs"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "hdfs"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "hdfs"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "hdfs",
+            "image": "lucmichalski/hdfs:kube-vs-metrics",
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

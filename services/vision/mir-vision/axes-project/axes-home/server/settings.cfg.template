@@ -1,0 +1,28 @@
+
+DEBUG = False
+
+# LIMAS JSON RPC service
+SERVICE_URL = 'http://<server>:<port>/json-rpc'
+
+# Location for user media
+MEDIA_URL = '<mount point>/media/'
+MEDIA_PATH = '<full path to media>'
+
+# Secret key (insert a random string)
+SECRET_KEY = '<secret key string>'
+
+# MongoDB config
+MONGO_HOST = 'localhost'
+MONGO_PORT = 27017
+MONGO_DBNAME = 'axeshome'
+
+# Dataset info for help page 
+DATASET_INFO = {
+    'id': 'cAXES',
+    'name': 'AXES',
+    'description': 'The AXES home dataset comprises 2700 hours of broadcasts.',
+    'lengthHours': 2714,
+    'videoCount': 3520,
+    'shotCount': 1647935,
+    'keyframeCount': 4608387,
+}

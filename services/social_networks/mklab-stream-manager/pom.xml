@@ -1,0 +1,214 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>gr.iti.mklab</groupId>
+    <artifactId>mklab-stream-manager</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+	
+    <name>mklab-stream-manager</name>
+    <url>https://github.com/MKLab-ITI/mklab-stream-manager</url>
+    <description> Monitors a set of social streams (e.g. Twitter status updates) and collects the incoming content.
+    </description>
+    
+  	<parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+    
+  	<developers>
+        <developer>
+            <id>manosetro</id>
+            <name>Manos Schinas</name>
+            <email>manosetro@iti.gr</email>
+        </developer>
+    </developers>
+    
+    <licenses>
+    	<license>
+      		<name>The Apache Software License, Version 2.0</name>
+      		<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      		<distribution>repo</distribution>
+    	</license>
+  	</licenses>
+  	
+  	<scm>
+        <connection>scm:git:git@github.com:MKLab-ITI/mklab-stream-manager.git</connection>
+        <developerConnection>scm:git:git@github.com:MKLab-ITI/mklab-stream-manager.git</developerConnection>
+        <url>git@github.com:MKLab-ITI/mklab-stream-manager.git</url>
+    </scm>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+   
+    <dependencies>
+    	<!-- MKLAB projects -->
+        <dependency>
+            <groupId>gr.iti.mklab</groupId>
+            <artifactId>mklab-framework-common</artifactId>
+            <version>0.2-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+  			<groupId>gr.iti.mklab</groupId>
+  			<artifactId>mklab-socialmedia-abstractions</artifactId>
+  			<version>0.2-SNAPSHOT</version>
+		</dependency>
+		
+        <dependency>
+            <groupId>gr.iti.mklab</groupId>
+            <artifactId>mklab-framework-client</artifactId>
+            <version>0.2-SNAPSHOT</version>
+        </dependency>
+        
+       	<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>4.10.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>4.10.2</version>
+		</dependency>
+
+
+        <dependency>
+        	<groupId>com.thinkaurelius.titan</groupId>
+        	<artifactId>titan-hbase</artifactId>
+        	<version>0.4.4</version>
+        	<exclusions>
+        		<exclusion>  
+       				<!-- declare the exclusion here -->
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+        		</exclusion>
+        		<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+        		</exclusion>
+      		</exclusions> 
+        </dependency>
+        
+        <dependency>
+        	<groupId>com.sun.jersey</groupId>
+        	<artifactId>jersey-client</artifactId>
+        	<version>1.9</version>
+        </dependency>
+        
+        <dependency>
+        	<groupId>com.cybozu.labs</groupId>
+        	<artifactId>langdetect</artifactId>
+        	<version>1.1-20120112</version>
+        </dependency>
+
+  		<dependency>
+    		<groupId>edu.stanford.nlp</groupId>
+    		<artifactId>stanford-corenlp</artifactId>
+    		<version>3.2.0</version>
+		</dependency>
+
+  		<dependency>
+  			<groupId>edu.stanford.nlp</groupId>
+  			<artifactId>stanford-corenlp</artifactId>
+  			<version>3.2.0</version>
+  			<classifier>models</classifier>
+  		</dependency>
+  		
+        <dependency>
+        	<groupId>com.rabbitmq</groupId>
+        	<artifactId>amqp-client</artifactId>
+        	<version>3.4.2</version>
+        </dependency>
+    </dependencies>
+    
+	<repositories>
+		<repository>  
+       		<id>mvn-neo4j</id>  
+       		<url>http://m2.neo4j.org/content/groups/everything</url>  
+     	</repository>
+	</repositories>
+    
+    <pluginRepositories />
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+		
+            </plugin>
+      
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.7.1</version>
+                <executions>
+                    <execution>
+                    	<id>StreamCollector</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>                                       
+                                    </excludes>
+                                </filter>		
+                            </filters>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>eu.socialsensor.sfc.streams.StreamCollector</Main-Class>
+                                        <Build-Number>123</Build-Number>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+            	</executions>
+            </plugin>
+      
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,63 @@
+etcd:
+  command: >
+    --advertise-client-urls http://0.0.0.0:2379
+    --data-dir /var/lib/etcd
+    --listen-client-urls http://127.0.0.1:2379
+    --listen-peer-urls http://127.0.0.1:2380
+    --name etcd0
+  image: "quay.io/coreos/etcd:v2.0.12"
+  restart: "always"
+
+vulcand:
+  build: vulcan-core
+  name: router
+  links:
+    - etcd
+  ports:
+    - 0.0.0.0:443:443
+    - 0.0.0.0:80:80
+    - 8181:8181
+    - 8282:8182    
+  command: -apiInterface="0.0.0.0" -etcd=http://etcd:2379 -port=80 -apiPort=8182
+
+etcd-viewer:
+  image: nikfoundas/etcd-viewer
+  ports:
+    - 0.0.0.0:1981:8080
+  links:
+    - etcd
+
+etcd-browser:
+  image: johnmccabe/etcd-browser
+  name: etcd-browser
+  restart: "always"
+  links:
+    - etcd
+  environment:
+   - ETCD_HOST=http://etcd:2379
+  ports:
+    - "8000:8000"
+
+vulcand-romulus:
+  image: exoplay/romulusd
+  name: etcd-browser
+  net: "host"
+  restart: "always"
+  command: -etcd-timeout=2s --etcd=http://127.0.0.1:2379 --kube=http://127.0.0.1:8080 --kube-api="v2" -d --debug-etcd
+
+vulcand-havok:
+  image: ehazlett/havok
+  name: docker-listener
+  links:
+    - etcd
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+  command: -etcd-machines http://etcd:2379 -host-ip etcd -root-domain localhost
+
+vulcand-salute:
+  build: vulcan-salute
+  name: vulcan-ui
+  links:
+    - vulcand
+  ports:
+    - 0.0.0.0:1979:80

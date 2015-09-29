@@ -1,0 +1,250 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  	
+  	<modelVersion>4.0.0</modelVersion>
+  	<groupId>eu.socialsensor</groupId>
+  	<artifactId>socialmedia-abstractions</artifactId>
+  	<version>0.2.1-SNAPSHOT</version>
+  	<packaging>jar</packaging>
+  	
+	<name>socialmedia-abstractions</name>
+    <url>https://github.com/socialsensor/socialmedia-abstractions</url>
+    <description>Contains data abstractions for mapping a number of different social networks to a single representation.</description>
+      
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+    
+  	<developers>
+        <developer>
+            <id>manosetro</id>
+            <name>Manos Schinas</name>
+            <email>manosetro@iti.gr</email>
+        </developer>
+        <developer>
+            <id>matzika</id>
+            <name>Katerina Iliakopoulou</name>
+            <email>ailiakop@iti.gr</email>
+        </developer>
+    </developers>
+    
+    <licenses>
+    	<license>
+      		<name>The Apache Software License, Version 2.0</name>
+      		<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      		<distribution>repo</distribution>
+    	</license>
+  	</licenses>
+  
+  	<scm>
+        <connection>scm:git:git@github.com:socialsensor/socialmedia-abstractions.git</connection>
+        <developerConnection>scm:git:git@github.com:socialsensor/socialmedia-abstractions.git</developerConnection>
+        <url>git@github.com:socialsensor/socialmedia-abstractions.git</url>
+      <tag>socialmedia-abstractions-0.2</tag>
+  </scm>
+    
+  	<properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    
+    <dependencies>
+    	<!-- Social Sensor -->
+    	<dependency>
+    		<groupId>eu.socialsensor</groupId>
+    		<artifactId>socialsensor-framework-common</artifactId>
+    		<version>0.2.2</version>
+    	</dependency>
+    	<!-- Google -->
+        <dependency>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client-jackson2</artifactId>
+			<version>1.15.0-rc</version>
+		</dependency>  
+    	<dependency>
+    		<groupId>com.google.apis</groupId>
+    		<artifactId>google-api-services-plus</artifactId>
+    		<version>v1-rev79-1.15.0-rc</version>
+    	</dependency>     
+    	<dependency>
+    		<groupId>com.google.gdata</groupId>
+    		<artifactId>core</artifactId>
+    		<version>1.47.1</version>
+    	</dependency>
+    	<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>14.0.1</version>
+		</dependency>
+		<!-- Flickr -->
+		<dependency>
+				<groupId>com.flickr4java</groupId>
+				<artifactId>flickr4java</artifactId>
+				<version>2.11</version>
+			</dependency>
+		<!-- Instagram -->
+		<dependency>
+   			<groupId>com.sachinhandiekar</groupId>
+   			<artifactId>jInstagram</artifactId>
+   			<version>1.0.7</version>
+		</dependency>
+		<!-- Twitter -->
+		<dependency>
+    		<groupId>org.twitter4j</groupId>
+    		<artifactId>twitter4j-stream</artifactId>
+    		<version>3.0.6</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.twitter4j</groupId>
+    		<artifactId>twitter4j-core</artifactId>
+    		<version>3.0.6</version>
+    	</dependency>
+    	<!-- Tumblr -->
+    	<dependency>
+    		<groupId>com.tumblr</groupId>
+    		<artifactId>jumblr</artifactId>
+    		<version>0.0.6</version>
+    	</dependency>
+    	<!-- Facebook -->
+    	<dependency>
+    		<groupId>com.restfb</groupId>
+    		<artifactId>restfb</artifactId>
+    		<version>1.6.14</version>
+    	</dependency>
+    	<!-- RSS -->
+    	<dependency>
+            <groupId>rome</groupId>
+            <artifactId>rome</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+			<groupId>org.rometools</groupId>
+			<artifactId>rome-modules</artifactId>
+			<version>1.0</version>
+		</dependency>  		
+		
+    	<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.5.2</version>
+		</dependency>  
+    	<dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20090211</version>
+        </dependency>
+        
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.7.2</version>
+		</dependency>
+		
+    </dependencies>
+   	
+  	<repositories>
+  		<repository>
+       		<snapshots>
+           		<enabled>false</enabled>
+         	</snapshots>
+         	<id>jcenter</id>
+        	<name>bintray</name>
+        	<url>http://jcenter.bintray.com</url>
+    	</repository>
+  	</repositories>
+  	
+    <pluginRepositories />
+            
+    <build>
+    
+    	<pluginManagement>
+        	<plugins>
+           		<plugin>
+                     <groupId>org.apache.maven.plugins</groupId>
+                     <artifactId>maven-release-plugin</artifactId>
+                     <version>2.5</version>
+                     <configuration>
+                          <useReleaseProfile>false</useReleaseProfile>
+                          <releaseProfiles>release</releaseProfiles>
+                          <goals>deploy</goals>
+                     </configuration>
+                </plugin>
+          	</plugins>
+		</pluginManagement>
+
+        <plugins>
+        
+        	<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.3</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>sonatype-nexus-staging</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+         
+            </plugin>
+      
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+              	<version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+        </plugins>
+    </build>
+</project>

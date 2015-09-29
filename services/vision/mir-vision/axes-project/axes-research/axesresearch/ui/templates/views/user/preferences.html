@@ -1,0 +1,53 @@
+<div data-bind="with: currentView">
+  <h2>Preferences</h2>
+  
+  <div style="margin-bottom: 20px" data-bind="with: preferences">
+    
+    <div class="preferences-section">
+      <h4>Search results</h4>
+      <div class="control-group">
+        <label class="checkbox">
+          <input type="checkbox" data-bind="checked: showFeedbackButtons"> 
+            Show feedback buttons in results view
+        </label>
+      </div>
+    
+      <div class="control-group">
+        <label class="radio control-label inline">Results view:</label>
+        <!-- ko foreach: $root.resultsView.viewTypes -->
+        <label class="radio">
+          <input type="radio" name="resultViewType" 
+            data-bind="value: $data, checked: $parent.defaultResultView">
+          Show <span data-bind="text: $data"></span> view by default
+        </label>
+        <!-- /ko -->
+      </div>
+      
+      <div class="control-group">
+        <label class="radio control-label inline">Result grouping:</label>
+        <!-- ko foreach: $root.resultsView.displayTypes -->
+        <label class="radio">
+          <input type="radio" name="resultDisplayType" 
+            data-bind="value: $data, checked: $parent.defaultResultType">
+          Display <span data-bind="text: $data"></span>s by default
+        </label>
+        <!-- /ko -->
+      </div>
+      
+      <div class="control-group">
+        <label class="radio control-label inline">Results to show:</label>
+        <!-- ko foreach: $root.resultsView.displayCountOptions -->
+        <label class="radio">
+          <input type="radio" name="displayCountOption" 
+            data-bind="value: $data, checked: $parent.resultsPerPage">
+          Display <span data-bind="text: $data"></span> results per page
+        </label>
+        <!-- /ko -->
+      </div>
+      
+    </div>
+      
+  </div>
+  
+  <button class="btn btn-primary" data-bind="click: savePreferences">Save Preferences</button>
+</div>

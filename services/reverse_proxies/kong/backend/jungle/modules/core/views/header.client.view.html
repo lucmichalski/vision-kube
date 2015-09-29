@@ -1,0 +1,33 @@
+<nav class="navbar navbar-fixed-top navbar-inverse">
+<div class="container-fluid" data-ng-controller="HeaderController">
+	<div class="navbar-header">
+	  <a href="/#!/" class="navbar-brand">JUNGLE</a>
+	</div>
+	<span ng-if="!storage.kongurl">
+		<form class="navbar-form navbar-right" role="search" ng-submit="setKongUrl()">
+	        <div class="form-group">
+	        	<input type="text" ng-model="url" size="100" class="form-control" placeholder="http://kong.org:8000/kongapi">
+	        </div>
+	        <button type="submit" class="btn btn-success">Connect</button>
+	    </form>
+	</span>
+		<p ng-if="storage.kongurl" class="navbar-text navbar-right" style="padding-right:10px;">
+			Connected to: {{storage.kongurl}} - <a href="#" ng-click="removeKongUrl()" class="navbar-link">Disconnect</a> 
+		</p>
+	
+</div>
+</nav>
+<div class="container-fluid" data-ng-controller="HeaderController">
+      <div class="row">
+        <div ng-hide="!storage.kongurl" class="col-sm-3 col-md-2 sidebar">
+        	<ul class="nav nav-sidebar">
+        		<li ui-route="/" ng-class="{active: $uiRoute}"><a href="/#!/">Home</a></li>
+        	</ul>
+          <ul class="nav nav-sidebar" data-ng-repeat="item in menu.items | orderBy: 'position'" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
+          	<li role="presentation" class="disabled"><a href="#">{{item.title}}</a></li>
+			<li class="ng-class: {active: $uiRoute, disabled: !storage.kongurl}" data-ng-repeat="subitem in item.items | orderBy: 'position'" ui-route="{{subitem.uiRoute}}">
+				<a ng-if="storage.kongurl" href="/#!/{{subitem.link}}" data-ng-bind="subitem.title"></a>
+				<a ng-if="!storage.kongurl" href="#" data-ng-bind="subitem.title"></a>
+			</li>
+          </ul>
+        </div>

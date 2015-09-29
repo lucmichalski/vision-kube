@@ -1,0 +1,7 @@
+Flask>=0.10.1
+Flask-RESTful>=0.2.12
+Flask-PyMongo>=0.3.0
+Flask-Login>=0.2.11
+gunicorn>=18.0
+pymongo>=2.4.2,<3.0
+jsonrpclib>=0.1.3

@@ -1,0 +1,94 @@
+- edit caching with decorator pattern
+- add all google search params to config
+- write functional tests
+- add sqlalchemy support for results
+- add better proxy handling
+- extend parsing functionality
+- update readme
+- prevent parsing config two times
+
+04.11.2014:
+
+  - Refactor code, change docstrings to google format
+      https://google-styleguide.googlecode.com/svn/trunk/pyguide.html#Commentss [done]
+
+15.11.2014:
+  - add shell access with sqlalchemy session [done]
+  - test selenium mode thoroughly [done]
+  - double check selectors
+  - add alternative selectors
+  - Add gevent support
+  - make all modes workable through proxies [done for http and sel]
+  - update README [done]
+  - write blog post that illustrates usage of GoogleScraper
+  - some testing
+  - release version 0.2.0 on the cheeseshop
+      - released version 0.1.5 on pypy [done]
+
+11.12.2014
+  - JSON output is still slightly corrupt
+  - CSV output probably also not ideal.
+  - Improve documentation after Google style guide
+  - Maybe add other search engines!
+  - finally implement async mode!!!
+
+30.12.2014:
+  - Fixed issue #45 [done]
+
+02.01.2015:
+  - Check output verbosity levels and modify them. [done]
+
+13.01.2015:
+  - Handle sigint. Then close all open files (csv, json).
+
+15.01.2015:
+  - Implement JSON static tests [done]
+  - Implement CSV static tests [done]
+  - Catch Resource warnings in testing [done]
+
+  - Add no_results_selectors for all SE [done]
+    - add test for no_results_selectors parsing [done]
+  - Add page number selectors for all SE [done]
+    - add static tests [done]
+
+  - add fabfile (google a basic template) for []
+      - adding & committing and uploading to master []
+      - push to the cheeseshop []
+  - add function in fabfile that pushes to cheeseshop only after all tests were successful []
+  - Add functionality that distinguishes the page number of serp pages when caching []
+
+  - implement async mode [done]
+    - reade 20 minutes about asyncio built in moduel and decide whether if feets my needs [done]
+
+
+18.01.2015
+
+    - add four different examples:
+        - a basic usage [done]
+        - using selenium mode [done]
+        - using http mode [done]
+        - using async mode [done]
+        - scraping with a keywords.py module
+        - scraping images [done]
+        - finding plagiarized content [done]
+
+
+- Add dynamic tests for selenium mode:
+
+    - Add event: No results for this query.
+
+    - Test Impossible query:
+        -> Cannot have next_results page
+        -> No results [done]
+        -> But still save serp page. [done]
+        -> add to missed keywords []
+
+    - What is the best way to detect that the page loaded????
+        -> Research, read about selenium
+
+    - Add test for duckduckgo
+
+
+- Fix: If there's no internet connection, Malicious request detected is show. Show no internet connection instead.
+
+- FIGURE OUT: WHY THE HELLO DOES DUCKDUCKGO NOT WORK IN PHANTOMJS?

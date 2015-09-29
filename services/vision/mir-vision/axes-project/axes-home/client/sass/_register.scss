@@ -1,0 +1,48 @@
+
+.registration-view {
+  @include box-sizing(border-box);
+  width: 600px;
+  margin: 0px auto;
+  padding: 10px 20px;
+  
+  h1 {
+      text-align: center;
+  }
+}
+
+#registration-form {
+  @include box-sizing(border-box);
+  width: 100%;
+  padding: 10px;
+  color: $text-color;
+  
+  label {
+    display: block;
+    color: $text-color;
+    font-size: small;
+    padding: 2px 20px;
+  }
+  
+  input {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 5px;
+  }
+  
+  button {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .error {
+    @include box-sizing(border-box);
+    width: 100%;
+    padding: 30px 10px;
+    display: inline-block;
+    font-weight: bold;
+    color: #ec514e;
+    text-align: center;
+  }
+}
+

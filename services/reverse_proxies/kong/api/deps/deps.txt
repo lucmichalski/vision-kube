@@ -1,0 +1,1 @@
+netcat lua5.1 openssl libpcre3 dnsmasq sudo

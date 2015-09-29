@@ -1,0 +1,49 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "web",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "web"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "web"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "web"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "web",
+            "image": "nginx",
+            "ports": [
+              {
+                "containerPort": 80
+              },
+              {
+                "containerPort": 443
+              }
+            ],
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

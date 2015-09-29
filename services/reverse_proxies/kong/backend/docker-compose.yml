@@ -1,0 +1,62 @@
+cassandra:
+  image: mashape/cassandra
+
+jungle:
+  image: lucmichalski/kong-jungle:latest
+  environment:
+    - DATABASE_URL=postgres://postgres@pgsql:5432/postgres
+    - REDIS_CACHE_URL=redis://redis:6379/1
+    - KONG_URL=http://kong:18000/
+    - STATIC_ROOT=/data/static
+  links:
+    - kong
+  ports:
+    - 0.0.0.0:1980:1980
+    - 35729:35729
+
+kong:
+  image: vikingco/kong
+  links:
+    - cassandra
+  ports:
+    - "18001:8001"
+    - "18000:8000"
+    - "18443:8443"
+
+storage:
+  image: busybox:buildroot-2014.02
+  volumes:
+    - /tmp/docker-kong-admin/data/static:/data/static
+    - /tmp/docker-kong-admin/data/media:/data/media
+
+pgsql:
+  image: postgres:9.4.4
+  volumes:
+    - /data/docker/docker-kong-admin-pgsql:/var/lib/postgresql/data
+
+redis:
+  image: redis:3.0.3
+
+app:
+  build: .
+  command: uwsgi
+  links:
+    - kong
+    - pgsql
+    - redis
+  volumes_from:
+    - storage
+  environment:
+    - DATABASE_URL=postgres://postgres@pgsql:5432/postgres
+    - REDIS_CACHE_URL=redis://redis:6379/1
+    - KONG_ADMIN_URL=http://kong:8001/
+    - STATIC_ROOT=/data/static
+
+web:
+  image: vikingco/nginx
+  ports:
+    - "7777:80"
+  links:
+    - app
+  volumes_from:
+    - storage

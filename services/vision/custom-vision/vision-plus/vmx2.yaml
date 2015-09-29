@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmx-v2-maxfactor2015-v2
+  namespace: default
+  annotations:
+    romulus/host: 'seeubaby.blippar.com'
+    romulus/path.web: '/'
+    romulus/path.pathRegexp: '/.*'
+    romulus/path.api: '/api'
+    romulus/path.pathRegexp: '/.*'
+  labels:
+    name: vmx-v2-maxfactor2015
+    romulus/type: external
+spec: 
+  ports:
+  - port: 3001
+    name: api
+  - port: 3001
+    name: web
+  selector:
+    romulus/external: production

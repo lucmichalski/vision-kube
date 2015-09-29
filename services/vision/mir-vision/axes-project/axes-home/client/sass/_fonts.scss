@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'Icomatic';
+  src: url('../font/icomatic.eot');
+  src: url('../font/icomatic.eot?#iefix') format("embedded-opentype"),
+       url('../font/icomatic.woff') format("woff"),
+       url('../font/icomatic.ttf') format("truetype"),
+       url('../font/icomatic.svg#icomatic') format('svg');
+}
+
+@font-face {
+	font-family: 'rx';
+	src:url('../font/rx.eot?6mkpm7');
+	src:url('../font/rx.eot?#iefix6mkpm7') format('embedded-opentype'),
+		url('../font/rx.woff?6mkpm7') format('woff'),
+		url('../font/rx.ttf?6mkpm7') format('truetype'),
+		url('../font/rx.svg?6mkpm7#rx') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-weight: normal;
+  font-style: normal;
+  src: url('../font/SourceSansPro-Regular.otf') format("opentype");
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-weight: normal;
+  font-style: italic;
+  src: url('../font/SourceSansPro-It.otf') format("opentype");
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-weight: bold;
+  font-style: normal;
+  src: url('../font/SourceSansPro-Semibold.otf') format("opentype");
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-weight: lighter;
+  font-style: normal;
+  src: url('../font/SourceSansPro-Light.otf') format("opentype");
+}

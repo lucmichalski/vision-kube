@@ -1,0 +1,46 @@
+{
+  "kind": "ReplicationController",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "cache",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "cache"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "service": "cache"
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "cache"
+        }
+      },
+      "spec": {
+        "volumes": null,
+        "containers": [
+          {
+            "name": "cache",
+            "image": "memcached",
+            "ports": [
+              {
+                "containerPort": 11211
+              }
+            ],
+            "resources": {},
+            "imagePullPolicy": ""
+          }
+        ],
+        "restartPolicy": "Always",
+        "serviceAccountName": ""
+      }
+    }
+  },
+  "status": {
+    "replicas": 0
+  }
+}

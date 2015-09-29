@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: dcolors-rest
+  labels:
+    name: dcolors-rest
+spec:
+  replicas: 10
+  selector:
+    name: dcolors-rest
+  template:
+    metadata:
+      labels:
+        name: dcolors-rest
+    spec:
+      containers:
+      - name: dcolors-rest
+        image: lucmichalski/cloudcv-dominantcolors:kube
+        ports:
+        - containerPort: 4000

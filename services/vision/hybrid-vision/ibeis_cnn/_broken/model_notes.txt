@@ -1,0 +1,12 @@
+
+        # Yann Lecun 2005-like network
+        #network_layers_def = [
+        #    _P(layers.InputLayer, shape=input_shape),
+        #    _P(Conv2DLayer, num_filters=16, filter_size=(7, 7), **rlu_glorot),
+        #    _P(MaxPool2DLayer, pool_size=(2, 2), stride=(2, 2)),
+        #    _P(Conv2DLayer, num_filters=64, filter_size=(6, 6), **rlu_glorot),
+        #    _P(MaxPool2DLayer, pool_size=(3, 3), stride=(2, 2)),
+        #    _P(Conv2DLayer, num_filters=128, filter_size=(5, 5), **rlu_glorot),
+        #    _P(layers.DenseLayer, num_units=50, **rlu_glorot),
+        #]
+

@@ -1,0 +1,101 @@
+@import 'fonts';
+@import 'theme';
+@import 'mixins';
+
+* {
+  // make transparent link selection, adjust last value opacity 0 to 1.0
+  -webkit-tap-highlight-color: rgba(0,0,0,0);   
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  width:100%;
+  height:100%;
+  margin:0px;
+  padding:0px;
+  
+  font-family: "Source Sans Pro", Arial, sans-serif;
+  
+  // prevent callout to copy image, etc when tap to hold 
+  -webkit-touch-callout: none;
+  // prevent webkit from resizing text to fit 
+  -webkit-text-size-adjust: none;
+  // prevent copy paste, to allow, change 'none' to 'text' 
+  -webkit-user-select: text;
+}
+
+a {
+  display: inline-block;
+  text-decoration: none;
+  color: #111;
+  cursor: pointer;
+}
+
+li {
+  position: relative;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'rx';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-write:before {
+	content: "\e600";
+}
+
+.icon-bubbles:before {
+	content: "\e601";
+}
+
+.icon-user:before {
+	content: "\e602";
+}
+
+.icon-sound:before {
+	content: "\e603";
+}
+
+.icon-image:before {
+	content: "\e604";
+}
+
+.icomatic {
+  font-family: 'Icomatic','sans-serif';
+  line-height: 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-feature-settings: "liga", "dlig";
+  -ms-font-feature-settings: "liga", "dlig";
+  -moz-font-feature-settings: "liga", "dlig";
+  -o-font-feature-settings: "liga", "dlig";
+  font-feature-settings: "liga", "dlig";
+  -webkit-font-smoothing: antialiased;
+}
+
+.icomatic-alt {
+  margin: -1px;
+  border:0;
+  padding: 0;
+  width: 1px; height: 1px;
+  clip: rect(0 0 0 0);
+  position: absolute;
+  overflow: hidden;
+}
+

@@ -1,0 +1,49 @@
+[Unit]
+Description=VMX Server Main Worker
+
+# Requirements
+Requires=mcr.service
+Requires=vmx-server-binary.service
+Requires=vmx-pretrained.service
+Requires=vmxserver-license.service
+Requires=vmxserver-discovery@%i.service
+
+# Dependency ordering
+After=mcr.service
+After=vmx-pretrained.service
+After=vmx-server-binary.service
+After=vmxserver-license.service
+After=vmxserver-models.service
+
+Before=vmxserver-discovery@%i.service
+
+[Service]
+TimeoutStartSec=0
+
+# work correctly.
+KillMode=none
+Restart=on-failure
+
+# Get CoreOS environmental variables
+EnvironmentFile=/etc/environment
+
+# Pre-start and Start
+ExecStartPre=-/usr/bin/docker kill vmxservernode-%i
+ExecStartPre=-/usr/bin/docker rm vmxservernode-%i
+ExecStartPre=-/usr/bin/docker pull visionai/vmx-server-node
+ExecStart=/usr/bin/docker run -t                             \
+          --volumes-from vmxmcr                              \
+          --volumes-from vmxmodels                           \
+          -v /home/core/vmx/data:/vmx/data                   \
+          --volumes-from vmxserver-binary                    \
+          -p ${COREOS_PRIVATE_IPV4}:%i:%i                    \
+          --name vmxservernode-%i                            \
+          --rm                                               \
+          visionai/vmx-server-node                           \
+          /vmx/build/VMXserver /vmx/build sid.%i none :%i
+# When we start a worker, add the ip:port to the vmxworkers_ready queue
+ExecStop=/usr/bin/docker stop vmxservernode-%i
+
+[X-Fleet]
+# Schedule on the same machine as the associated Middle Service
+MachineMetadata="vmxtype=vmxserver"

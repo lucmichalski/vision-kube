@@ -1,0 +1,46 @@
+<div class="history-item">
+  <div class="lastViewed">Last searched on: 
+    <span class="date" data-bind="text: date || 'Unknown'"></span>
+  </div>
+  
+  <!--  ko if: query.type == 'simple' -->
+  <a class="query-text" data-bind="attr: { href:'#/search/' + id }">
+    Search
+    <!-- ko if: query.text -->  
+    &ldquo;<span data-bind="text: query.text"></span>&rdquo;
+    in <span class="query-type" 
+    data-bind="text: model.QueryType.getDescription(query.textQueryType)"></span>
+    <!-- /ko -->
+    <!-- ko if: query.queryImages.length -->  
+      <span data-bind="if: query.text">and</span> 
+      <span data-bind="with: query.queryImages.length">
+        <span data-bind="text: $data"></span> 
+        <span data-bind="text: utils.pluralize($data, 'image')"></span>
+      </span>
+     in <span 
+       data-bind="text: model.QueryType.getDescription(query.imageQueryType)"></span>
+    <!-- /ko -->
+  </a>
+  <!-- /ko -->
+  <!-- ko if: query.type =='advanced' -->
+  <a class="query-text" data-bind="attr: { href:'#/search/' + id }">
+    Advanced Query
+    (<span data-bind="text: query.clauses.length"></span> 
+     <span data-bind="text: utils.pluralize(query.clauses.length, 'clause')"></span>)
+  </a>
+  
+  <!-- /ko -->
+  
+  <div class="topn" data-bind="foreach: topn">
+    <span class="history-result">
+      <a data-bind="attr: { href:'#/asset/' + uri }">
+          <img data-bind="attr: {src: (segment || video).keyframe.thumbnailUrl }"></img>
+      </a>
+      <span class="title-overlay" data-bind="text: video.metadata.title"></span>
+    </span>
+  </div>
+  <div data-bind="if: topn.length == 0" 
+    style="margin-top: 25px; text-align: center">
+    No results
+  </div>
+</div>
