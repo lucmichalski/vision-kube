@@ -1,20 +1,20 @@
 #!/bin/bash
 
-cd vmx-server-v1
+cd dockerfiles
 echo "=== Build the container"
-docker build -t lucmichalski/vmx-server-v1:latest .
+docker build -t lucmichalski/vmx-server-v2:latest .
 echo ""
 
 echo "=== Push the container"
-docker push lucmichalski/vmx-server-v1
+docker push lucmichalski/vmx-server-v2
 echo ""
 
 echo "=== Create the controller"
-kubectl create -f vmx-v1-controller.yaml
+kubectl create -f vmx-v2-controller.yaml
 echo ""
 
 echo "=== Create the service"
-kubectl create -f vmx-v1-service.yaml
+kubectl create -f vmx-v2-service.yaml
 echo ""
 
 echo "==== Get Nodes available"

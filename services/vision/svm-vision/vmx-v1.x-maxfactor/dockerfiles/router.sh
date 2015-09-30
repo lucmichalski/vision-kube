@@ -63,4 +63,3 @@ cat $TEMP_BACKEND_PATH/$CHECK_TIME/fo_*.toml >> frontends_tmp.toml
 cat backends_tmp.toml frontends_tmp.toml >> new_rules.toml
 mv rules.toml rules_old.toml
 mv new_rules.toml rules.toml
-

@@ -2,19 +2,19 @@
 
 cd dockerfiles
 echo "=== Build the container"
-docker build -t lucmichalski/vmx-server-v1:latest .
+docker build -t lucmichalski/vmx-v1-maxfactor2015:v11 .
 echo ""
 
 echo "=== Push the container"
-docker push lucmichalski/vmx-server-v1
+docker push lucmichalski/vmx-v1-maxfactor2015:v11
 echo ""
 
 echo "=== Create the controller"
-kubectl create -f vmx-v1-controller.yaml
+kubectl replace -f vmx1-maxfactor-svc.yaml
 echo ""
 
 echo "=== Create the service"
-kubectl create -f vmx-v1-service.yaml
+kubectl replace -f vmx1-maxfactor-rc.yaml
 echo ""
 
 echo "==== Get Nodes available"

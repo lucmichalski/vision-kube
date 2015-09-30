@@ -9,5 +9,4 @@ address = ":1980"
 
 [file]
 filename = "/opt/rules.toml"
-watch = true
-
+watch = true 

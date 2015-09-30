@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: vmx2-maxfactor-rest
-        image: lucmichalski/vmx-v2-maxfactor2015:v3
+        image: lucmichalski/vmx-v2-maxfactor2015-prox:latest
         ports:
         - containerPort: 3000
         volumeMounts:

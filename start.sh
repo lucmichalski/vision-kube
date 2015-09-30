@@ -14,7 +14,10 @@ echo "Public IP: $COREOS_PUBLIC_IPV4"
 
 echo "Mount the Amazon S3 buket with Models and Dataset"
 sudo mkdir /mnt/s3-blippar
-docker run --privileged=true -e AWS_BUCKET=bucket-test-markers -e AWSACCESSKEYID=z6oyko0TrdRX+FTLjQIDYOarL9WgbJEsWXPNVBYd -e AWSSECRETACCESSKEY=AKIAJX5PMOG2GMVC3RUA lucmichalski/s3fs ls /mnt/s3-blippar
+docker build -t lucmichalski/s3fs ./utils/s3fs-docker
+docker stop  s3-blippar
+docker rm  s3-blippar
+docker run --name s3-blippar --privileged=true -e AWS_BUCKET=bucket-test-markers -e AWSACCESSKEYID=z6oyko0TrdRX+FTLjQIDYOarL9WgbJEsWXPNVBYd -e AWSSECRETACCESSKEY=AKIAJX5PMOG2GMVC3RUA lucmichalski/s3fs ls /mnt/s3-blippar
 
 docker info
 
@@ -37,7 +40,7 @@ docker logs proxy.discovery.romulus
 # Start ETCD-Browser
 docker stop etcd.browser
 docker rm -f etcd.browser
-docker run -d --name etcd.browser -p 0.0.0.0:8000:8000 --env ETCD_HOST=172.31.0.246 --env ETCD_PORT=2379 -t -i dreampuf/etcd-browser
+docker run -d --name etcd.browser -p 0.0.0.0:8000:8000 --env ETCD_HOST=${COREOS_PRIVATE_IPV4} --env ETCD_PORT=2379 -t -i dreampuf/etcd-browser
 docker logs etcd.browser
 
 #kubectl create -f ./kube-system-plugins/vision/vmx-v1.x-backend-ui/
@@ -51,22 +54,12 @@ kubectl replace -f ./services/vision/opencv-vision/libccv/
 #kubectl replace -f ./services/vision/opencv-vision/find-object/
 #kubectl replace -f ./services/metrics/vision-cyclops/
 # ES cluster base
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/service-account.yaml
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/es-discovery-svc.yaml
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/es-svc.yaml
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/es-master-rc.yaml
-# Then client
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/es-client-rc.yaml
-# Then data
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/es-data-rc.yaml
-# Then logstash & Kibana
-kubectl create -f ./kube-system-plugins/elk-cluster/
 
 #echo "Mount the S3 buckets in order to get access to datasets or pictures"
 #s3fs mybucket /path/to/mountpoint -o passwd_file=/path/to/passwd
 
 
- curl -X POST -H "Content-Type: application/json" http://172.31.0.246:8182/v2/frontends/api.libccv-rest.default/middlewares\
+ curl -X POST -H "Content-Type: application/json" http://${COREOS_PRIVATE_IPV4}:8182/v2/frontends/api.libccv-rest.default/middlewares\
      -d '{"Middleware": {
          "Id":"api.libccv-rest.default",
          "Priority":1,
@@ -77,7 +70,7 @@ kubectl create -f ./kube-system-plugins/elk-cluster/
             "RewriteBody":false,
             "Redirect":false}}}'
 
- curl -X POST -H "Content-Type: application/json" http://172.31.0.246:8182/v2/frontends/api.vmx2-maxfactor-rest.default/middlewares\
+ curl -X POST -H "Content-Type: application/json" http://${COREOS_PRIVATE_IPV4}:8182/v2/frontends/api.vmx2-maxfactor-rest.default/middlewares\
      -d '{"Middleware": {
          "Id":"api.vmx2-maxfactor-rest.default",
          "Priority":1,
@@ -88,7 +81,7 @@ kubectl create -f ./kube-system-plugins/elk-cluster/
             "RewriteBody":false,
             "Redirect":false}}}'
 
- curl -X POST -H "Content-Type: application/json" http://172.31.0.246:8182/v2/frontends/api.vmx1-maxfactor-rest.default/middlewares\
+ curl -X POST -H "Content-Type: application/json" http://${COREOS_PRIVATE_IPV4}:8182/v2/frontends/api.vmx1-maxfactor-rest.default/middlewares\
      -d '{"Middleware": {
          "Id":"api.vmx1-maxfactor-rest.default",
          "Priority":1,
@@ -99,7 +92,7 @@ kubectl create -f ./kube-system-plugins/elk-cluster/
             "RewriteBody":false,
             "Redirect":false}}}'           
 
- curl -X POST -H "Content-Type: application/json" http://172.31.0.246:8182/v2/frontends/api.dcolors-rest.default/middlewares\
+ curl -X POST -H "Content-Type: application/json" http://${COREOS_PRIVATE_IPV4}:8182/v2/frontends/api.dcolors-rest.default/middlewares\
      -d '{"Middleware": {
          "Id":"api.dcolors-rest.default",
          "Priority":1,
@@ -112,3 +105,4 @@ kubectl create -f ./kube-system-plugins/elk-cluster/
 
 # Check active containers
 docker ps
+/home/core/vision-kube/differ_start_es.sh

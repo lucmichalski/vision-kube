@@ -1,0 +1,12 @@
+port = ":1979"
+graceTimeOut = 10
+logLevel = "ERROR"
+traefikLogsFile = "/vmx/sessions/smart_proxy_daemon.log"
+accessLogsFile = "/vmx/sessions/smart_proxy_access.log"
+
+[web]
+address = ":1980"
+
+[file]
+filename = "/vmx/build/rules.toml"
+watch = true

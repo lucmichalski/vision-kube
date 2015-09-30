@@ -1,9 +1,6 @@
 #!/bin/sh
-
-echo "Remove any postgresql legacy"
-echo "Re-generating the configuration files of LTU Engine 7.6..."
-echo "Restarting LTU services..."
-echo "Authentication to LTU Backend for allowing the bulk upload of markers..."
-
-echo "Weki logs output for this instance"
-tail -f /opt/ltuengine76/logs/weki.log
+HOSTY=$(`hostname -f`)
+apt-get update
+sed -i -e "s/0214bf566d99/$HOSTY/g" /opt/ltu-engine-7.6.3/licence.lic
+cd /opt/ltu-engine-7.6.3 && ls -l && ./install.sh /opt/ltuengine76; echo ok
+service ltud restart all

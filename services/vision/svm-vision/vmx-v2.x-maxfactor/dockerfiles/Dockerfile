@@ -29,11 +29,11 @@ RUN mkdir -p /vmx/middle
 WORKDIR /vmx
 
 RUN \ 
-  wget -q http://files.vision.ai/vmx/VMXmiddle/Linux/VMXmiddle_Linux_v0.3.7.tar.gz && \
+  wget -q http://files.vision.ai/vmx/VMXmiddle/Linux/VMXmiddle_Linux_v0.4.0-7-g0275866.tar.gz && \
   cd middle && \                                                         
-  gzip -d ../VMXmiddle_Linux_v0.3.7.tar.gz && \
-  tar xf ../VMXmiddle_Linux_v0.3.7.tar && \
-  rm ../VMXmiddle_Linux_v0.3.7.tar && \
+  gzip -d ../VMXmiddle_Linux_v0.4.0-7-g0275866.tar.gz && \
+  tar xf ../VMXmiddle_Linux_v0.4.0-7-g0275866.tar && \
+  rm ../VMXmiddle_Linux_v0.4.0-7-g0275866.tar && \
   echo "Version is " `cat version`
 
 #VOLUME /vmx/middle
@@ -55,10 +55,10 @@ ENV ACCESS_KEY  AKIAJX5PMOG2GMVC3RUA
 ENV SECRET_KEY  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
 
 RUN \
-  wget -q http://files.vision.ai/vmx/VMXserver/Linux/VMXserver_Linux_v0.1.9.tar.gz && \
-  gzip -d VMXserver_Linux_v0.1.9.tar.gz && \
-  tar xf VMXserver_Linux_v0.1.9.tar && \
-  rm VMXserver_Linux_v0.1.9.tar && \
+  wget -q http://files.vision.ai/vmx/VMXserver/Linux/VMXserver_Linux_v0.2.0-9-g8bb540c.tar.gz && \
+  gzip -d VMXserver_Linux_v0.2.0-9-g8bb540c.tar.gz && \
+  tar xf VMXserver_Linux_v0.2.0-9-g8bb540c.tar && \
+  rm VMXserver_Linux_v0.2.0-9-g8bb540c.tar && \
   echo "Version is " `cat build/version` && \
   mkdir -p /vmx/data && \
   cd /vmx/data
@@ -70,21 +70,22 @@ ADD config.json /vmx/build/config.json
 RUN mkdir -p /vmx/middle
 WORKDIR /vmx/middle
 RUN \
-  wget -q http://files.vision.ai/vmx/vmxAppBuilder/vmxAppBuilder_v0.1.7.tar.gz &&\ 
-  gzip -d vmxAppBuilder_v0.1.7.tar.gz &&\
-  tar xf vmxAppBuilder_v0.1.7.tar &&\ 
-  rm vmxAppBuilder_v0.1.7.tar &&\
-  wget -q http://files.vision.ai/vmx/VMXdocs/VMXdocs_v0.4.12.tar.gz &&\
-  gzip -d VMXdocs_v0.4.12.tar.gz &&\
-  tar xf VMXdocs_v0.4.12.tar -C static &&\
-  rm VMXdocs_v0.4.12.tar
+  wget -q http://files.vision.ai/vmx/vmxAppBuilder/vmxAppBuilder_v0.2.0-7-g7cbae14.tar.gz &&\ 
+  gzip -d vmxAppBuilder_v0.2.0-7-g7cbae14.tar.gz &&\
+  tar xf vmxAppBuilder_v0.2.0-7-g7cbae14.tar &&\ 
+  rm vmxAppBuilder_v0.2.0-7-g7cbae14.tar &&\
+  wget -q http://files.vision.ai/vmx/VMXdocs/VMXdocs_v0.4.9.tar.gz &&\
+  gzip -d VMXdocs_v0.4.9.tar.gz &&\
+  tar xf VMXdocs_v0.4.9.tar -C static &&\
+  rm VMXdocs_v0.4.9.tar
 #VOLUME /vmx/middle/static
 
 ######################  user data
 RUN mkdir -p /vmx/models
 
 ADD fetch.sh /fetch.sh
-RUN chmod +x /fetch.sh && /fetch.sh
+RUN chmod +x /fetch.sh
+RUN /fetch.sh
 
 VOLUME /vmx/models
 WORKDIR /vmx/middle
@@ -110,7 +111,7 @@ ADD create_sessions.sh /create_sessions.sh
 ADD active_models.txt /vmx/build/active_models.txt
 
 EXPOSE 3000
-RUN chmod +x /create_sessions.sh && /create_sessions.sh
+RUN chmod +x /create_sessions.sh
 
 RUN mkdir -p /vmx/build/output && \
     chmod -Rf 755 /vmx/build/output && \
@@ -130,5 +131,7 @@ EXPOSE 1980
 
 
 WORKDIR /vmx/build/
-
-CMD ["/vmx/build/traefik_d","/vmx/build/traefik.toml"]
+ADD start.sh /start.sh
+RUN chmod +x /start.sh
+#RUN /create_sessions.sh
+CMD ["/start.sh"]

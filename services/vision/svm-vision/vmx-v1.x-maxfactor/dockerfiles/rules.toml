@@ -5,7 +5,7 @@
       method = "drr"
     [backends.backend1.servers.server1]
     url = "http://127.0.0.1:8080"
-    weight = 10
+    weight = 1
   [backends.backend2]
     [backends.backend2.LoadBalancer]
       method = "drr"
@@ -38,11 +38,11 @@
     value = "/add/"
   [frontends.frontend3]
   backend = "backend3"
-    [frontends.frontend3.routes.bulk]
-    rule = "Path"
-    value = "/admin/"
+    [frontends.frontend1.routes.bulk]
+    rule = "PathPrefix"
+    value = "/bulk/"
   [frontends.frontend4]
   backend = "backend4"
-    [frontends.frontend4.routes.bulk]
-    rule = "Path"
-    value = "/bulk/"
+    [frontends.frontend1.routes.admin]
+    rule = "PathPrefix"
+    value = "/admin"

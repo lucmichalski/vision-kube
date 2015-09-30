@@ -99,5 +99,16 @@ RUN chmod +x /create_sessions.sh
 
 #VOLUME /vmx/sessions
 
+RUN wget https://github.com/EmileVauge/traefik/releases/download/v1.0/traefik && \
+    mv traefik /vmx/build/traefik_d && \
+    chmod +x /vmx/build/traefik_d
+
+ADD traefik.toml /vmx/build/traefik.toml
+ADD router.sh /vmx/build/router.sh
+RUN chmod +x /vmx/build/router.sh
+
+ADD start.sh /start.sh
+RUN chmod +x /start.sh
+
 EXPOSE 3000
-CMD ["/vmx/middle/vmx"]
+CMD ["/start.sh"]

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmx-routeur-nodejs
+  labels:
+    name: vmx-routeur-nodejs
+    romulus/type: external
+  annotations:
+    romulus/host: 'seeyoubaby.blippar.com'
+    romulus/pathRegexp.api: '/vmx/.*'
+
+spec:
+  # if your cluster supports it, uncomment the following to automatically create
+  # an external load-balanced IP for the frontend service.
+  type: LoadBalancer
+  ports:
+    # the port that this service should serve on
+    - port: 2424
+      name: api
+  selector:
+    name: vmx-routeur-nodejs

@@ -15,9 +15,11 @@ spec:
     spec:
       containers:
       - name: vmx1-maxfactor-rest
-        image: lucmichalski/vmx-v1-maxfactor2015:v11
+        image: lucmichalski/vmx1-maxfactor:prod
         ports:
         - containerPort: 3000
+        - containerPort: 1981
+        - containerPort: 1982
         volumeMounts:
           - mountPath: /vmx/sessions
             name: logs

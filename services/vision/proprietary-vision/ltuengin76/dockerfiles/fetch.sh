@@ -27,7 +27,6 @@ do
   # take action on each file. $f store current file name
   unzip $f
 done
-sed -i -e "s/0214bf566d99/ltu76/g" /opt/licence.lic
 mv /opt/licence.lic /opt/ltu-engine-7.6.3/licence.lic
 cd /opt/ltu-engine-7.6.3
 cat /opt/ltu-engine-7.6.3/licence.lic
