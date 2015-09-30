@@ -26,7 +26,7 @@ docker run -d --name main.proxy.vulcan -p 0.0.0.0:80:80 -p 8182:8182 -p 8181:818
 docker logs main.proxy.vulcan
 
 echo "- Output logs from the proxy container"
-#docker logs 
+#docker logs
 
 # Start Romulus
 docker stop proxy.discovery.romulus
@@ -50,17 +50,6 @@ kubectl replace -f ./services/vision/proprietary-vision/ltuengin76/
 kubectl replace -f ./services/vision/opencv-vision/libccv/
 #kubectl replace -f ./services/vision/opencv-vision/find-object/
 #kubectl replace -f ./services/metrics/vision-cyclops/
-# ES cluster base
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/service-account.yaml
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/es-discovery-svc.yaml
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/es-svc.yaml
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/es-master-rc.yaml
-# Then client
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/es-client-rc.yaml
-# Then data
-kubectl create -f ./kube-system-plugin/elk-components/kubernetes-elasticsearch-cluster/es-data-rc.yaml
-# Then logstash & Kibana
-kubectl create -f ./kube-system-plugins/elk-cluster/
 
 #echo "Mount the S3 buckets in order to get access to datasets or pictures"
 #s3fs mybucket /path/to/mountpoint -o passwd_file=/path/to/passwd
@@ -97,7 +86,7 @@ kubectl create -f ./kube-system-plugins/elk-cluster/
             "Regexp":"/api/vision/vmx1/maxfactor/(.*)",
             "Replacement":"/$1",
             "RewriteBody":false,
-            "Redirect":false}}}'           
+            "Redirect":false}}}'
 
  curl -X POST -H "Content-Type: application/json" http://172.31.0.246:8182/v2/frontends/api.dcolors-rest.default/middlewares\
      -d '{"Middleware": {
@@ -112,3 +101,4 @@ kubectl create -f ./kube-system-plugins/elk-cluster/
 
 # Check active containers
 docker ps
+/home/core/vision-kube/differ_start_es.sh
