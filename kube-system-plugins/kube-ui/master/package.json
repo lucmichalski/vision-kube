@@ -55,6 +55,6 @@
     "postbuild": "gulp build"
   },
   "dependencies": {
-    "lodash": "^3.3.0"
+    "lodash": "^4.17.19"
   }
 }
