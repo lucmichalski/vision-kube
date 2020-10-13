@@ -116,7 +116,7 @@
     </repositories>
     <properties>
         <version.jdk>1.7</version.jdk>
-        <version.junit>4.12</version.junit>
+        <version.junit>4.13.1</version.junit>
         <version.powermock>1.6.2</version.powermock>
         <version.powermock-mockito>1.5.3</version.powermock-mockito>
         <version.jersey>2.4</version.jersey>
