@@ -24,7 +24,7 @@
         <HikariCP.version>2.2.5</HikariCP.version>
         <assertj-core.version>1.6.1</assertj-core.version>
         <awaitility.version>1.4.0</awaitility.version>
-        <commons-io.version>2.4</commons-io.version>
+        <commons-io.version>2.7</commons-io.version>
         <commons-lang.version>2.6</commons-lang.version>
         <hibernate.version>4.3.6.Final</hibernate.version>
         <java.version>1.8</java.version>
