@@ -205,7 +205,7 @@
         <clojure.tools.logging.version>0.2.3</clojure.tools.logging.version>
         <clojure.math.numeric-tower.version>0.0.1</clojure.math.numeric-tower.version>
         <carbonite.version>1.4.0</carbonite.version>
-        <snakeyaml.version>1.11</snakeyaml.version>
+        <snakeyaml.version>1.26</snakeyaml.version>
         <httpclient.version>4.3.3</httpclient.version>
         <clojure.tools.cli.version>0.2.4</clojure.tools.cli.version>
         <disruptor.version>2.10.4</disruptor.version>
